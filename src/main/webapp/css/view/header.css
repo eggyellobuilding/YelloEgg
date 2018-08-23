@@ -1,0 +1,21 @@
+.navbar-inner {
+	background-color: #111;
+}
+
+.header {
+	border-right: 1px solid black;
+	color: white;
+	width: 130px;
+	text-align: center;
+	font-size: 17px;
+}
+
+.header a {
+	margin: 0px;
+	color: black;
+}
+
+a:hover {
+	color: #FFBB00;
+}
+ 

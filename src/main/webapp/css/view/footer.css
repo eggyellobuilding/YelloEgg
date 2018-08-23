@@ -1,0 +1,12 @@
+#footer {
+	height: 80px;
+	background-color: #4C4C4C;
+	color: #D5D5D5;
+	font-size: 15px;
+	padding-top: 10px;
+	padding-left: 26%;
+}
+#footerimg {
+	float: left;
+	padding-right: 10px;
+} 

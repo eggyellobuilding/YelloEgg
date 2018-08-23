@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="yello.movie">
+	<insert id="adminMovieAdd" parameterType="amvdto">
+		insert into movieInfo values(movieInfosq.nextval,#{movieReleaseDate},
+		#{movieName},#{movieDirector},#{movieActor},#{movieSummary},
+		#{movieRunTime},#{movieTitleCut},#{movieDistributer},
+		#{movieGrade},#{movieGenre},#{movieEndDate})
+	</insert>
+	<select id="movidIdxInfo" resultType="int">
+		select max(movieIdx) from movieInfo
+	</select>
+	<select id="adminMovieList" parameterType="Map" resultType="amvdto">	
+		select * from
+		(select rownum as rnum,a.* from
+		(select * from movieInfo order by movieIdx desc)a)b
+		where rnum<![CDATA[>=]]>#{startnum} and rnum<![CDATA[<=]]>#{endnum}
+	</select>
+	<select id="movieTotalCut" resultType="int">
+		select count(*) from movieInfo
+	</select>
+	<select id="searchList" parameterType="Map" resultType="amvdto">
+	select * from(select rownum as rnum,a.* from
+	(select * from movieInfo where movieName like '%'||#{mName}||'%' and 
+	movieGenre like '%'||#{mGenre}||'%' and movieDistributer like '%'||#{mDistributer}||'%' 
+	order by movieIdx desc)a)b where rnum<![CDATA[>=]]>#{startnum} and rnum<![CDATA[<=]]>#{endnum}
+	</select>
+	
+</mapper>

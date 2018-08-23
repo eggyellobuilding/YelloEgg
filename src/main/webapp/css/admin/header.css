@@ -1,0 +1,15 @@
+@charset "UTF-8";
+
+.container,.container-fluid{
+	width: 1200px !important;
+}
+
+body{
+	position:relative;
+}
+.navibar{
+	padding-top:30px;
+	position:absolute;
+	width: 180px;
+	height: 2000px;
+}

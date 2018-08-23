@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="adminCinemaAdd">
+	<insert id="cinemaAdd" parameterType="cdto">
+		insert into
+		cinema
+		values(
+		cinemaSq.nextval,
+		#{cinemaCity},
+		#{cinemaGu},
+		#{cinemaBungi},
+		#{cinemaAddr},
+		#{cinemaName},
+		#{cinemaTheater}
+		)
+	</insert>
+	
+	<select id="cinemaList" resultType="cdto" >
+		select * from cinema
+	</select>
+	
+	<select id="theaterList" resultType="cdto">
+		select * 
+		from theater
+		where 
+		theaterCinemaIdx=#{cinemaIdx} 
+	</select>
+	
+	<select id="theaterCount" parameterType="int" resultType="cdto">
+		select cinemaTheater,cinemaIdx
+		from cinema 
+		where cinemaIdx = #{cinemaIdx}
+	</select>
+	
+	<select id="theaterNames" parameterType="int" resultType="cdto" >
+		select * from theater where theaterCinemaIdx = #{cinemaIdx}
+	</select>
+	
+	<select id="theaterCinemaCity" resultType="cdto">
+		select distinct (cinemaCity) from cinema
+	</select>
+	
+	<select id="theaterCinemaName" parameterType="String" resultType="cdto">
+		select cinemaName,cinemaIdx
+		from cinema
+		where cinemaCity = #{cinemaCity}
+	</select>
+	
+	<insert id="theaterAdd" parameterType="cdto">
+	 	insert into
+	 	theater
+	 	values(
+	 	theaterSq.nextval,
+	 	#{theaterCinemaIdx},
+	 	#{theaterName}
+	 	) 
+	</insert>
+	
+	<select id="seatsTheaterLists" resultType="cdto" parameterType="int">
+		select theaterName, theaterIdx 
+		from theater 
+		where #{cinemaIdx} = theaterCinemaIdx 
+	</select>
+	
+	<select id="availibleSeats" parameterType="cdto" resultType="String">
+	select * from 
+		seat
+		where seatTheaterIdx=#{theaterIdx}
+	</select>
+	
+	
+	<insert id="seatsAdd" parameterType="cdto">
+		insert into
+		seat
+		values(
+		#{seatTheaterIdx},
+		#{seatX},
+		#{seatY}
+		
+		)
+	</insert>
+	
+	<select id="seatsPosition" parameterType="int" resultType="cdto">
+		select * from
+		seat
+		where seatTheaterIdx = #{seatTheaterIdx}
+	</select>
+	
+	<select id="seatsX" parameterType="int" resultType="cdto">
+		select distinct(seatX) from
+		seat
+		where seatTheaterIdx= #{seatTheaterIdx}
+		order by seatX asc
+	</select>
+	
+	<select id="seatsY" parameterType="int" resultType="cdto">
+		select distinct(seatY) from
+		seat
+		where seatTheaterIdx= #{seatTheaterIdx}
+		order by seatY asc
+	</select>
+	
+	<insert id="exitsAdd" parameterType="cdto">
+		insert into
+			exit
+			values(
+			#{exitTheaterIdx},
+			#{exitX},
+			#{exitY},
+			#{exitDirection}
+			)
+	</insert>
+	
+</mapper>

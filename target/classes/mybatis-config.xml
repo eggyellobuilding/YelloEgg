@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration
+  PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-config.dtd">
+  <configuration>
+  	<typeAliases>
+		<typeAlias type="egg.cinema.admin.model.CinemaDTO" alias="cdto"/>
+		<!-- <typeAlias type="egg.schedule.admin.model.AdminScheduleDTO" alias="asdto"/> -->
+		<typeAlias type="egg.movie.admin.model.AdminMovieDTO" alias="amvdto"/>
+		<typeAlias type="egg.movie.model.MovieDTO" alias="mvdto"/>
+  	</typeAliases>
+  	<mappers>
+		<mapper resource="sql/adminSteelCutSql.xml"/>
+		<mapper resource="sql/adminCinemaSql.xml"/>  
+		<mapper resource="sql/adminScheduleSql.xml"/>
+		<mapper resource="sql/adminMovieSql.xml"/>
+		<mapper resource="sql/adminSteelCutSql.xml"/>
+		<mapper resource="sql/movieInfoSql.xml"/>
+		<mapper resource="sql/scheduleSql.xml"/>
+  	</mappers>
+  </configuration>  

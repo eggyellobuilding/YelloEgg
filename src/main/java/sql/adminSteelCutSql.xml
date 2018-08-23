@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="yello.movie">
+<insert id="steelCutAdd" parameterType="amvdto" >
+	insert into steelCut values(#{steelCutMovieIdx},steelCutSq.nextval,#{steelCutFileName})
+</insert>
+<select id="steelCutList" resultType="amvdto">
+	select * from steelCut
+</select>
+</mapper>

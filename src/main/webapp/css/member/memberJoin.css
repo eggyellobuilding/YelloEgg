@@ -1,0 +1,118 @@
+@charset "UTF-8";
+
+.colorgraph {
+	height: 5px;
+	border-top: 0;
+	background: #c4e17f;
+	border-radius: 5px;
+	background-image: -webkit-linear-gradient(left, #c4e17f, #c4e17f 12.5%, #f7fdca 12.5%,
+		#f7fdca 25%, #fecf71 25%, #fecf71 37.5%, #f0776c 37.5%, #f0776c 50%,
+		#db9dbe 50%, #db9dbe 62.5%, #c49cde 62.5%, #c49cde 75%, #669ae1 75%,
+		#669ae1 87.5%, #62c2e4 87.5%, #62c2e4);
+	background-image: -moz-linear-gradient(left, #c4e17f, #c4e17f 12.5%, #f7fdca 12.5%,
+		#f7fdca 25%, #fecf71 25%, #fecf71 37.5%, #f0776c 37.5%, #f0776c 50%,
+		#db9dbe 50%, #db9dbe 62.5%, #c49cde 62.5%, #c49cde 75%, #669ae1 75%,
+		#669ae1 87.5%, #62c2e4 87.5%, #62c2e4);
+	background-image: -o-linear-gradient(left, #c4e17f, #c4e17f 12.5%, #f7fdca 12.5%, #f7fdca
+		25%, #fecf71 25%, #fecf71 37.5%, #f0776c 37.5%, #f0776c 50%, #db9dbe
+		50%, #db9dbe 62.5%, #c49cde 62.5%, #c49cde 75%, #669ae1 75%, #669ae1
+		87.5%, #62c2e4 87.5%, #62c2e4);
+	background-image: linear-gradient(to right, #c4e17f, #c4e17f 12.5%, #f7fdca 12.5%, #f7fdca
+		25%, #fecf71 25%, #fecf71 37.5%, #f0776c 37.5%, #f0776c 50%, #db9dbe
+		50%, #db9dbe 62.5%, #c49cde 62.5%, #c49cde 75%, #669ae1 75%, #669ae1
+		87.5%, #62c2e4 87.5%, #62c2e4);
+}
+
+#updateTr {
+	width: 20%;
+	font-size: 15px;
+	padding-top: 15px;
+	text-align: center;
+	background-color: #F3E2A9;
+}
+
+#updateTd {
+	padding-left: 40px;
+}
+
+.memberJoinHeader {
+	padding: 2px 0px 10px 15px;
+	margin-top: 15px;
+	background-color: #D8D8D8;
+	border-bottom: 4px solid #F4FA58;
+	margin: 0px auto;
+}
+
+#inputPwdBox {
+	width: 30%;
+	margin-top: 6px;
+}
+
+#genderCheckBox1 {
+	width: 17px;
+	height: 17px;
+	margin-right: 10px;
+}
+
+#genderCheckBox2 {
+	width: 17px;
+	height: 17px;
+	margin-left: 20px;
+	margin-right: 10px;
+}
+
+#cancelButton {
+	margin-right: 20px;
+	width: 120px;
+	height: 50px;
+}
+
+#idCancelButton {
+	margin-right: 20px;
+	width: 120px;
+	height: 50px;
+}
+
+#pwdCancelButton {
+	margin-right: 20px;
+	width: 120px;
+	height: 50px;
+}
+
+#divJoin {
+	border-top: 4px solid #F4FA58;
+	margin-top: 20px;
+}
+
+#divContainer {
+	margin-top: 100px;
+}
+
+#rowJoin {
+	width: 900px;
+	margin: 0px auto;
+}
+
+#divFind {
+	margin-top: 80px;
+	margin-left: 10px;
+}
+
+#submitButton {
+	width: 120px;
+}
+
+#idSubmitButton {
+	width: 120px;
+}
+#pwdSubmitButton {
+	width: 120px;
+}
+
+#checkButton {
+	margin-top: 7px;
+}
+
+#idCheckMsg {
+	margin-top: 10px;
+}

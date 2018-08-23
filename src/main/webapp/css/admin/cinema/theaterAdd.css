@@ -1,0 +1,46 @@
+@charset "UTF-8";
+#cinemaList {
+	width: 401px;
+	height: 500px;
+	border-left: 1px solid lightgray;
+	border-bottom: 1px solid lightgray;
+	border-right: 1px solid lightgray;
+	border-radius: 6px;
+}
+
+#cinemaSi {
+	padding: 0px;
+	margin-left:14px;
+	width: 179px;
+	height: 459px;
+	border-right: 1px solid lightgray;
+	border-left: 1px solid lightgray;
+	border-bottom: 1px solid lightgray;
+	background: white;
+}
+
+#cinemaNameList {
+	padding: 0px;
+	background-color: #F9F9F9;
+	width: 221px;
+	height: 459px;
+	border-top: 1px solid lightgray;
+	border-bottom-right-radius: 6px;
+	border-bottom:1px solid lightgray;
+}
+
+#cinemSi ul li,#cinemaNameList ul li{
+	height: 41px;
+	padding-top: 10px;
+}
+
+#cinemSi ul li :hover,#cinemaNameList ul li:hover {
+	color: green;
+	text-decoration: none;
+} 
+
+.glyphicon {
+	position: absolute;
+	left: 130px;
+	top: 12px;
+}

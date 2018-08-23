@@ -1,0 +1,97 @@
+@charset "UTF-8";
+
+.colorgraph {
+	height: 5px;
+	border-top: 0;
+	background: #c4e17f;
+	border-radius: 5px;
+	background-image: -webkit-linear-gradient(left, #c4e17f, #c4e17f 12.5%, #f7fdca 12.5%,
+		#f7fdca 25%, #fecf71 25%, #fecf71 37.5%, #f0776c 37.5%, #f0776c 50%,
+		#db9dbe 50%, #db9dbe 62.5%, #c49cde 62.5%, #c49cde 75%, #669ae1 75%,
+		#669ae1 87.5%, #62c2e4 87.5%, #62c2e4);
+	background-image: -moz-linear-gradient(left, #c4e17f, #c4e17f 12.5%, #f7fdca 12.5%,
+		#f7fdca 25%, #fecf71 25%, #fecf71 37.5%, #f0776c 37.5%, #f0776c 50%,
+		#db9dbe 50%, #db9dbe 62.5%, #c49cde 62.5%, #c49cde 75%, #669ae1 75%,
+		#669ae1 87.5%, #62c2e4 87.5%, #62c2e4);
+	background-image: -o-linear-gradient(left, #c4e17f, #c4e17f 12.5%, #f7fdca 12.5%, #f7fdca
+		25%, #fecf71 25%, #fecf71 37.5%, #f0776c 37.5%, #f0776c 50%, #db9dbe
+		50%, #db9dbe 62.5%, #c49cde 62.5%, #c49cde 75%, #669ae1 75%, #669ae1
+		87.5%, #62c2e4 87.5%, #62c2e4);
+	background-image: linear-gradient(to right, #c4e17f, #c4e17f 12.5%, #f7fdca 12.5%, #f7fdca
+		25%, #fecf71 25%, #fecf71 37.5%, #f0776c 37.5%, #f0776c 50%, #db9dbe
+		50%, #db9dbe 62.5%, #c49cde 62.5%, #c49cde 75%, #669ae1 75%, #669ae1
+		87.5%, #62c2e4 87.5%, #62c2e4);
+}
+
+
+.input-group-addon {
+    color: #fff;
+    background: #3276B1;
+}
+
+.memberOption {
+	margin-bottom: 15px;
+}
+
+.memberOption ul {
+	list-style: none;
+	margin: 10px 0px 40px 0px;
+	padding: 5px 0px 10px 0px;
+}
+
+.memberOption li {
+	margin: 0px 0px 0px 15px;
+	padding: 0px 0px 6px 50px;
+	border: 0px;
+	float: left;
+}
+
+.memberOption li a {
+	text-decoration: none;
+}
+
+.checkbox label {
+	min-height: 20px;
+	padding-left: 20px;
+	margin-bottom: 10px;
+	font-weight: normal;
+	cursor: pointer;
+}
+
+#divLoginForm {
+	position: absolute;
+	left: 900px;
+	top: 48px;
+	border: 2px solid gray;
+	border-radius: 10px;
+	background-color: white;
+	padding-left: 0px;
+	padding-right: 0px;
+	padding-top: 0px;
+	padding-bottom: 20px;
+}
+
+#divLogin {
+	position: absolute; 
+	left: 900px;
+	top: 50px;
+	border: 2px solid gray;
+	border-radius: 10px;
+	background-color: white;
+	padding-left: 0px;
+	padding-right: 0px;
+	padding-top: 0px;
+	padding-bottom: 75px;
+}
+
+#divLoginContainer {
+	width: 420px;
+	height: 400px;
+	margin-top: 20px;
+}
+
+#divStateContainer {
+	width: 420px;
+	height: 400px;
+	
+}
