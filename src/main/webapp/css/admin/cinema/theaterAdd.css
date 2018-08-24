@@ -1,4 +1,7 @@
 @charset "UTF-8";
+.row{
+	margin:0px auto;
+}
 #cinemaList {
 	width: 401px;
 	height: 500px;
@@ -10,7 +13,7 @@
 
 #cinemaSi {
 	padding: 0px;
-	margin-left:14px;
+	margin-left:0px;
 	width: 179px;
 	height: 459px;
 	border-right: 1px solid lightgray;
@@ -22,7 +25,7 @@
 #cinemaNameList {
 	padding: 0px;
 	background-color: #F9F9F9;
-	width: 221px;
+	width: 220px;
 	height: 459px;
 	border-top: 1px solid lightgray;
 	border-bottom-right-radius: 6px;
@@ -39,7 +42,7 @@
 	text-decoration: none;
 } 
 
-.glyphicon {
+.list-group-item span{
 	position: absolute;
 	left: 130px;
 	top: 12px;

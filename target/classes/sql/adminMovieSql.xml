@@ -13,7 +13,7 @@
 		select max(movieIdx) from movieInfo
 	</select>
 	<select id="adminMovieList" parameterType="Map" resultType="amvdto">	
-		select * from
+		select * from  
 		(select rownum as rnum,a.* from
 		(select * from movieInfo order by movieIdx desc)a)b
 		where rnum<![CDATA[>=]]>#{startnum} and rnum<![CDATA[<=]]>#{endnum}

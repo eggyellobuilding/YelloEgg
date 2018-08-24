@@ -67,11 +67,11 @@
 		</constructor-arg>
 	</bean>
 	
-<!-- 	<bean id="scheduleDAO" class="egg.schedule.admin.model.ScheduleDAOImple">
+ 	<bean id="adminScheduleDAO" class="egg.schedule.admin.model.AdminScheduleDAOImple">
 		<constructor-arg>
 			<ref bean="sqlSessionTemplate"/>
 		</constructor-arg>
-	</bean> -->
+	</bean>
 	
 <!-- views -->
  	<bean id="viewResolver" class="org.springframework.web.servlet.view.InternalResourceViewResolver">

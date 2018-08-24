@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
-  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd"> 
 <mapper namespace="adminCinemaAdd">
 	<insert id="cinemaAdd" parameterType="cdto">
 		insert into
@@ -9,16 +9,16 @@
 		values(
 		cinemaSq.nextval,
 		#{cinemaCity},
-		#{cinemaGu},
+		#{cinemaGu}, 
 		#{cinemaBungi},
 		#{cinemaAddr},
-		#{cinemaName},
-		#{cinemaTheater}
+		#{cinemaName},  
+		#{cinemaTheater} 
 		)
 	</insert>
-	
+	 
 	<select id="cinemaList" resultType="cdto" >
-		select * from cinema
+		select * from cinema  
 	</select>
 	
 	<select id="theaterList" resultType="cdto">
@@ -39,7 +39,7 @@
 	</select>
 	
 	<select id="theaterCinemaCity" resultType="cdto">
-		select distinct (cinemaCity) from cinema
+		select distinct (cinemaCity) from cinema where cinemaIdx not in(0)
 	</select>
 	
 	<select id="theaterCinemaName" parameterType="String" resultType="cdto">
