@@ -25,6 +25,7 @@
 	location.href='mypageInquiryList.do';
 }
   function deleteMemberForm() {
+
 	location.href='mypageDeleteMemberForm.do';
 }
   </script>
@@ -73,8 +74,11 @@
 				</div>
 			</div>
 		</div>
+		
+		
 		<div style="border-top: 4px solid #F4FA58; margin-top: 20px;">
-			<form class="form-group" name="mypageUpdateMemberForm" action="mypageUpdateMember.do">
+			<form class="form-group" name="mypageUpdateMemberForm" action="mypageUpdateMember.do" method="post">
+				<input type="hidden" name="memberIdx" id="memberIdx" value="${sessionScope.dto.memberIdx}"/>
 				<table class="table table-striped">
 					<tr>
 						<th id="updateTr"> * 비밀번호</th>
@@ -107,7 +111,7 @@
 					</tr>
 					<tr>
 						<td colspan="2" align="center" style="padding-top: 20px;">
-						<button type="button" style="margin-right: 20px;width:120px;height: 50px;" class="btn btn-default btn-lg" onclick="cancelUpdateMember()">Cancel</button>
+						<button type="button" style="margin-right: 20px;width:120px;height: 46px;" class="btn btn-default btn-lg" onclick="cancelUpdateMember()">Cancel</button>
 						<button type="submit" style="width:120px;" class="btn btn-primary btn-lg">Submit</button>
 						</td>
 					</tr>

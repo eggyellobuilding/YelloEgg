@@ -9,7 +9,7 @@
 		#{name},
 		#{id},
 		#{pwd},
-		to_date(#{birthDate}, 'YYYY-MM-DD'),
+		#{birthDate},
 		sysdate,
 		#{gender},
 		#{email},
@@ -17,11 +17,48 @@
 		default,
 		default
 		)
+		
 	</insert>
+	
 	<select id="idCheck" parameterType="String" resultType="java.lang.Integer">
 		select count(id) from member where id=#{id}
 	</select>
+	
 	<select id="memberLogin" parameterType="mdto" resultType="mdto">
 		select * from member where id=#{id}
 	</select>
+	
+	<select id="adminLogin" parameterType="mdto" resultType="mdto">
+		select * from admin where adminId=#{adminId}
+	</select>
+	
+	<update id="memberUpdateState" parameterType="mdto">
+		update member set state='Y',joinDate=sysdate where memberIdx=#{memberIdx}
+	</update>
+	
+	<select id="adminMemberList" resultType="mdto">
+		select m.*, g.gradeName from member m , grade g 
+		where memberGradeIdx=gradeIdx order by memberIdx desc
+	</select>
+	
+	<select id="adminDeleteMemberList" resultType="mdto">
+		select m.*, g.gradeName from member m, grade g 
+		where memberGradeIdx=gradeIdx and state='Y' order by memberIdx desc		
+	</select>
+	<delete id="afterDaysDeleteMember" parameterType="mdto">
+		delete from member where joinDate<![CDATA[<=]]>(sysdate<![CDATA[-]]>1)
+	</delete>
+	<select id="getMemberImfo" parameterType="mdto" resultType="mdto">
+		select m.*, g.gradeName from member m , grade g 
+		where memberGradeIdx=gradeIdx and memberIdx=#{memberIdx}
+	</select>
+	
+	<update id="adminUpdateMember" parameterType="mdto">
+		update member set email=#{email}, tel=#{tel} where memberIdx=#{memberIdx}
+	</update>
+	
+	<delete id="adminDeleteMember" parameterType="int">
+		delete from member where memberIdx=#{memberIdx}
+	</delete>
+	
 </mapper>  

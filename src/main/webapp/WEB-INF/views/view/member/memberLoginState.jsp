@@ -28,7 +28,7 @@
 				
 				<div class="row">
 					<div class="col-xs-6">
-                        <p class="text-center" style="font-size:20px;">${dto.id}님</p>
+                        <p class="text-center" style="font-size:20px;">${sessionScope.mdto.id}님</p>
 					</div>
 					<div class="col-xs-6">
 						<p class="text-center" style="font-size:20px; color: green;">달걀</p>

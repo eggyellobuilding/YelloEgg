@@ -56,7 +56,30 @@
  				 <li role="presentation" ><a href="mypageReservationCancelList.do">예매 취소내역</a></li>
 			</ul>
  		</div>
- 		<div id="divReservation"></div>
+ 		<div id="divList">
+ 		<form name="mypageReservationList">
+		<div style="text-align: center; margin-top: 15px;">
+				<table class="table table-hover" >
+					<thead>
+					<tr class="active">
+						<th width="10%"  class="text-center">NO.</th>
+						<th width="10%"  class="text-center">예매번호</th>
+						<th width="20%"  class="text-center">영화명</th>
+						<th width="20%"  class="text-center">영화관</th>
+						<th width="15%"  class="text-center">상영일시</th>
+						<th width="15%"  class="text-center">예매일</th>
+						<th width="30%"  class="text-center">예매취소</th>
+					</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td colspan="7" align="center">예매한 내역이 없습니다.</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</form>	
+	</div>	
  </div>
 <%@include file="../commonsView/footer.jsp" %>
   </body>

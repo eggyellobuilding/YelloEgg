@@ -16,31 +16,57 @@
         	<!-- memberCSS -->
 	<link href="/yelloMovie/css/member/memberJoin.css" rel="stylesheet">
   </head>
+  <style>
+#memberFindId table th {
+	width: 20%;
+	font-size: 15px;
+	padding-top: 15px;
+	text-align: center;
+	background-color: #F3E2A9;
+}
+
+#memberFindId table td{
+	padding-left: 40px;
+}
+
+#memberFindPwd table th {
+	width: 20%;
+	font-size: 15px;
+	padding-top: 15px;
+	text-align: center;
+	background-color: #F3E2A9;
+}
+
+#memberFindPwd table td{
+	padding-left: 40px;
+}
+
+</style>
   <body>
   <%@include file="../commonsView/header.jsp" %>
   <div class="container" id="divContainer">
- 		<div class="memberJoinHeader"><h2><b>ID/패스워드 찾기</b></h2></div>
+ 	<div class="memberJoinHeader"><h2><b>ID/패스워드 찾기</b></h2></div>
  		<div>
  			<div>
 			<div id="divFind"><h3>ID 찾기</h3></div>
 			<div id="divJoin">
-			<form class="form-group" name="memberIdFindForm" action="memberIdFind.do">
+			<form class="form-group" id="memberFindId" name="memberFindIdForm" action="memberIdFind.do">
 				<table class="table table-striped">
 					<tr>
-						<th id="updateTr"> 이름</th>
-						<td id="updateTd"><input type="text" name="name" class="form-control" style="width: 20%"></input></td>
+						<th class="text-center"> 이름</th>
+						<td><input type="text" name="name" class="form-control" style="width: 20%"></input></td>
 					</tr>
 					<tr>
-						<th id="updateTr"> 생년월일</th>
-						<td class="form-inline" id="updateTd">
+						<th class="text-center"> 생년월일</th>
+						<td class="form-inline">
 						<input type="text" name="year" id="year" class="form-control" style="width: 8%"/> 년
 						<input type="text" name="month" id="month" class="form-control" style="width: 6%"/> 월
 						<input type="text" name="date" id="date" class="form-control" style="width: 6%"/> 일
 						</td>
 					</tr>
 					<tr>
-						<th id="updateTr"> * 휴대폰번호</th>
-						<td class="form-inline" id="updateTd">
+						<th class="text-center"> * 휴대폰번호</th>
+						<td class="form-inline">
 						<input type="text" name="tel1" id="tel1" class="form-control" style="width: 7%"/> -
 						<input type="text" name="tel2" id="tel2" class="form-control" style="width: 8%"/> -
 						<input type="text" name="tel3" id="tel3" class="form-control" style="width: 8%"/>
@@ -59,19 +85,19 @@
  			<div>
 			<div id="divFind"><h3>패스워드 찾기</h3></div>
  			<div id="divJoin">
-			<form class="form-group" name="memberFindPwdForm" action="memberFindPwd.do">
+			<form class="form-group" id="memberFindPwd" name="memberFindPwdForm" action="memberFindPwd.do">
 				<table class="table table-striped">
 					<tr>
-						<th id="updateTr"> 아이디</th>
-						<td id="updateTd"><input type="text" name="id" class="form-control" style="width: 20%"></input></td>
+						<th class="text-center"> 아이디</th>
+						<td><input type="text" name="id" class="form-control" style="width: 20%"></input></td>
 					</tr>
 					<tr>
-						<th id="updateTr"> 이름</th>
-						<td id="updateTd"><input type="text" name="name" class="form-control" style="width: 20%"></input></td>
+						<th class="text-center"> 이름</th>
+						<td><input type="text" name="name" class="form-control" style="width: 20%"></input></td>
 					</tr>
 					<tr>
-						<th id="updateTr"> 이메일</th>
-						<td id="updateTd"><input type="email" name="email"  class="form-control" style="width: 30%"></input>
+						<th class="text-center"> 이메일</th>
+						<td><input type="email" name="email"  class="form-control" style="width: 30%"></input>
 						</td>
 					</tr>
 					<tr>

@@ -78,8 +78,8 @@
 			</div>
 			<div class="col-xs-4" style="padding-top: 20px; text-align: right;">
 				<p>
-				<input type="radio" name="inquiryAgree" value="동의함" style="width:16px; height: 16px; margin-right: 5px;"/>동의함
-				<input type="radio" name="inquiryAgree" value="동의 하지 않음" style="width:16px; height: 16px; margin-left: 15px; margin-right: 5px;"/>동의 하지 않음
+				<input type="checkbox" name="inquiryAgree" style="width:16px; height: 16px; margin-right: 5px;"/>동의함
+				<input type="checkbox" name="inquiryAgree" style="width:16px; height: 16px; margin-left: 15px; margin-right: 5px;"/>동의 하지 않음
 				</p>
 				
 			</div>

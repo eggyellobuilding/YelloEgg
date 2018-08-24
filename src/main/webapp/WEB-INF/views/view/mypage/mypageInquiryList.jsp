@@ -56,6 +56,7 @@
 				<span style="color:#A4A4A4;"><strong>스토어 구매내역</strong></span>
 			</div>
 		</div>
+		<div id="divList">
 		<form name="mypageInquiryList" action="mypageInquiryWriteForm.do">
 		<div style="margin-top: 80px; margin-left: 10px;"><h3><strong>나의 문의내역</strong></h3></div>
 		<div style="margin-top: 20px;margin-left: 10px;"><button type="submit" class="btn btn-primary" style="width:10%">1:1문의</button></div>
@@ -76,7 +77,8 @@
 					</tbody>
 				</table>
 			</div>
-		</form>	
+		</form>
+	</div>		
 </div>	
 <%@include file="../commonsView/footer.jsp" %>
   </body>

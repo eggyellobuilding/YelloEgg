@@ -56,7 +56,28 @@
  				 <li role="presentation" class="active"><a href="mypageStoreCancelList.do">스토어 취소내역</a></li>
 			</ul>
  		</div>
- 		<div id="divStore"></div>
+	<div id="divList">
+ 		<form name="mypageStoreCancelList">
+		<div style="text-align: center; margin-top: 15px;">
+				<table class="table table-hover" >
+					<thead>
+					<tr class="active">
+						<th width="20%"  class="text-center">구매일</th>
+						<th width="30%"  class="text-center">상품명</th>
+						<th width="10%"  class="text-center">구매수량</th>
+						<th width="20%"  class="text-center">결제내역</th>
+						<th width="30%"  class="text-center">취소일시</th>
+					</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td colspan="7" align="center">취소한 내역이 없습니다.</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</form>	
+	</div>	
  	
  </div>
 	
