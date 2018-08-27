@@ -7,5 +7,24 @@
   		select * from
   		cinema
   		where cinemaIdx = #{cinemaIdx}
+  		order by cinemaIdx asc
+  	</select>
+  	<select id="adminScheduleTheater" parameterType="int" resultType="cdto">
+  		select * from
+  		theater
+  		where theaterCinemaIdx = #{cinemaIdx}
+  		order by theaterIdx asc
+  	</select>
+  	
+  	<select id="adminScheduleMovieInfo" parameterType="String" resultType="asdto">
+  		select * from
+  		movieInfo
+  		where movieName like '%' || #{movieName} ||'%' 
+  	</select>
+  	
+  	<select id="adminScheduleMovieDetail" parameterType="int" resultType="asdto">
+  		select * from
+  		movieInfo
+  		where movieIdx =#{movieIdx}
   	</select>
   </mapper>
