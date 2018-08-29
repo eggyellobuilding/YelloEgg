@@ -27,4 +27,26 @@
   		movieInfo
   		where movieIdx =#{movieIdx}
   	</select>
+  	
+  	<insert id="adminScheduleAdd" parameterType="asdto">
+  		insert into 
+  		schedule
+  		values(
+  		scheduleSq.nextval,
+  		#{scheduleMovieIdx},
+  		#{scheduleTheaterIdx},
+  		#{scheduleDate},
+  		#{scheduleStartTime}
+  		)
+  	</insert>
+  	
+  	<select id="adminScheduleList" parameterType="asdto" resultType="asdto">
+  	select a.* , m.*
+	from (select * 
+			from schedule 
+			where scheduleTheaterIdx=#{scheduleTheaterIdx} and scheduleDate=#{scheduleDate}
+			order by scheduleStartTime asc)a , movieInfo m
+	where a.scheduleMovieIdx = m.movieIdx
+  	</select>
+ 	
   </mapper>

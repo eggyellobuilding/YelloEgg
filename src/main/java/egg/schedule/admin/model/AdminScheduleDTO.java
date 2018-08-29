@@ -5,10 +5,10 @@ import java.util.Date;
 public class AdminScheduleDTO {
 	//schedule
 	private int scheduleIdx;
+	private int scheduleMovieIdx;
+	private int scheduleTheaterIdx;
 	private Date scheduleDate;
 	private int scheduleStartTime;
-	private int scheduleTheaterIdx;
-	private int scheduleMovieIdx;
 	
 	//movie
 	private int movieIdx;
@@ -19,10 +19,10 @@ public class AdminScheduleDTO {
 	private String movieSummary;
 	private int movieRunTime;
 	private String movieTitleCut;
+	private String movieDistributer;
 	private int movieGrade;
 	private String movieGenre;
 	private Date movieEndDate;
-	private String movieDistributer;
 	
 	public AdminScheduleDTO() {
 		super();

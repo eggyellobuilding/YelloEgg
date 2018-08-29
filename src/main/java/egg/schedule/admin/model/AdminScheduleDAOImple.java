@@ -1,5 +1,6 @@
 package egg.schedule.admin.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.mybatis.spring.SqlSessionTemplate;
@@ -33,5 +34,19 @@ public class AdminScheduleDAOImple implements AdminScheduleDAO {
 	public AdminScheduleDTO adminScheduleMovieDetail(int movieIdx) {
 		AdminScheduleDTO asdto = sqlMap.selectOne("adminScheduleMovieDetail",movieIdx);
 		return asdto;
+	}
+	
+	public int adminScheduleAdd(ArrayList<AdminScheduleDTO> arr) {
+		int result=0;
+		for(int i = 0 ; i<arr.size() ; i++) {
+			 result += sqlMap.insert("adminScheduleAdd",arr.get(i));
+		}
+		return result;
+	}
+	
+	public List<AdminScheduleDTO> adminScheduleList(AdminScheduleDTO asdto) {
+		System.out.println("ㄴ날짜"+asdto.getScheduleDate());
+		List<AdminScheduleDTO> scheduleList = sqlMap.selectList("adminScheduleList",asdto);
+		return scheduleList;
 	}
 }

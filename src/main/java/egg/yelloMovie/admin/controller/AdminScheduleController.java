@@ -1,6 +1,9 @@
 package egg.yelloMovie.admin.controller;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -99,4 +102,75 @@ public class AdminScheduleController {
 		return mav;
 	}
 	
+	//스캐줄 등록
+	@RequestMapping(value="adminScheduleAdd.do",method=RequestMethod.POST)
+	public ModelAndView adminScheduleAdd(@RequestParam("scheduleInfo")List<String> lists) {
+		ArrayList<AdminScheduleDTO> arr =new ArrayList<AdminScheduleDTO>();
+		for(int i = 0 ; i < lists.size();i++) {
+			AdminScheduleDTO dto = new AdminScheduleDTO();
+			String schedule[]= lists.get(i).split(",",4);
+			//startdate
+			Date date=null;
+			try {
+				date = new SimpleDateFormat("yyyy-MM-dd").parse(schedule[0]);
+				System.out.println(date);
+			} catch (ParseException e) {
+				e.printStackTrace();
+			}
+			dto.setScheduleDate(date);
+			
+			//startTime
+			dto.setScheduleStartTime(Integer.parseInt(schedule[1]));
+			dto.setScheduleTheaterIdx(Integer.parseInt(schedule[2]));
+			dto.setScheduleMovieIdx(Integer.parseInt(schedule[3]));
+			arr.add(dto);
+		}
+		int result = asdao.adminScheduleAdd(arr);
+		String msg=(result==arr.size())?"등록 성공":"등록 실패";
+		ModelAndView mav = new ModelAndView("admin/schedule/adminScheduleMsg");
+		mav.addObject("msg",msg);
+		mav.addObject("gopage","adminSchedule.do");
+		return mav;
+	}
+	//스캐줄등록  -- 사영관 선택 -- 스캐줄
+	@RequestMapping(value="adminScheduleSelectJquery.do",method=RequestMethod.POST)
+	public ModelAndView adminScheduleAdd(@RequestParam("theaterIdx")int theaterIdx,
+			@RequestParam("scheduleDate")String scheduleDate){
+		AdminScheduleDTO dto = new AdminScheduleDTO();
+		java.sql.Date date= java.sql.Date.valueOf(scheduleDate);
+		
+
+		dto.setScheduleDate(date);
+		dto.setScheduleTheaterIdx(theaterIdx);
+		List<AdminScheduleDTO> asdtoList = asdao.adminScheduleList(dto);
+		
+		
+		
+		//시간 계산
+		ArrayList<String> arr = new ArrayList<String>();
+		int h1 = 0;
+		String h ="0";
+		
+		for(int i=1;i<=48;i++) {
+			h ="0";
+			String m = "30";
+			
+			if(i%2==0) {
+				m="00";
+				h1++;
+			}
+			h=h1+"";
+			if(h1<10) {
+				h = "0"+h1;
+			}
+			
+			arr.add(h+":"+m);
+		}
+		
+		ModelAndView mav = new ModelAndView("yongJson");
+
+		mav.addObject("asdtoList",asdtoList);
+		mav.addObject("time",arr);
+		return mav;
+	}
 }

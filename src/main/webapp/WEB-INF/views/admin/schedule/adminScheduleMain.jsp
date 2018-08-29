@@ -1,52 +1,65 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+	pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset=UTF-8>
 <title>관리자 페이지</title>
-    <link href="/yelloMovie/bootstrap/css/bootstrap.min.css" rel="stylesheet">
- 	<link href="/yelloMovie/css/admin/header.css" type="text/css"rel="stylesheet">
- 	<link rel="stylesheet" href="/yelloMovie/jquery-ui-1.12.1/jquery-ui.min.css">
-    <link href="/yelloMovie/css/admin/cinema/theaterAdd.css" rel="stylesheet" type="text/css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
-    <script src="/yelloMovie/jquery-ui-1.12.1/jquery-ui.min.js"></script>
-    <script src="/yelloMovie/jquery-ui-1.12.1/datepicker-ko.js"></script>
+<link href="/yelloMovie/bootstrap/css/bootstrap.min.css"
+	rel="stylesheet">
+<link href="/yelloMovie/css/admin/header.css" type="text/css"
+	rel="stylesheet">
+<link rel="stylesheet"
+	href="/yelloMovie/jquery-ui-1.12.1/jquery-ui.min.css">
+<link href="/yelloMovie/css/admin/cinema/theaterAdd.css"
+	rel="stylesheet" type="text/css">
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+<script src="/yelloMovie/jquery-ui-1.12.1/jquery-ui.min.js"></script>
+<script src="/yelloMovie/jquery-ui-1.12.1/datepicker-ko.js"></script>
 </head>
 <style>
-	.form-control{
-        width:61%;
-    }
-    #scheduleList{
-        margin-top:20px;
-    }
-    #scheduleList th:first-child{
-        width:50px;
-    }
-    .input-group input{
-        height:40px;
-    }
-    .table{
-    	width:100%;
-    	
-    }
-    #topDate{
-    	width:82%;
-    }
-	.theaterName{
-		 width:80px; 
-	}
-	.time{
-		padding:3px;
-	}
-	.table tr td{
-		border-left:1px solid lightgray;
-		border-right:1px solid lightgray;
-	}
-	.time{
-		width:20px;
-	}
+.form-control {
+	width: 61%;
+}
+
+#scheduleList {
+	margin-top: 20px;
+}
+
+#scheduleList th:first-child {
+	width: 50px;
+}
+
+.input-group input {
+	height: 40px;
+}
+
+.table {
+	width: 100%;
+}
+
+#topDate {
+	width: 82%;
+}
+
+.theaterName {
+	width: 80px;
+}
+
+.time {
+	padding: 3px;
+}
+
+.table tr td {
+	border-left: 1px solid lightgray;
+	border-right: 1px solid lightgray;
+}
+
+.time {
+	width: 20px;
+}
 </style>
 <script>
     $(document).ready(function(){
@@ -55,7 +68,7 @@
         
         $("#date1").change(function(){
             var changeDate=$(this).val().split("-",3);
-            $("#topDate").text(changeDate[1]+'.'+changeDate[2]);
+            $("#topDate").text($(this).val());
             });
         
         
@@ -69,7 +82,7 @@
             if (month.length < 2) month = '0' + month;
             if (day.length < 2) day = '0' + day;
 
-            return [month, day].join('.');
+            return [year,month, day].join('-');
         }
         $("#topDate").text(formatDate());
         
@@ -110,6 +123,8 @@
        //등록/수정 모달
        $('#adminScheduleAdd').click(function(){
                $("#myModal").modal();
+               var date = $("#topDate").text();
+               $("#scheduleDate").text(date);
        });
        
        //영화 정보 찾기
@@ -183,6 +198,7 @@
 	        		
 	        		temp+='<div class="row text-center" style="margin:0px auto;">';
 	        		temp+=' <img src="'+dto.movieTitleCut+'" style="width:71%;height:296px;margin-bottom: 20px;">';
+	        		temp+=' <input id="movieTitleCut" value="'+dto.movieTitleCut+'" type="hidden">';
 	        		temp+='</div>';
 	        		temp+='<div class="form-horizontal">';
 	        		temp+='<div class="form-group" >';
@@ -229,185 +245,256 @@
        //상영관 선택
        function selectTheaterName(theaterIdx,theaterName){
     	   $('#theaterName').text(theaterName);
-    	   $('#theaterName2').text(theaterName);
-    	   $('#scheduleTable').show();
+    	   var params = "theaterIdx="+theaterIdx+"&scheduleDate="+$('#scheduleDate').text();
+    	   $.ajax({
+	        	url:'adminScheduleSelectJquery.do?'+params,
+	        	type:'post',
+	        	success:function(data){
+	        	
+	        		var timeData = data.time;
+	        		var result='';
+	        		var temp ='';
+	        		
+	        		var count = 1;
+	        		
+	        		
+	        		//스캐줄 탬플릿
+	        		temp += '<div class="panel-heading" id="theaterName2">'+theaterName+'</div>';
+	        		temp += '<table class="table">';
+	        		temp += '<tr>';
+	        		temp += '<th>시간</th>';
+	        		temp += '<th>영화</th>';
+	        		temp += '</tr>';
+	        		
+					for(var i = 0 ; i<timeData.length;i++){
+						var time = timeData[i];
+							temp +='<tr>';
+							temp +='<th class="time">'+time+'</th>';
+							temp +='<td id="time'+count+'" onclick="startTime('+count+')"></td>';
+							temp +='</tr>';	
+							count++;
+						}
+					temp +='</table>';
+					result =temp;
+					$('#scheduleTable').html(result);
+					
+					//스캐줄 입력
+					var adminScheduleList=data.asdtoList;
+					window.alert(adminScheduleList.length);
+					for(var i=0 ; i < adminScheduleList.length;i++){
+						var dto = adminScheduleList[i];
+						var blockCount=Math.floor(dto.movieRunTime/30)+1;
+						$('#time'+dto.scheduleStartTime).attr("rowspan",blockCount).html('<img style="width:100%;height:21%" src="'+dto.movieTitleCut+'">').addClass('on');
+						for(var j = dto.scheduleStartTime+1 ; j <dto.scheduleStartTime+blockCount ;j++){
+									$('#time'+j).addClass('on'+j).css('display','none');
+								}
+						}
+					
+					}      	
+ 	});
+    	   
+    	   
        }
        
        //영화 시작 시간등록
        function startTime(count){
-    	   var runTime = $('#movieRuntime').val();
-    	   var blockCount=Math.floor(runTime/30)+1;
     	   
-    	   for(var i = parseInt(count)+1; i<blockCount+parseInt(count);i++){
-	    		   if($('#time'+i).hasClass("on")){
-	        		  window.alert("불가능한 위치입니다.");
-	        		  return;
-	        	   }
-				}
-    	   
-    	   if($('#time'+count).hasClass("on")){
-				$('#time'+count).removeAttr('rowspan').removeClass('on');
-    		   
-    		   for(var i = parseInt(count)+1; i<blockCount+parseInt(count);i++){
-   					$('#time'+i).css('display','none').show();
-   				}
+    	   if($('#movieRuntime').length==0){
+    		   $('#scheduleTable').off('click');
     	   }else{
-	    		   $('#time'+count).attr('rowspan',blockCount).addClass('on');
-	    		   
+	    	   var runTime = $('#movieRuntime').val();
+	    	   var blockCount=Math.floor(runTime/30)+1;
+	    	   var i =  parseInt(count)+1;
+	    	   for(i = parseInt(count)+1; i<blockCount+parseInt(count);i++){
+		    		   if($('#time'+i).hasClass("on")){
+		        		  window.alert("불가능한 위치입니다.");
+		        		  return;
+		        	   }	    		 
+					}
+
+	    	   
+	 
+	    	   
+	    	   if($('#time'+count).hasClass("on")){
+					$('#time'+count).removeAttr('rowspan').removeClass('on');
+					$('#time'+count).children().remove();
+					$('.on'+count).show().removeClass('on'+count);
+	    	   }else{
+	    	
+	    		   //값 넣어주기
 	    		   for(var i = parseInt(count)+1; i<blockCount+parseInt(count);i++){
-	   					$('#time'+i).css('display','none').hide();
+	   					if($('#time'+i).length==0){
+		   					 window.alert("불가능한 위치입니다.");
+		   	     		 	 return;
+	   					}
 	   				}
+	    		   
+	    		   //첫 시작 크기 변경
+		    		   $('#time'+count).attr('rowspan',blockCount).addClass('on').html('<img style="width:100%;height:21%" src="'+$("#movieTitleCut").val()+'">');
+	    	
+		    			var scheduleInfo = $('#scheduleDate').text()+','+count+','+$('#theaterIdx').val()+','+$("#movieIdx").val();
+		    			var movieIdx = '<input type="hidden" name="scheduleInfo" value="'+scheduleInfo+'">';
+		    			$('#time'+count).append(movieIdx);
+		    			   for(var i = parseInt(count)+1; i<blockCount+parseInt(count);i++){
+			   					$('#time'+i).addClass('on'+count).css('display','none').hide();	
+		    			   }
+	    	   }
     	   }
-    	   
     	   
     	   
 			
        }
 </script>
 <body>
-<!-- Modal -->
-<div class="modal fade" id="myModal" style="display:none;">
-    <!--전체틀-->
-    <div class="modal-dialog "  style="width:1216px;">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" id="myModalLabel">스캐줄 등록 수정</h4>
-            </div>
-            <div class="row text-right" style="margin:0px;margin-top: 20px;margin-right: 20px;">
-                <div class="btn-group">
-                    <button type="button" class="btn btn-default" id="theaterName">상영관 선택</button>
-                    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
-                        <span class="caret"></span>
-                        <span class="sr-only">Toggle Dropdown</span>
-                    </button>
-                    <!-- 상영관 이름 리스트 -->
-                    <ul class="dropdown-menu">
-                    	<c:forEach items="${lists}" var="tdto">
-                    		<li onclick="selectTheaterName('${tdto.theaterIdx}','${tdto.theaterName}')"><a href="#">${tdto.theaterName}</a></li>
-                    	</c:forEach>
-                    </ul>
-                </div>
-            </div>
-            <div class="modal-body container" style="height:700px;">
-            	<!-- 영화 검색 -->
-                <div class="col-xs-4 " style="border:1px solid red;height:100%;overflow-y:auto;">
-                    <h3 class="text-center">영화검색</h3>
+	<!-- Modal -->
+	<div class="modal fade" id="myModal" style="display: none;">
+		<!--전체틀-->
+		<div class="modal-dialog " style="width: 1216px;">
+		<form action="adminScheduleAdd.do" method="post">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal"
+						aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+					<h4 class="modal-title" id="myModalLabel">
+						<span id="scheduleDate"></span>스캐줄 등록 수정
+					</h4>
+				</div>
+				<div class="row text-right"
+					style="margin: 0px; margin-top: 20px; margin-right: 20px;">
+					<div class="btn-group">
+						<button type="button" class="btn btn-default" id="theaterName">상영관
+							선택</button>
+						<button type="button" class="btn btn-default dropdown-toggle"
+							data-toggle="dropdown">
+							<span class="caret"></span> <span class="sr-only">Toggle
+								Dropdown</span>
+						</button>
+						<!-- 상영관 이름 리스트 -->
+						<ul class="dropdown-menu">
+							<c:forEach items="${lists}" var="tdto">
+								<li
+									onclick="selectTheaterName('${tdto.theaterIdx}','${tdto.theaterName}')"><input
+									type="hidden" value="${tdto.theaterIdx}" id="theaterIdx"><a
+									href="#">${tdto.theaterName}</a></li>
+							</c:forEach>
+						</ul>
+					</div>
+				</div>
+				<div class="modal-body container" style="height: 700px;">
+					<!-- 영화 검색 -->
+					<div class="col-xs-4 "
+						style="border: 1px solid red; height: 100%; overflow-y: auto;">
+						<h3 class="text-center">영화검색</h3>
 
-                        <div class="input-group">
-                            <input type="text" class="form-control" placeholder="영화 이름" id="findMovieInfoInput">
-                            <span class="input-group-btn">
-                                <button class="btn btn-default" type="button" id="findMovieInfo">Go!</button>
-                            </span>
-                        </div>
-					<!-- 영화 검색 결과 -->
-                    <div class="list-group" id="findMovieInfoResult">
-                      
-                    </div>
-                </div>
-                
-                <!-- 영화 상세 정보-->
-                <div class="col-xs-4" style="border:1px solid blue;height:100%;overflow-y: auto;overflow-x: hidden;">
-                    <h3 class="text-center">영화상세 정보</h3>
-                    <div id="movieDetail">
-                    
-                    </div>
-                </div>
-				
-				<!-- 스케줄-->
-                <div class="col-xs-4" style="border:1px solid yellow;height:100%;overflow-y:auto;">
-                    <h3 class="text-center">상영관 스케줄 등록</h3>
-                    <div class="panel panel-default"   style="display:none;" id="scheduleTable">
-                        <div class="panel-heading" id="theaterName2">상영관 이름</div>
-                            <table class="table">
-                                <tr>
-                                    <th>시간</th>
-                                    <th>영화</th>
-                                </tr>
-                                <c:forEach items="${arr}" var="t" step="1" varStatus="time">
-				                    <tr>
-				                        <th class="time">${t}</th>
-				                        <td id="time${time.count}" onclick="startTime('${time.count}')"></td>
-				                    </tr>
-			                    </c:forEach>
-                            </table>
-                    </div>
-                </div>
-            </div>
+						<div class="input-group">
+							<input type="text" class="form-control" placeholder="영화 이름"
+								id="findMovieInfoInput"> <span class="input-group-btn">
+								<button class="btn btn-default" type="button" id="findMovieInfo">Go!</button>
+							</span>
+						</div>
+						<!-- 영화 검색 결과 -->
+						<div class="list-group" id="findMovieInfoResult"></div>
+					</div>
 
-            <div class="modal-footer">
-             	<button type="button" class="btn btn-default">등록</button>
-                <button type="button" class="btn btn-default">Close</button>
-            </div>
-        </div>
-    </div>
-</div>
-<div class="container">
-<%@include file="../adminCommonsViews/adminHeader.jsp" %>
-		
-		<div class="container">
-			<%@include file="../adminCommonsViews/adminNavi.jsp" %>
-    			<div class="col-xs-10" style="padding:0px;padding-left:5px; border-left: 1px solid #E1E1E1; height:1900px; ">
-      				<ul class="nav nav-tabs" >
-      					<li class="active"><a href="adminSchedule.do" >스캐줄 목록</a></li>
-					</ul>
-					 
-					   <!-- 마스터 -->
-						   <form class="form-inline" id="selectCinemaForm" style="margin-top:20px;">
-							   <div class="form-group">
-									<label>영화관 : </label>
-										<button id="selectCinemaName" type="button"
-											class="btn btn-default"> 영화관 선택 <span class="caret"></span>
-										</button>
-									<input type="hidden" value="" id="selectCinemaIdxInput" name="selectCinemaIdxInput">
-								</div>
-							</form>
-							<div id="div" style="display:none;">
-								
+					<!-- 영화 상세 정보-->
+					<div class="col-xs-4"
+						style="border: 1px solid blue; height: 100%; overflow-y: auto; overflow-x: hidden;">
+						<h3 class="text-center">영화상세 정보</h3>
+						<div id="movieDetail"></div>
+					</div>
+
+					<!-- 스케줄-->
+					<div class="col-xs-4" style="border: 1px solid yellow; height: 100%; overflow-y: auto;">
+						<h3 class="text-center">상영관 스케줄 등록</h3>
+							<div class="panel panel-default"  id="scheduleTable">
+
 							</div>
-					   <!-- 마스터 -->
-					   
-                <!-- 영화관 관리자  &  마스터-->
-           <c:if test="${!empty cdto }">
-             <div class="container">
-                <h1 id="cinemaName">${cdto.cinemaName }  영화관 스캐줄</h1>
-              
-                <div class="row" style="margin-top: 30px;">
-                    <div class="input-group" style="width:160px;height:40px;">
-                        <input type="text" name="date" id="date1" size="12" class="form-control">
-                        <span  style="font-size: 20px;"class="input-group-addon glyphicon glyphicon-calendar"></span>
-                    </div>
-                    	<div class="row text-center">
-                        	<h2 id="topDate"></h2>
-                        </div>
-                        
-                        <div class="text-right">
-                        	<span class="btn btn-default" style="margin-right:11%" id="adminScheduleAdd">등록/수정</span>
-                        </div>
-                </div>
-		                <div class="row" style="width:1030px; height:1000px; overflow:auto;margin-left:10px;">
-			                <table class="table" id ="scheduleList">
-			                    <tr class="text-center">
-			                        <th class="time">시간\상영관</th>
-			                        <c:forEach items="${lists}" var="tdto">
-			                        	<th class="theaterName text-center">${tdto.theaterName}</th>
-			                        </c:forEach>
-			                    </tr>
-			                    <c:forEach items="${arr}" var="t" step="1" varStatus="time">
-				                    <tr>
-				                        <th  class="time">${t}</th>
-				                        <c:forEach items="${lists}" var="tdto">
-				                        	<td id="${time.count},${tdto.theaterIdx}"></td>
-				                        </c:forEach>
-				                    </tr>
-			                    </c:forEach>
-			                </table>
-			            </div>
-            		</div>
-            </c:if>
-    	</div>
+					
+					</div>
+				</div>
+
+				<div class="modal-footer">
+					<button type="submit" class="btn btn-default">등록</button>
+					<button type="button" class="btn btn-default">Close</button>
+				</div>
+			</div>
+				</form>
+		</div>
 	</div>
-</div>
+	<!-- 메인 -->
+	<div class="container">
+		<%@include file="../adminCommonsViews/adminHeader.jsp"%>
+
+		<div class="container">
+			<%@include file="../adminCommonsViews/adminNavi.jsp"%>
+			<div class="col-xs-10"
+				style="padding: 0px; padding-left: 5px; border-left: 1px solid #E1E1E1; height: 1900px;">
+				<ul class="nav nav-tabs">
+					<li class="active"><a href="adminSchedule.do">스캐줄 목록</a></li>
+				</ul>
+
+				<!-- 마스터 -->
+				<form class="form-inline" id="selectCinemaForm"
+					style="margin-top: 20px;">
+					<div class="form-group">
+						<label>영화관 : </label>
+						<button id="selectCinemaName" type="button"
+							class="btn btn-default">
+							영화관 선택 <span class="caret"></span>
+						</button>
+						<input type="hidden" value="" id="selectCinemaIdxInput"
+							name="selectCinemaIdxInput">
+					</div>
+				</form>
+				<div id="div" style="display: none;"></div>
+				<!-- 마스터 -->
+
+				<!-- 영화관 관리자  &  마스터-->
+				<c:if test="${!empty cdto }">
+					<div class="container">
+						<h1 id="cinemaName">${cdto.cinemaName }영화관 스캐줄</h1>
+
+						<div class="row" style="margin-top: 30px;">
+							<div class="input-group" style="width: 160px; height: 40px;">
+								<input type="text" name="date" id="date1" size="12"
+									class="form-control"> <span style="font-size: 20px;"
+									class="input-group-addon glyphicon glyphicon-calendar"></span>
+							</div>
+							<div class="row text-center">
+								<h2 id="topDate"></h2>
+							</div>
+
+							<div class="text-right">
+								<span class="btn btn-default" style="margin-right: 11%"
+									id="adminScheduleAdd">등록/수정</span>
+							</div>
+						</div>
+						<div class="row"
+							style="width: 1030px; height: 1000px; overflow: auto; margin-left: 10px;">
+							<table class="table" id="scheduleList">
+								<tr class="text-center">
+									<th class="time">시간\상영관</th>
+									<c:forEach items="${lists}" var="tdto">
+										<th class="theaterName text-center">${tdto.theaterName}</th>
+									</c:forEach>
+								</tr>
+								<c:forEach items="${arr}" var="t" step="1" varStatus="time">
+									<tr>
+										<th class="time">${t}</th>
+										<c:forEach items="${lists}" var="tdto">
+											<td id="${time.count},${tdto.theaterIdx}"></td>
+										</c:forEach>
+									</tr>
+								</c:forEach>
+							</table>
+						</div>
+					</div>
+				</c:if>
+			</div>
+		</div>
+	</div>
 </body>
-    <script src="/yelloMovie/bootstrap/js/bootstrap.min.js"></script>
+<script src="/yelloMovie/bootstrap/js/bootstrap.min.js"></script>
 </html>
