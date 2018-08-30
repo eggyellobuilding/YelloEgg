@@ -22,17 +22,12 @@
 	  location.href='mypageUpdateMemberForm.do';
 }
   function submitDeleteMember() {
-	  	var memberIdx=document.getElementById('memberIdx').value;
-	  	var userPwd = document.getElementById('userPwd').value;
-	  	var pwd = document.getElementById('pwd').value;
-		alert(memberIdx);
-		alert(userPwd);
-		alert(pwd);
 		var result =window.confirm('진짜 삭제하시겠습니까?');
 		if(result){
-			location.href='mypageDeleteMember.do?memberIdx='+memberIdx+'&userPwd='+userPwd+'&pwd='+pwd;
+			return true;
 		}else{
 			window.alert('삭제를 취소하였습니다.');
+			return false;
 		}
 	} 
   </script> 
@@ -41,18 +36,24 @@
   </style>
   <body>
    <%@include file="../commonsView/header.jsp" %>
+	<c:if test="${empty sessionScope.smdto.memberIdx}">
+		<script type="text/javascript">
+			window.alert('로그인후 사용하시기를 바랍니다.');
+			location.href = 'main.do';
+		</script>
+	</c:if>   
 <div class="container" id="divMypageContainer">
  	<div class="mypageHeader"><h2><b>My YelloMovie</b></h2></div>
  		<div class="row" id="mypageNav">
 			<div class="col-xs-2" id="mypageCol">
-				<p><a href="mypageInquiryList.do"><img src="/yelloMovie/img/mypage/mypage.jpg"
+				<p><a href="mypageQaboardList.do?memberIdx=${sessionScope.smdto.memberIdx}"><img src="/yelloMovie/img/mypage/mypage.jpg"
 					style="margin-left: 7px;" width="50%" height="50%"
 					alt="myYelloMovie" class="img-rounded"></a>
 				</p>
 				<span style="color:#A4A4A4;"><strong>나의 문의내역</strong></span>
 			</div>
 			<div class="col-xs-2" id="mypageCol">
-				<p><a href="mypageUpdateMemberForm.do"><img
+				<p><a href="mypageUpdateMemberForm.do?memberIdx=${sessionScope.smdto.memberIdx}"><img
 					src="/yelloMovie/img/mypage/reservation.jpg" width="50%" height="50%"
 					alt="updateMember" class="img-rounded"></a>
 				</p>
@@ -72,12 +73,14 @@
 				<span style="color:#A4A4A4;"><strong>스토어 구매내역</strong></span>
 			</div>
 		</div>
+		
 		<div style="margin-top: 80px; margin-left: 10px;"><h3><strong>회원탈퇴</strong></h3></div>
 		<div style="padding-top:8px;color:#FE2E64;padding-left: 20px;"><h4><strong>[주의] YelloEggMovie 회원탈퇴를 신청하기 전에 안내 사항을 꼭 확인해주세요.</strong></h4></div>
  		<div style="border-top: 4px solid #F4FA58; margin-top: 20px;">
-			<form class="form-group" name="mypageDeleteMemberForm" method="post">
-				<input type="hidden" name="memberIdx" id="memberIdx" value="${sessionScope.mdto.memberIdx}">
-				<input type="hidden" name="pwd" id="pwd" value="${sessionScope.mdto.pwd}"/>
+ 		
+			<form class="form-group" action="mypageDeleteMember.do" method="post">
+				<input type="hidden" name="memberIdx" id="memberIdx" value="${sessionScope.smdto.memberIdx}">
+				<input type="hidden" name="pwd" id="pwd" value="${sessionScope.smdto.pwd}"/>
 				<table class="table table-striped">
 					<tr>
 						<td colspan="3">
@@ -104,7 +107,7 @@
 					<tr>
 						<td colspan="3" align="center" style="padding-top: 20px;">
 						<button type="button" style="margin-right: 20px;width:120px;"class="btn btn-default btn-lg" onclick="cancelDeleteMember()">취소</button>
-						<button type="button" style="width:120px;height: 50px;"class="btn btn-primary btn-lg" onclick="submitDeleteMember()">회원탈퇴</button>
+						<button type="submit" style="width:120px;"class="btn btn-primary btn-lg" onsubmit="return submitDeleteMember()">회원탈퇴</button>
 						</td>
 					</tr>
 				</table>

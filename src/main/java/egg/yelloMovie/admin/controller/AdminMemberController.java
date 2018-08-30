@@ -2,8 +2,6 @@ package egg.yelloMovie.admin.controller;
 
 import java.util.*;
 
-import javax.servlet.http.HttpServletRequest;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,9 +18,16 @@ public class AdminMemberController {
 
 	/**회원목록*/
 	@RequestMapping("/adminMemberList.do")
-	public ModelAndView adminMemberList() {
-		List<MemberDTO> lists=memberdao.adminMemberList();
-		ModelAndView mav=new ModelAndView("admin/member/adminMemberList","lists",lists);
+	public ModelAndView adminMemberList(@RequestParam(value="cp",defaultValue="1")int cp) {
+		int totalcnt=memberdao.getTotalCnt();
+		int listsize=10;
+		int pagesize=5;
+		List<MemberDTO> lists=memberdao.adminMemberList(listsize, cp);
+		String pageStr=egg.page.PageModule.makePage("adminMemberList.do", totalcnt, listsize, pagesize, cp);
+		ModelAndView mav=new ModelAndView();
+		mav.addObject("pageStr", pageStr);
+		mav.addObject("lists", lists);
+		mav.setViewName("admin/member/adminMemberList");
 		return mav;
 	}
 	
@@ -36,16 +41,15 @@ public class AdminMemberController {
 	
 	/**회원수정 submit*/
 	@RequestMapping("/adminUpdateMember.do")
-	public ModelAndView adminUpdateMemberSubmit(HttpServletRequest req, MemberDTO dto) {
-		String memberIdx_s=req.getParameter("memberIdx");
-		int memberIdx=Integer.parseInt(memberIdx_s);
+	public ModelAndView adminUpdateMemberSubmit(@RequestParam(value="email")String email,
+												@RequestParam(value="tel")String tel,
+												@RequestParam(value="memberIdx",required=false)int memberIdx,		
+												MemberDTO dto) {
 		dto.setMemberIdx(memberIdx);
-		String email=req.getParameter("email");
-		String tel=req.getParameter("tel");
 		dto.setEmail(email);
 		dto.setTel(tel);
 		
-		int result =memberdao.adminUpdateMember(dto);
+		int result =memberdao.updateMember(dto);
 		String msg =result>0?"회원정보를 수정하였습니다.":"회원정보 수정에 실패하였습니다.";
 		ModelAndView mav=new ModelAndView();
 		mav.addObject("msg", msg);
@@ -56,13 +60,21 @@ public class AdminMemberController {
 	
 	/**탈퇴회원 목록*/
 	@RequestMapping("/adminDeleteMemberList.do")
-	public ModelAndView adminDeleteMemberList() {
-		List<MemberDTO> lists=memberdao.adminDeleteMemberList();
-		ModelAndView mav=new ModelAndView("admin/member/adminDeleteMemberList","lists", lists);
+	public ModelAndView adminDeleteMemberList(@RequestParam(value="cp",defaultValue="1")int cp) {
+		int totalcnt=memberdao.getTotalCnt();
+		int listsize=10;
+		int pagesize=5;
 		
+		List<MemberDTO> lists=memberdao.adminDeleteMemberList(listsize, cp);
+		String pageStr=egg.page.PageModule.makePage("adminDeleteMemberList.do", totalcnt, listsize, pagesize, cp);
+		
+		ModelAndView mav=new ModelAndView();
+		mav.addObject("pageStr", pageStr);
+		mav.addObject("lists", lists);
+		mav.setViewName("admin/member/adminDeleteMemberList");
 		return mav;
 	}
-	
+	/**30일후 회원삭제*/
 	@RequestMapping("/afterDaysDeleteMember.do")
 	public ModelAndView afterDaysDeleteMemberSubmit(MemberDTO dto) {
 		ModelAndView mav = new ModelAndView();
@@ -74,6 +86,7 @@ public class AdminMemberController {
 		return mav;
 	}
 	
+	/**관리자가 회원을 삭제*/
 	@RequestMapping("/adminDeleteMember.do")
 	public ModelAndView adminDeleteMemberSubmit(@RequestParam(value="memberIdx")int memberIdx) {
 		int result = memberdao.adminDeleteMember(memberIdx);

@@ -32,28 +32,67 @@
 		select * from admin where adminId=#{adminId}
 	</select>
 	
+	<select id="memberFindId" parameterType="Map" resultType="String">
+		select id from member 
+		where name=#{name} and birthDate=#{birthDate} and tel=#{tel}
+	</select>
+	
+	<select id="memberFindPwd" parameterType="Map" resultType="String">
+		select pwd from member 
+		where id=#{id} and name=#{name} and email=#{email}
+	</select>
+	
+	<update id="memberUpdatePwd" parameterType="mdto">
+		update member set pwd=#{pwd} where email=#{email}
+	</update>
+	
 	<update id="memberUpdateState" parameterType="mdto">
 		update member set state='Y',joinDate=sysdate where memberIdx=#{memberIdx}
 	</update>
 	
 	<select id="adminMemberList" resultType="mdto">
-		select m.*, g.gradeName from member m , grade g 
-		where memberGradeIdx=gradeIdx order by memberIdx desc
+	select * from
+	(select rownum as rnum,b.* from
+	( select sum(mileagePrice) as mileagePrice,a.memberIdx,a.name,a.id,	a.birthdate,a.joindate,a.gender,a.email,a.tel,a.gradeName
+	from 
+	(select m.*,g.gradeName from member m, grade g 
+	where m.memberGradeIdx=g.gradeIdx)a,mileage mi
+	where a.memberIdx=mi.mileageMemberIdx
+	group by a.memberIdx, a.name, a.id,a.birthdate,a.joindate,a.gender,a.email,a.tel,a.gradeName
+	)b)c
+	where rnum<![CDATA[>=]]>#{startnum}	and rnum<![CDATA[<=]]>#{endnum}
+	</select>
+	
+	<select id="sumMileage" parameterType="int" resultType="mdto">
+	select sum(mileagePrice) as mileagePrice,a.memberIdx
+	from 
+	(select m.*,g.gradeName from member m, grade g where m.memberGradeIdx=g.gradeIdx)a,mileage mi
+	where a.memberIdx=mi.mileageMemberIdx and a.memberIdx=#{memberIdx}
+	group by a.memberIdx , a.name
+	</select>
+	
+	<select id="totalCnt" resultType="int">
+		select count(*) from member
 	</select>
 	
 	<select id="adminDeleteMemberList" resultType="mdto">
-		select m.*, g.gradeName from member m, grade g 
-		where memberGradeIdx=gradeIdx and state='Y' order by memberIdx desc		
+	select * from
+		(select rownum as rnum,a.* from
+		(select m.*, g.gradeName from member m, grade g 
+		where memberGradeIdx=gradeIdx and state='Y' order by memberIdx desc)a)b
+		where rnum<![CDATA[>=]]>#{startnum} and rnum<![CDATA[<=]]>#{endnum}		
 	</select>
+	
 	<delete id="afterDaysDeleteMember" parameterType="mdto">
 		delete from member where joinDate<![CDATA[<=]]>(sysdate<![CDATA[-]]>1)
 	</delete>
+	
 	<select id="getMemberImfo" parameterType="mdto" resultType="mdto">
 		select m.*, g.gradeName from member m , grade g 
 		where memberGradeIdx=gradeIdx and memberIdx=#{memberIdx}
 	</select>
 	
-	<update id="adminUpdateMember" parameterType="mdto">
+	<update id="updateMember" parameterType="mdto">
 		update member set email=#{email}, tel=#{tel} where memberIdx=#{memberIdx}
 	</update>
 	
@@ -61,4 +100,58 @@
 		delete from member where memberIdx=#{memberIdx}
 	</delete>
 	
+	<select id="adminEmployeeList" parameterType="map" resultType="mdto">
+		select b.* from
+		(select rownum as rnum,a.* from
+		(select a.*,c.cinemaCity,c.cinemaName
+		from admin a, cinema c where cinemaIdx=adminCinemaIdx order by adminGrade desc)a)b
+		where rnum between #{startnum} and #{endnum}	
+	</select>
+	
+	<delete id="adminDeleteEmployee" parameterType="int">
+		delete from admin where adminIdx=#{adminIdx}
+	</delete>
+	
+	<select id="adminIdCheck" parameterType="String" resultType="java.lang.Integer">
+		select count(adminId) from admin where adminId=#{adminId}
+	</select>
+	
+	<insert id="adminRegisterEmployee" parameterType="mdto">
+		insert into admin values(
+		adminSq.nextval,
+		#{adminId},
+		#{adminPwd},
+		sysdate,
+		#{adminGrade},
+		#{adminCinemaIdx}
+		)
+	</insert>
+	
+	<update id="mypageChangePwd" parameterType="mdto">
+		update member set pwd=#{pwd} where memberIdx=#{memberIdx}
+	</update>
+	
+	
+	<select id="adminCount" parameterType="int" resultType="int">
+		select count(*) from
+		admin
+		where adminCinemaIdx = #{cinemaIdx}
+	</select>
+	
+	<insert id="adminEmployeeAdd" parameterType="mdto">
+		insert into 
+		admin 
+		values(
+		adminSq.nextval,
+		#{adminId},
+		#{adminPwd},
+		sysdate,
+		#{adminGrade},
+		#{adminCinemaIdx}
+		)
+	</insert>
+	
+	<select id="adminTotalCnt" resultType="int">
+	select count(*) from admin
+	</select>
 </mapper>  

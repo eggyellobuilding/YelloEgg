@@ -1,22 +1,24 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+	pageEncoding="UTF-8"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <!DOCTYPE html>
 <html lang="ko">
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Yello egg</title>
-    <!-- 부트스트랩 -->
-    <link href="/yelloMovie/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
-    <script src="/yelloMovie/bootstrap/js/bootstrap.min.js"></script>
-     	<!-- memberCSS -->
-	<link href="/yelloMovie/css/member/memberJoin.css" rel="stylesheet">
-  </head>
-  <style>
-  #agreeTitle {
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Yello egg</title>
+<!-- 부트스트랩 -->
+<link href="/yelloMovie/bootstrap/css/bootstrap.min.css"
+	rel="stylesheet">
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+<script src="/yelloMovie/bootstrap/js/bootstrap.min.js"></script>
+<!-- memberCSS -->
+<link href="/yelloMovie/css/member/memberJoin.css" rel="stylesheet">
+</head>
+<style>
+#agreeTitle {
 	margin-top: 50px;
 	margin-left: 15px;
 }
@@ -24,29 +26,59 @@
 #agreeSmallTitle {
 	margin-top: 50px;
 }
-  </style>
+</style>
 <script type="text/javascript">
-function cancelMemberAgree() {
-	alert('회원가입을 취소하였습니다.');
-	location.href='main.do';
-}
 
-function submitAgree() {
+	function cancelMemberAgree() {
+		alert('회원가입을 취소하였습니다.');
+		location.href = 'main.do';
+	}
 
-	location.href='memberJoinForm.do';
-}
-
+	function agreeCheck() {
+		var agree = document.getElementsByClassName('agree');
+		var agree_s = document.getElementById('memberAgreeAll').checked;
+		if (agree_s) {
+			for (var i = 0; i < agree.length; i++) {
+				agree[i].checked = true;
+			}
+		} else {
+			for (var i = 0; i < agree.length; i++) {
+				agree[i].checked = false;
+			}
+		}
+	}
+	function submitAgree() {
+		var agree=document.getElementsByClassName('agree1');
+		for(var i = 0; i < agree.length; i++){
+			if(agree[i].checked != true){
+				window.alert('약관 동의에 체크해주세요.');
+				return false;
+			}
+		}
+		
+		location.href = 'memberJoinForm.do';
+	}
 </script>
-  <body>
-    <%@include file="../commonsView/header.jsp" %>
- <div class="container" id="divContainer">
-    <div class="memberJoinHeader"><h2><Strong>회원가입<small>YelloEgg에 오신것을 환영합니다.</small></Strong></h2></div>
-    	<form name="memberAgreeForm">
-    	<div id="agreeTitle">
-    		<h3><strong>약관동의<small>서비스 이용약관 및 정보이용 안내에 대한 동의를 해주세요.</small></strong></h3>
-    	</div>
-    	<div id="agreeSmallTitle"><h4><strong>이용약관</strong></h4></div>
-    		<textarea class="form-control" name="memberAgreeContents1" rows="7">
+<body>
+	<%@include file="../commonsView/header.jsp"%>
+	<div class="container" id="divContainer">
+		<div class="memberJoinHeader">
+			<h2>
+				<Strong>회원가입<small>YelloEgg에 오신것을 환영합니다.</small></Strong>
+			</h2>
+		</div>
+		<form name="memberAgreeForm">
+			<div id="agreeTitle">
+				<h3>
+					<strong>약관동의<small>서비스 이용약관 및 정보이용 안내에 대한 동의를 해주세요.</small></strong>
+				</h3>
+			</div>
+			<div id="agreeSmallTitle">
+				<h4>
+					<strong>이용약관</strong>
+				</h4>
+			</div>
+			<textarea class="form-control" name="memberAgreeContents1"	readonly="readonly" rows="7">
 제1조. 목적
 	이 약관은 메가박스중앙(주)(이하 '회사'라 합니다)가 제공하는 온라인, 오프라인 서비스(이하 "서비스"라 합니다) 이용과 관련하여 회사와 이용자의 권리, 의무 및 책임사항을 규정함을 목적으로 합니다.
 제 2조. 약관의 효력 및 변경
@@ -230,21 +262,30 @@ function submitAgree() {
 (시행일) 이 약관은 2018년 6월 14일부터 시행합니다.
 (변경) 종전의 약관은 본 약관으로 대체합니다.
 			</textarea>
-		<div style="margin-top: 15px;">
-				<p><input type="checkbox" name="memberAgree1" id="memberAgree1" style="width:16px; height: 16px; margin-right: 5px;"/>위의 ‘이용약관’을 읽고 동의 합니다. (필수 동의)</p>
-				<p class="text-danger">※ 이용약관에 대한 동의를 거부할 수 있으며, 미 동의 시 회원가입을 하실 수 없습니다.</p>
-		</div>
-    <div id="agreeSmallTitle"><h4><strong>개인정보수집 및 이용안내</strong></h4></div>
-    		<textarea class="form-control" name="memberAgreeContents2" rows="7">
+			<div style="margin-top: 15px;">
+				<p>
+					<input type="checkbox" name="memberAgree1"class="agree agree1" style="width: 16px; height: 16px; margin-right: 5px;" />
+						위의 ‘이용약관’을 읽고 동의 합니다. (필수 동의)
+				</p>
+				<p class="text-danger">
+				※ 이용약관에 대한 동의를 거부할 수 있으며, 미 동의 시 회원가입을 하실 수 없습니다.
+				</p>
+			</div>
+			<div id="agreeSmallTitle">
+				<h4>
+					<strong>개인정보수집 및 이용안내</strong>
+				</h4>
+			</div>
+			<textarea class="form-control" name="memberAgreeContents2" readonly="readonly" rows="7">
 메가박스중앙(주)가 개인정보를 수집하는 목적은 보다 다양하고 원활한 고객서비스를 제공하기 위함입니다. 메가박스중앙(주)는 최초 회원가입 시 개인정보의 수집항목 및 이용목적, 개인정보의 수집방법, 개인정보의 이용 및 보관기간을 안내 드리오니 자세히 읽은 후 동의하여 주시기 바랍니다. 
 
 1. 개인정보의 수집항목 및 이용목적
-<필수입력(수집) 항목>
+<필수입력 (수집) 항목>
 - 성명, 생년월일, 성별, 본인확인기관을 통해 받는 결과값(CI) : 본인 인증 시 수집
 - 아이디, 비밀번호, 휴대폰번호, 이메일, 문자/이메일/앱푸쉬 수신동의여부: 회원 가입 시 수집
 - 14세미만 법정대리인의 이름, 휴대폰번호
 
-<선택입력(수집) 항목>
+<선택입력 (수집) 항목>
 - 휴대폰번호, 이메일, 주소, 생년월일, 선호영화관, 문자/이메일/앱푸쉬 정보 수신동의여부, 서비스 이용 시 자동수집 정보, 포인트 적립 및 사용 정보, 프로필 사진
 
 <서비스 이용 또는 사업처리 과정에서 생성 수집되는 각종 거래 및 개인 성향 정보>
@@ -285,12 +326,21 @@ function submitAgree() {
 - 게시판 이용자의 본인확인에 관한 기록: 6개월
 			</textarea>
 			<div style="margin-top: 15px;">
-				<p><input type="checkbox" name="memberAgree2" id="memberAgree2" style="width:16px; height: 16px; margin-right: 5px;"/>위의 ‘개인정보수집 및 이용안내’를 읽고 동의 합니다. (필수 동의)</p>
-				<p class="text-danger">※ 개인정보수집 및 이용에 대한 동의를 거부할 수 있으며, 미 동의 시 회원가입을 하실 수 없습니다.</p>
-			</div>	
-			
-	<div id="agreeSmallTitle"><h4><strong>제휴 모바일 멤버십 서비스 이용을 위한 제 3자 제공에 관한 안내</strong></h4></div>
-    		<textarea class="form-control" name="memberAgreeContents3" rows="7">
+				<p>
+					<input type="checkbox" name="memberAgree2" class="agree agree1" style="width: 16px; height: 16px; margin-right: 5px;" />
+					위의 ‘개인정보수집 및 이용안내’를 읽고 동의 합니다. (필수 동의)
+				</p>
+				<p class="text-danger">
+				※ 개인정보수집 및 이용에 대한 동의를 거부할 수 있으며, 미 동의 시 회원가입을 하실 수 없습니다.
+				</p>
+			</div>
+
+			<div id="agreeSmallTitle">
+				<h4>
+					<strong>제휴 모바일 멤버십 서비스 이용을 위한 제 3자 제공에 관한 안내</strong>
+				</h4>
+			</div>
+			<textarea class="form-control" name="memberAgreeContents3" readonly="readonly" rows="7">
 1. 회사는 고객의 요청에 의하여 해당 고객의 개인정보를 제 3자에게 제공하는 경우, 그 제공하는 목적, 제공하는 개인정보의 항목, 개인정보를 제공받는 자 및 그 보유 • 이용기간은 다음 표와 같습니다.
 	제공받는 업체 -SK플래닛㈜, ㈜케이티, LG U+㈜, ㈜카카오페이, ㈜비엔에스웍스(SK플래닛㈜의 Syrup 모바일 서비스 대행사), ㈜오케이터치(U+멤버스 서비스 대행사)
 	제공하는 항목 -메가박스 멤버십 카드번호, 포인트 내역, 휴대폰번호, 성명, 메가박스 WEB ID, 예매 정보, 본인확인기관을 통해 받는 결과값(CI)
@@ -302,31 +352,49 @@ function submitAgree() {
 4. 제공받는 업체 모두에게 개인정보가 제공되지 않으며 회원님의 추가 동의 및 요청에 따라 정보가 해당 업체에 제공됩니다.
 			</textarea>
 			<div style="margin-top: 15px;">
-				<p><input type="checkbox" name="memberAgree3" id="memberAgree3" style="width:16px; height: 16px; margin-right: 5px;"/>위의 '제휴 모바일 멤버십 서비스 이용을 위한 제3자 제공에 대한 안내'를 읽고 동의 합니다. (선택 동의)</p>
-				<p class="text-danger">※ 제3자 정보 제공 동의를 거부할 권리가 있으며, 동의를 거부하더라도 회원가입 및 서비스 이용이 가능합니다.</p>
-			</div>			
-	<div id="agreeSmallTitle"><h4><strong>마케팅 활용을 위한 개인정보 수집 이용 안내</strong></h4></div>
-    		<textarea class="form-control" name="memberAgreeContents4" rows="7">
+				<p>
+					<input type="checkbox" name="memberAgree3" class="agree agree1" style="width: 16px; height: 16px; margin-right: 5px;" />
+					위의 '제휴 모바일 멤버십 서비스 이용을 위한 제3자 제공에 대한 안내'를 읽고 동의 합니다. (선택 동의)
+				</p>
+				<p class="text-danger">
+				※ 제3자 정보 제공 동의를 거부할 권리가 있으며, 동의를 거부하더라도 회원가입 및 서비스 이용이 가능합니다.
+				</p>
+			</div>
+			<div id="agreeSmallTitle">
+				<h4>
+					<strong>마케팅 활용을 위한 개인정보 수집 이용 안내</strong>
+				</h4>
+			</div>
+			<textarea class="form-control" name="memberAgreeContents4" readonly="readonly" rows="7">
 
 수집 목적 -고객 맞춤형 상품 및 서비스 추천.	당사 신규 상품/서비스 안내 및 권유. 사은/할인 행사 등 각종 이벤트 정보 등의 안내 및 권유
 수집 항목 -	 이메일, 휴대폰번호, 주소, 생년월일, 선호영화관, 문자/이메일/앱푸쉬 정보 수신동의여부, 서비스 이용기록, 포인트 적립 및 사용 정보, 접속로그
 보유 및 이용 기간 - 회원 탈퇴 시 혹은 이용 목적 달성 시까지
 			</textarea>
 			<div style="margin-top: 15px;">
-				<p><input type="checkbox" name="memberAgree4" id="memberAgree4" style="width:16px; height: 16px; margin-right: 5px;"/>위, 내용을 읽고 '마케팅 활용을 위한 개인정보 수집 이용 안내'에 동의합니다. (선택동의)</p>
-				<p class="text-danger">※ 마케팅 활용을 위한 개인정보 수집 이용 안내에 대한 동의를 거부할 권리가 있으며, 동의를 거부하더라도 회원가입 및 서비스 이용이 가능합니다.<br>
-				단, 미 동의시 메가박스의 주요 행사 안내 및 혜택 제공에 제한이 있을 수 있습니다.</p>
-			</div>	
-		<hr>
-	<div style="margin-top: 40px;">
-		<p><input type="checkbox" name="memberAgree5" id="memberAgree5" style="width:16px; height: 16px; margin-right: 5px;"/>위의 모든 약관을 읽고 동의 합니다.<br></p>
+				<p>
+					<input type="checkbox" name="memberAgree4" class="agree agree1" style="width: 16px; height: 16px; margin-right: 5px;" />
+						위, 내용을 읽고	'마케팅 활용을 위한 개인정보 수집 이용 안내'에 동의합니다. (선택동의)
+				</p>
+				<p class="text-danger">
+					※ 마케팅 활용을 위한 개인정보 수집 이용 안내에 대한 동의를 거부할 권리가 있으며, 동의를 거부하더라도 회원가입 및
+					서비스 이용이 가능합니다.<br> 
+					단, 미 동의시 메가박스의 주요 행사 안내 및 혜택 제공에 제한이 있을 수있습니다.
+				</p>
+			</div>
+			<hr>
+			<div style="margin-top: 40px;">
+				<p>
+					<input type="checkbox" id="memberAgreeAll" onclick="agreeCheck()"
+						style="width: 16px; height: 16px; margin-right: 5px;" />위의 모든 약관을	읽고 동의 합니다.<br>
+				</p>
+			</div>
+			<p align="center" style="margin-top: 40px; margin-bottom: 100px;">
+				<a href="#" class="btn btn-default btn-lg" id="cancelButton"onclick="javascript:history.back();">취소</a> 
+				<input type="button" value="확인" id="submitButton" onclick="return submitAgree()" class="btn btn-primary btn-lg" />
+			</p>
+		</form>
 	</div>
-	<p align="center" style="margin-top: 40px;margin-bottom: 100px;">
-	<a href="#" class="btn btn-default btn-lg" id="cancelButton" onclick="cancelMemberAgree()">취소</a>
-	<input type="button"  value="확인" id="submitButton" onclick="submitAgree()" class="btn btn-primary btn-lg"/>
-	</p>
- </form>	
-</div>
-	<%@include file="../commonsView/footer.jsp" %>
-  </body>
+	<%@include file="../commonsView/footer.jsp"%>
+</body>
 </html>

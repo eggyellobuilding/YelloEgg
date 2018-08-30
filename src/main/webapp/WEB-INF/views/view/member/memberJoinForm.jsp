@@ -16,16 +16,25 @@
   
     	<!-- memberCSS -->
 	<link href="/yelloMovie/css/member/memberJoin.css" rel="stylesheet">
-	
+	<!-- httpRequest -->
+	<script type="text/javascript" src="js/httpRequest.js"></script>
   </head>
+<style>
+#genderRadio1 {
+	width: 20px;
+	height: 14px;
+	margin-right: 10px;
+}
 
+#genderRadio2 {
+	width: 20px;
+	height: 14px;
+	margin-left: 20px;
+	margin-right: 10px;
+}
+
+</style>
  <script type="text/javascript">
-	
-	function idCheck() {
-	var id=document.getElementById('id').value;
-	location.href='idCheck.do?id='+id;	
-	
-	}
 	
 	function cancelMemberJoin() {
 		alert('회원가입이 취소되었습니다.');
@@ -166,8 +175,8 @@
 		if(XHR.readyState==4){
 			if(XHR.status==200){
 				var data = XHR.responseText;
-				var idCheckMsg=document.all.idCheckMsg;
-				idCheckMsg.innerHTML=data;
+				var divNode=document.all.idCheckMsg;
+				divNode.innerHTML=data;
 			}
 		}
 	}
@@ -184,6 +193,7 @@
 	function codeCheckResult() {
 		if(XHR.readyState==4){
 			if(XHR.status==200){
+				alert('인증코드를 이메일에 보냈습니다.');
 				var inputCode = document.getElementById('inputCode');
 				inputCode.type='text';
 				var data = XHR.responseText;
@@ -233,7 +243,7 @@
 	<hr class="colorgraph">
         <h2>Please Sign Up <small>It's free and always will be.</small></h2>
     <div id="divJoin">
-			<form class="form-group" id="memberJoin" name="memberJoinForm" action="memberJoin.do" method="post">
+			<form class="form-group" id="memberJoin" action="memberJoin.do" method="post">
 				<input type="hidden" readonly="readonly" name="code" id="code" value="${random}">
 				<input type="hidden" readonly="readonly" name="randomCode" id="randomCode">
 				<table class="table table-striped">
@@ -264,15 +274,16 @@
  				</tr>
  				<tr>
  					<th class="text-center">*성별</th>
- 					<td ><input type="radio" name="gender" value="남자" id="genderCheckBox1"/>남자
- 					<input type="radio" name="gender"value="여자" id="genderCheckBox2"/>여자</td>
+ 					<td ><input type="radio" name="gender" value="남자" id="genderRadio1"/>남자
+ 					<input type="radio" name="gender"value="여자" id="genderRadio2"/>여자</td>
  				</tr>
  				<tr>
  					<th class="text-center">휴대폰번호</th>
  					<td class="form-inline" colspan="2" onchange="telExp()">
  					<input type="text" class="form-control" name="tel1" id="tel1" style="width:9%"/> -
  					<input type="text" class="form-control" name="tel2" id="tel2" style="width:11%"/> -
- 					<input type="text" class="form-control"  name="tel3" id="tel3" style="width:11%"/></td>
+ 					<input type="text" class="form-control"  name="tel3" id="tel3" style="width:11%"/>
+ 					</td>
  				</tr>
  				<tr>
  					<th class="text-center">*생년월일</th>
@@ -280,7 +291,7 @@
  					<input type="text" name="year" id="year" style="width:12%" class="form-control"/>년
  					<input type="text" name="month" id="month" style="width:8%" class="form-control"/> 월
  					<input type="text" name="date" id="date" style="width:8%" class="form-control"/> 일
- 					<span style="color:red"><small style="padding-left: 10px;">*yyyy/mm/dd</small></span></td>
+ 					</td>
  				</tr>
  				<tr>
  					<th  class="text-center">*이메일</th>
@@ -288,13 +299,13 @@
  					<input type="button" class="btn btn-info" value="이메일인증" style="margin-left: 10px;"onclick="sendCodeCheck()"/>
  					<div class="form-inline"><input type="hidden" id="inputCode" name="inputCode" style="width:35%;margin-top:12px;" 
 					class="form-control" onkeyup="checkCode()" placeholder="인증번호를 입력해주세요.">
-					<span id="viewTimer" style="margin-left: 20px;"></span><span id="checkCode" style="margin-left: 20px;"></span></div>
+					<span id="checkCode" style="margin-left: 20px;"></span></div>
  					</td>
  				</tr>							
 				<tr>
 					<td colspan="2" align="center" style="padding-top: 15px;">
 						<a href="#" class="btn btn-default btn-lg" id="cancelButton" onclick="cancelMemberJoin()">취소</a>
-						<input type="submit"  style="height: 50px;"value="회원가입" id="submitButton" class="btn btn-primary btn-lg"/>
+						<input type="submit" value="회원가입" id="submitButton" class="btn btn-primary btn-lg"/>
 					</td>
 				</tr>
 			</table>

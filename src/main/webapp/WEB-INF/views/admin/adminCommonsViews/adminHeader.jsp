@@ -16,9 +16,9 @@ function adminLogout() {
 	<div class="col-xs-9">
 		<h1>관리자 페이지</h1>
 	</div>
-	<c:if test="${!empty addto}">
+	<c:if test="${!empty saddto}">
 		<div class="col-xs-1">
-			<input type="button" value="로그아웃" class="btn btn-info" onclick="adminLogout()" style="position:absolute;left:800px;">
+			<input type="button" value="로그아웃" class="btn btn-info" onclick="adminLogout()" style="position:absolute;left:900px;">
 		</div>
 	</c:if>
 </div>

@@ -18,18 +18,24 @@
  
   <body>
    <%@include file="../commonsView/header.jsp" %>
+	<c:if test="${empty sessionScope.smdto.memberIdx}">
+		<script type="text/javascript">
+			window.alert('로그인후 사용하시기를 바랍니다.');
+			location.href = 'main.do';
+		</script>
+	</c:if>   
 <div class="container" id="divMypageContainer">
  	<div class="mypageHeader"><h2><b>My YelloMovie</b></h2></div>
  		<div class="row" id="mypageNav">
 			<div class="col-xs-2" id="mypageCol">
-				<p><a href="mypageInquiryList.do"><img src="/yelloMovie/img/mypage/mypage.jpg"
+				<p><a href="mypageQaboardList.do?memberIdx=${sessionScope.smdto.memberIdx}"><img src="/yelloMovie/img/mypage/mypage.jpg"
 					style="margin-left: 7px;" width="50%" height="50%"
 					alt="myYelloMovie" class="img-rounded"></a>
 				</p>
 				<span style="color:#A4A4A4;"><strong>나의 문의내역</strong></span>
 			</div>
 			<div class="col-xs-2" id="mypageCol">
-				<p><a href="mypageUpdateMemberForm.do"><img
+				<p><a href="mypageUpdateMemberForm.do?memberIdx=${sessionScope.smdto.memberIdx}"><img
 					src="/yelloMovie/img/mypage/reservation.jpg" width="50%" height="50%"
 					alt="updateMember" class="img-rounded"></a>
 				</p>
@@ -57,7 +63,7 @@
 			</ul>
  		</div>
  		<div id="divList">
- 		<form name="mypageStoreBuyList">
+ 		<form name="mypageStoreBuyList" method="post">
 		<div style="text-align: center; margin-top: 15px;">
 				<table class="table table-hover" >
 					<thead>
@@ -75,6 +81,25 @@
 							<td colspan="7" align="center">구매한 내역이 없습니다.</td>
 						</tr>
 					</tbody>
+					<tfoot>
+						<tr>
+							<td colspan="7">
+							<nav style="text-align: center">
+								<ul class="pagination">
+									<li><a href="#" aria-label="Previous">
+									<span aria-hidden="true">&laquo;</span></a></li>
+									<li><a href="#">1</a></li>
+									<li><a href="#">2</a></li>
+									<li><a href="#">3</a></li>
+									<li><a href="#">4</a></li>
+									<li><a href="#">5</a></li>
+									<li><a href="#" aria-label="Next"> 
+									<span aria-hidden="true">&raquo;</span></a></li>
+								</ul>
+							</nav>
+							</td>		
+						</tr>	
+					</tfoot>
 				</table>
 			</div>
 		</form>	

@@ -31,16 +31,22 @@ function adminUpdateMemberForm(memberIdx) {
 function adminDeleteMember(memberIdx) {
 	var result =window.confirm('진짜 삭제하시겠습니까?');
 	if(result){
-		location.href='adminDeleteMember.do?memberIdx='+memberIdx;
+		return true;
 	}else{
 		window.alert('삭제를 취소하였습니다.');
+		return false;
 	}
 }
 </script>
 <body>
 <div class="container">
 <%@include file="../adminCommonsViews/adminHeader.jsp" %>
-		
+	<c:if test="${empty sessionScope.saddto.adminIdx}">
+		<script type="text/javascript">
+			window.alert('로그인후 사용하시기를 바랍니다.');
+			location.href = 'main.do';
+		</script>
+	</c:if>
 		<div class="container">
 			<%@include file="../adminCommonsViews/adminNavi.jsp" %>
     			<div class="col-xs-10" style="padding:0px;padding-left:5px; border-left: 1px solid #E1E1E1; height:1900px; ">
@@ -51,8 +57,9 @@ function adminDeleteMember(memberIdx) {
 					<div class="container">
 				
 						<h2>가입된 회원목록</h2>
-							<form name="memberList" style="margin-top:35px;overflow: auto;width:95%;" method="post">
-								<table id="adminMemberTable" class="table table-striped">
+							<form action="adminDeleteMember.do" method="post" style="margin-top:35px;overflow: auto;width:95%;">
+								<input type="hidden" name="memberIdx" id="memberIdx" value="${mdto.memberIdx}"/>
+								<table id="adminMemberTable" class="table table-hover">
 									<thead>
 									<tr>
 										<th>번호</th>
@@ -63,6 +70,7 @@ function adminDeleteMember(memberIdx) {
 										<th>생년월일</th>
 										<th>휴대폰번호</th>
 										<th>Email</th>
+										<th>마일리지</th>
 										<th>가입날짜</th>
 										<th>비고</th>
 									</tr>
@@ -70,7 +78,7 @@ function adminDeleteMember(memberIdx) {
 									<tbody>
 								<c:if test="${empty lists}">
 									<tr>
-										<td colspan="10" align="center">
+										<td colspan="11" align="center">
 											회원내역이 없습니다.
 										</td>
 									</tr>
@@ -85,28 +93,21 @@ function adminDeleteMember(memberIdx) {
 										<td>${mdto.birthDate}</td>
 										<td>${mdto.tel}</td>
 										<td>${mdto.email}</td>
+										<td>${mdto.mileagePrice}</td>
 										<td>${mdto.joinDate}</td>
 										<td>
 										<input type="button" value="수정" class="btn btn-default"  onclick="adminUpdateMemberForm(${mdto.memberIdx})">
-										<input type="button" value="삭제" class="btn btn-danger" onclick="adminDeleteMember(${mdto.memberIdx})">
+										<input type="submit" value="삭제" class="btn btn-danger" onsubmit="return adminDeleteMember()">
 										</td>
 									</tr>
 								</c:forEach>
 								</tbody>
 								<tfoot>
 								<tr>
-									<td colspan="10">
-										<nav>
-											<ul class="pagination pagination-lg">
-												<li><a href="#" aria-label="Previous"> <span aria-hidden="true">&laquo;</span>
-												</a></li>
-												<li><a href="#">1</a></li>
-												<li><a href="#">2</a></li>
-												<li><a href="#">3</a></li>
-												<li><a href="#">4</a></li>
-												<li><a href="#">5</a></li>
-												<li><a href="#" aria-label="Next"> <span aria-hidden="true">&raquo;</span>
-												</a></li>
+									<td colspan="11">
+										<nav style="text-align: center">
+											<ul class="pagination">
+												${pageStr}
 											</ul>
 										</nav>
 									</td>

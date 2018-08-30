@@ -17,18 +17,24 @@
   </head>
   <body>
      <%@include file="../commonsView/header.jsp" %>
-   <div class="container" id="divMypageContainer">
+	<c:if test="${empty sessionScope.smdto.memberIdx}">
+		<script type="text/javascript">
+			window.alert('로그인후 사용하시기를 바랍니다.');
+			location.href = 'main.do';
+		</script>
+	</c:if>
+	<div class="container" id="divMypageContainer">
     	<div class="mypageHeader"><h2><b>My YelloMovie</b></h2></div>
  		<div class="row" id="mypageNav">
 			<div class="col-xs-2" id="mypageCol">
-				<p><a href="mypageInquiryList.do"><img src="/yelloMovie/img/mypage/mypage.jpg"
-					style="margin-left: 7px;" width="50%" height="50%"
-					alt="myYelloMovie" class="img-rounded"></a>
+				<p><a href="mypageQaboardList.do?memberIdx=${sessionScope.smdto.memberIdx}"><img src="/yelloMovie/img/mypage/mypage.jpg"
+					style="margin-left: 7px;background-color: bule;" width="50%" height="50%"
+					alt="qaboard" class="img-rounded"></a>
 				</p>
 				<span style="color:#A4A4A4;"><strong>나의 문의내역</strong></span>
 			</div>
 			<div class="col-xs-2" id="mypageCol">
-				<p><a href="mypageUpdateMemberForm.do"><img
+				<p><a href="mypageUpdateMemberForm.do?memberIdx=${sessionScope.smdto.memberIdx}"><img
 					src="/yelloMovie/img/mypage/reservation.jpg" width="50%" height="50%"
 					alt="updateMember" class="img-rounded"></a>
 				</p>

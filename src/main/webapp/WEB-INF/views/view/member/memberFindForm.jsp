@@ -42,6 +42,14 @@
 }
 
 </style>
+<script type="text/javascript">
+function cancelIdFind() {
+	location.href='main.do';
+}
+function cancelFindPwd() {
+	location.href='main.do';
+}
+</script>
   <body>
   <%@include file="../commonsView/header.jsp" %>
   <div class="container" id="divContainer">
@@ -50,32 +58,32 @@
  			<div>
 			<div id="divFind"><h3>ID 찾기</h3></div>
 			<div id="divJoin">
-			<form class="form-group" id="memberFindId" name="memberFindIdForm" action="memberIdFind.do">
+			<form class="form-group" id="memberFindId" action="memberIdFind.do" method="post">
 				<table class="table table-striped">
 					<tr>
-						<th class="text-center"> 이름</th>
+						<th class="text-center">이름</th>
 						<td><input type="text" name="name" class="form-control" style="width: 20%"></input></td>
 					</tr>
 					<tr>
-						<th class="text-center"> 생년월일</th>
+						<th class="text-center">생년월일</th>
 						<td class="form-inline">
-						<input type="text" name="year" id="year" class="form-control" style="width: 8%"/> 년
-						<input type="text" name="month" id="month" class="form-control" style="width: 6%"/> 월
-						<input type="text" name="date" id="date" class="form-control" style="width: 6%"/> 일
+						<input type="text" name="year" class="form-control" style="width: 8%"/> 년
+						<input type="text" name="month"  class="form-control" style="width: 6%"/> 월
+						<input type="text" name="date"  class="form-control" style="width: 6%"/> 일
 						</td>
 					</tr>
 					<tr>
-						<th class="text-center"> * 휴대폰번호</th>
-						<td class="form-inline">
-						<input type="text" name="tel1" id="tel1" class="form-control" style="width: 7%"/> -
-						<input type="text" name="tel2" id="tel2" class="form-control" style="width: 8%"/> -
-						<input type="text" name="tel3" id="tel3" class="form-control" style="width: 8%"/>
-						</td>
+						<th class="text-center">휴대폰번호</th>
+ 						<td class="form-inline">
+ 							<input type="text" class="form-control" name="tel1" style="width:9%"/> -
+ 							<input type="text" class="form-control" name="tel2" style="width:11%"/> -
+ 							<input type="text" class="form-control"  name="tel3" style="width:11%"/>
+ 						</td>
 					</tr>
 					<tr>
 						<td colspan="2" align="center" style="padding-top: 20px;">
-						<button type="button" id="idCancelButton" class="btn btn-default btn-lg" onclick="cancelFindId()">Cancel</button>
-						<button type="submit" id="idSubmitButton" class="btn btn-primary btn-lg">Submit</button>
+						<button type="button" id="idCancelButton" class="btn btn-default btn-lg" onclick="cancelFindId()">취소</button>
+						<button type="submit" id="idSubmitButton" class="btn btn-primary btn-lg">확인</button>
 						</td>
 					</tr>
 				</table>
@@ -85,25 +93,25 @@
  			<div>
 			<div id="divFind"><h3>패스워드 찾기</h3></div>
  			<div id="divJoin">
-			<form class="form-group" id="memberFindPwd" name="memberFindPwdForm" action="memberFindPwd.do">
+			<form class="form-group" id="memberFindPwd" action="memberFindPwd.do" method="post">
 				<table class="table table-striped">
 					<tr>
-						<th class="text-center"> 아이디</th>
+						<th class="text-center">아이디</th>
 						<td><input type="text" name="id" class="form-control" style="width: 20%"></input></td>
 					</tr>
 					<tr>
-						<th class="text-center"> 이름</th>
+						<th class="text-center">이름</th>
 						<td><input type="text" name="name" class="form-control" style="width: 20%"></input></td>
 					</tr>
 					<tr>
-						<th class="text-center"> 이메일</th>
+						<th class="text-center">Email</th>
 						<td><input type="email" name="email"  class="form-control" style="width: 30%"></input>
 						</td>
 					</tr>
 					<tr>
 						<td colspan="2" align="center" style="padding-top: 20px;">
-						<button type="button" id="pwdCancelButton" class="btn btn-default btn-lg" onclick="cancelFindPwd()">Cancel</button>
-						<button type="button" id="pwdSubmitButton" class="btn btn-primary btn-lg">Submit</button>
+						<button type="button" id="pwdCancelButton" class="btn btn-default btn-lg" onclick="cancelFindPwd()">취소</button>
+						<button type="submit" id="pwdSubmitButton" class="btn btn-primary btn-lg">확인</button>
 						</td>
 					</tr>
 				</table>

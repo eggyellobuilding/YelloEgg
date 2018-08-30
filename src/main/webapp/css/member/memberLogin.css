@@ -88,10 +88,12 @@
 	width: 420px;
 	height: 400px;
 	margin-top: 20px;
+	z-index: 5;
 }
 
 #divStateContainer {
 	width: 420px;
 	height: 400px;
+	z-index: 5;
 	
 }

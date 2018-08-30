@@ -14,6 +14,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
     <script src="/yelloMovie/bootstrap/js/bootstrap.min.js"></script>
     <link href="/yelloMovie/css/view/header.css" rel="stylesheet">
+    
 </head>
 
 <script type="text/javascript">
@@ -27,7 +28,6 @@
 			if(XHR.status==200){
 				var loginForm=XHR.responseText;
 				var divNode=document.getElementById('divLogin');
-				window.alert(divNode);
 				if(divNode.hasChildNodes()){
 					while(divNode.hasChildNodes()){
 						divNode.removeChild(divNode.firstChild);
@@ -42,10 +42,11 @@
 			}
 		}
 	}
+	
 	function loginState(memberIdx) {
-
 		sendRequest('memberLoginState.do','memberIdx='+memberIdx,loginStateResult,'GET');
 	}
+	
 	function loginStateResult() {
 		if(XHR.readyState==4){
 			if(XHR.status==200){
@@ -69,7 +70,7 @@
 	}
   </script>
 <body> 
-	<div class="container">
+	<div>
 		<ul class="nav nav-tabs navbar-fixed-top " style="padding-left: 26%; background-color: white; width:110%;">
 			<li class="header logo"><a href="main.do"><img src="/yelloMovie/img/log.PNG" class="img-rounded" height="20" width="100"></a></li>
 			<li class="header"><a href="movieBoxOffice.do" style="margin: 0px;">영화</a></li>
@@ -77,10 +78,10 @@
 			<li class="header"><a href="#" style="margin: 0px;">스토어</a></li>
 			<li class="header"><a href="#" style="margin: 0px;">공지&이벤트</a></li>
 			<li class="header"><a href="#" style="margin: 0px;">빠른예매</a></li>
-			<c:if test="${!empty mdto}">
-				<li class="header" style="width:13%;"><a href="#" style="margin: 0px;" onclick="loginState(${memberIdx})"><small>${sessionScope.mdto.id}님</small></a></li>			
+			<c:if test="${!empty smdto}">
+				<li class="header" style="width:13%;"><a href="#" style="margin: 0px;" onclick="loginState(${smdto.memberIdx})"><small>${smdto.id}님</small></a></li>			
 			</c:if>
-			<c:if test="${empty mdto}">
+			<c:if test="${empty smdto}">
 				<li class="header" style="width:11%;"><a href="#" style="margin: 0px;" onclick="loginForm()">로그인</a></li>			
 			</c:if>
 			
@@ -98,6 +99,6 @@
 			</ul>
 		</div>
 	</div>
-<div id="divLogin"></div>
+<div id="divLogin" style="z-index: 1;"></div>
 </body>
 </html>

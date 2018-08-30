@@ -1,6 +1,6 @@
 @charset "UTF-8";
 .row{
-	margin:0px auto;
+	margin:0px auto  !important;
 }
 #cinemaList {
 	width: 401px;

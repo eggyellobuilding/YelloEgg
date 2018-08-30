@@ -26,7 +26,12 @@ h2{
 <body>
 <div class="container">
 <%@include file="../adminCommonsViews/adminHeader.jsp" %>
-		
+	<c:if test="${empty sessionScope.saddto.adminIdx}">
+		<script type="text/javascript">
+			window.alert('로그인후 사용하시기를 바랍니다.');
+			location.href = 'main.do';
+		</script>
+	</c:if>
 		<div class="container">
 			<%@include file="../adminCommonsViews/adminNavi.jsp" %>
     			<div class="col-xs-10" style="padding:0px;padding-left:5px; border-left: 1px solid #E1E1E1; height:1900px; ">
@@ -34,10 +39,10 @@ h2{
       					<li><a href="adminMemberList.do">가입된 회원관리</a></li>
 						<li class="active"><a href="adminDeleteMemeberList.do">탈퇴 회원관리</a></li>
 					</ul>
-					<div class="container" class="col-xs-10">
+					<div class="container">
 						<h2>탈퇴한 회원목록</h2>
-							<form name="memberDeleteList" action="afterDaysDeleteMember.do" style="margin-top:35px;overflow: auto;width:95%;">
-								<table id="adminDelMemberTable" class="table table-striped">
+							<form action="afterDaysDeleteMember.do" method="post" style="margin-top:35px;overflow: auto;width:95%;">
+								<table id="adminDelMemberTable" class="table table-hover">
 									<thead>
 									<tr>
 										<th>번호</th>
@@ -82,19 +87,9 @@ h2{
 									<tfoot>
 								<tr>
 									<td colspan="9">
-										<nav>
-											<ul class="pagination pagination-lg">
-												<li><a href="#" aria-label="Previous"> <span
-														aria-hidden="true">&laquo;</span>
-												</a></li>
-												<li><a href="#">1</a></li>
-												<li><a href="#">2</a></li>
-												<li><a href="#">3</a></li>
-												<li><a href="#">4</a></li>
-												<li><a href="#">5</a></li>
-												<li><a href="#" aria-label="Next"> <span
-														aria-hidden="true">&raquo;</span>
-												</a></li>
+										<nav style="text-align: center">
+											<ul class="pagination">
+												${pageStr}
 											</ul>
 										</nav>
 									</td>

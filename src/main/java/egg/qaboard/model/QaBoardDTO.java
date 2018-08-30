@@ -1,8 +1,8 @@
-package egg.member.model;
+package egg.qaboard.model;
 
 import java.sql.Date;
 
-public class MemberDTO {
+public class QaBoardDTO {
 
 	/**member*/
 	private int memberIdx;
@@ -16,16 +16,6 @@ public class MemberDTO {
 	private Date joinDate;
 	private String state;
 	private int memberGradeIdx;
-		
-	/**grade*/
-	private int gradeIdx;
-	private String gradeName;
-	
-	/**mileage*/
-	private int mileageIdx;
-	private int mileagePrice;
-	private String mileageReason;
-	private int mileageMemberIdx;
 	
 	/**admin*/
 	private int adminIdx;
@@ -44,49 +34,18 @@ public class MemberDTO {
 	private String cinemaName;
 	private int cinemaTheater;
 	
-
+	/**qa*/
+	private int qaIdx;
+	private String qaTitle;
+	private String qaContent;
+	private Date qaWriteDate;
+	private String qaCate;
+	private String qaAnswer;
+	private int qaMemberIdx;
+	private int qaCinemaIdx;
 	
-	public MemberDTO() {
+	public QaBoardDTO() {
 		super();
-	}
-
-	public MemberDTO(int memberIdx, String id, String pwd, String name, String gender, String tel, Date birthDate,
-			String email, Date joinDate, String state, int memberGradeIdx, int gradeIdx, String gradeName,
-			int mileageIdx, int mileagePrice, String mileageReason, int mileageMemberIdx, int adminIdx, String adminId,
-			String adminPwd, Date adminJoinDate, String adminGrade, int adminCinemaIdx, int cinemaIdx,
-			String cinemaCity, String cinemaGu, String cinemaBungi, String cinemaAddr, String cinemaName,
-			int cinemaTheater) {
-		super();
-		this.memberIdx = memberIdx;
-		this.id = id;
-		this.pwd = pwd;
-		this.name = name;
-		this.gender = gender;
-		this.tel = tel;
-		this.birthDate = birthDate;
-		this.email = email;
-		this.joinDate = joinDate;
-		this.state = state;
-		this.memberGradeIdx = memberGradeIdx;
-		this.gradeIdx = gradeIdx;
-		this.gradeName = gradeName;
-		this.mileageIdx = mileageIdx;
-		this.mileagePrice = mileagePrice;
-		this.mileageReason = mileageReason;
-		this.mileageMemberIdx = mileageMemberIdx;
-		this.adminIdx = adminIdx;
-		this.adminId = adminId;
-		this.adminPwd = adminPwd;
-		this.adminJoinDate = adminJoinDate;
-		this.adminGrade = adminGrade;
-		this.adminCinemaIdx = adminCinemaIdx;
-		this.cinemaIdx = cinemaIdx;
-		this.cinemaCity = cinemaCity;
-		this.cinemaGu = cinemaGu;
-		this.cinemaBungi = cinemaBungi;
-		this.cinemaAddr = cinemaAddr;
-		this.cinemaName = cinemaName;
-		this.cinemaTheater = cinemaTheater;
 	}
 
 	public int getMemberIdx() {
@@ -175,54 +134,6 @@ public class MemberDTO {
 
 	public void setMemberGradeIdx(int memberGradeIdx) {
 		this.memberGradeIdx = memberGradeIdx;
-	}
-
-	public int getGradeIdx() {
-		return gradeIdx;
-	}
-
-	public void setGradeIdx(int gradeIdx) {
-		this.gradeIdx = gradeIdx;
-	}
-
-	public String getGradeName() {
-		return gradeName;
-	}
-
-	public void setGradeName(String gradeName) {
-		this.gradeName = gradeName;
-	}
-
-	public int getMileageIdx() {
-		return mileageIdx;
-	}
-
-	public void setMileageIdx(int mileageIdx) {
-		this.mileageIdx = mileageIdx;
-	}
-
-	public int getMileagePrice() {
-		return mileagePrice;
-	}
-
-	public void setMileagePrice(int mileagePrice) {
-		this.mileagePrice = mileagePrice;
-	}
-
-	public String getMileageReason() {
-		return mileageReason;
-	}
-
-	public void setMileageReason(String mileageReason) {
-		this.mileageReason = mileageReason;
-	}
-
-	public int getMileageMemberIdx() {
-		return mileageMemberIdx;
-	}
-
-	public void setMileageMemberIdx(int mileageMemberIdx) {
-		this.mileageMemberIdx = mileageMemberIdx;
 	}
 
 	public int getAdminIdx() {
@@ -327,6 +238,70 @@ public class MemberDTO {
 
 	public void setCinemaTheater(int cinemaTheater) {
 		this.cinemaTheater = cinemaTheater;
+	}
+
+	public int getQaIdx() {
+		return qaIdx;
+	}
+
+	public void setQaIdx(int qaIdx) {
+		this.qaIdx = qaIdx;
+	}
+
+	public String getQaTitle() {
+		return qaTitle;
+	}
+
+	public void setQaTitle(String qaTitle) {
+		this.qaTitle = qaTitle;
+	}
+
+	public String getQaContent() {
+		return qaContent;
+	}
+
+	public void setQaContent(String qaContent) {
+		this.qaContent = qaContent;
+	}
+
+	public Date getQaWriteDate() {
+		return qaWriteDate;
+	}
+
+	public void setQaWriteDate(Date qaWriteDate) {
+		this.qaWriteDate = qaWriteDate;
+	}
+
+	public String getQaCate() {
+		return qaCate;
+	}
+
+	public void setQaCate(String qaCate) {
+		this.qaCate = qaCate;
+	}
+
+	public String getQaAnswer() {
+		return qaAnswer;
+	}
+
+	public void setQaAnswer(String qaAnswer) {
+		this.qaAnswer = qaAnswer;
+	}
+
+	public int getQaMemberIdx() {
+		return qaMemberIdx;
+	}
+
+	public void setQaMemberIdx(int qaMemberIdx) {
+		this.qaMemberIdx = qaMemberIdx;
+	}
+
+	public int getQaCinemaIdx() {
+		return qaCinemaIdx;
+	}
+
+	public void setQaCinemaIdx(int qaCinemaIdx) {
+		this.qaCinemaIdx = qaCinemaIdx;
 	}
 	
 	

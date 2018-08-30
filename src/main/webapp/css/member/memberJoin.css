@@ -48,15 +48,15 @@
 	margin-top: 6px;
 }
 
-#genderCheckBox1 {
-	width: 17px;
-	height: 17px;
+#genderRadio1 {
+	width: 15px;
+	height: 14px;
 	margin-right: 10px;
 }
 
-#genderCheckBox2 {
-	width: 17px;
-	height: 17px;
+#genderRadio2 {
+	width: 15px;
+	height: 14px;
 	margin-left: 20px;
 	margin-right: 10px;
 }
@@ -64,19 +64,19 @@
 #cancelButton {
 	margin-right: 20px;
 	width: 120px;
-	height: 50px;
+	
 }
 
 #idCancelButton {
 	margin-right: 20px;
 	width: 120px;
-	height: 50px;
+	
 }
 
 #pwdCancelButton {
 	margin-right: 20px;
 	width: 120px;
-	height: 50px;
+	
 }
 
 #divJoin {
@@ -100,10 +100,12 @@
 
 #submitButton {
 	width: 120px;
+	
 }
 
 #idSubmitButton {
 	width: 120px;
+	
 }
 #pwdSubmitButton {
 	width: 120px;

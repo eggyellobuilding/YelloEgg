@@ -4,10 +4,12 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import egg.member.model.MemberDAO;
@@ -51,28 +53,86 @@ public class MypageController {
 	}
 	
 	/**마이페이지 1:1문의 내역*/
-	@RequestMapping("/mypageInquiryList.do")
-	public String mypageInquiryList() {
-		return "view/mypage/mypageInquiryList";
+	@RequestMapping("/mypageQaboardList.do")
+	public String mypageQaboardList() {
+		return "view/mypage/mypageQaboardList";
 	}
 	
 	/**마이페이지 1:1문의 글 쓰기*/
-	@RequestMapping("/mypageInquiryWriteForm.do")
-	public String mypageInquiryWriteForm() {
-		return "view/mypage/mypageInquiryWriteForm";
+	@RequestMapping("/mypageQaboardWriteForm.do")
+	public String mypageQaboardWriteForm() {
+		return "view/mypage/mypageQaboardWriteForm";
 	}
 	
-	/**마이페이지 회원정보 수정*/
+	/**마이페이지 회원정보 수정 폼*/
 	@RequestMapping("/mypageUpdateMemberForm.do")
-	public String mypageUpdateMemberForm() {
-		return "view/mypage/mypageUpdateMemberForm";
+	public ModelAndView mypageUpdateMemberForm(MemberDTO dto) {
+		MemberDTO dtos=memberdao.getMemberImfo(dto);
+		ModelAndView mav = new ModelAndView("view/mypage/mypageUpdateMemberForm","dtos",dtos);
+		return mav;
 		
 	}
 	
-	/**마이페이지 비밀번호 변경*/
+	/**마이페이지 회원정보 수정submit*/
+	@RequestMapping("/mypageUpdateMember.do")
+	public ModelAndView mypageUpdateMemberSubmit(@RequestParam(value="memberIdx")int memberIdx,
+												@RequestParam(value="tel")String tel,
+												@RequestParam(value="email")String email,
+												MemberDTO dto) {
+		
+		dto.setMemberIdx(memberIdx);
+		dto.setEmail(email);
+		dto.setTel(tel);
+		ModelAndView mav = new ModelAndView();
+		int result=memberdao.updateMember(dto);
+		String msg=result>0?"회원정보 수정하였습니다.":"회원정보 수정 실패하였습니다.";
+		mav.addObject("msg",msg);
+		mav.addObject("goUrl", "mypageForm.do");
+		mav.setViewName("view/mypage/memberMsg");
+		return mav;
+	}
+	/**마이페이지 비밀번호 변경 폼*/
 	@RequestMapping("mypageChangePwdForm.do")
 	public String mypageChangePwdForm() {
 		return "view/mypage/mypageChangePwdForm";
+	}
+	
+	/**마이페이지 비밀번호 변경 submit*/
+	@RequestMapping("/mypageChangePwd.do")
+	public ModelAndView mypageChangePwdSubmit(MemberDTO dto,
+											@RequestParam(value="memberIdx")int memberIdx,
+											@RequestParam(value="nowPwd")String nowPwd_s,
+											@RequestParam(value="newPwd")String newPwd_s,
+											@RequestParam(value="pwd")String pwd) {
+		String nowPwd=testMD5(nowPwd_s);
+		String newPwd=testMD5(newPwd_s);
+		dto.setPwd(pwd);
+
+		ModelAndView mav = new ModelAndView();
+		
+		String msg=null;
+		String goUrl=null;
+		
+		if(dto.getPwd().equals(nowPwd)) {
+			
+			dto.setPwd(newPwd);
+			int result=memberdao.mypageChangePwd(dto);
+			if(result>0) {
+				msg="비밀번호 변경을 성공하였습니다.";
+				goUrl="mypageForm.do";
+			}else {
+				msg="비밀번호 변경을 실패하였습니다.";
+				goUrl="mypageForm.do";
+			}
+
+		}else {
+			msg="비밀번호를 다시 입력하세요.";
+			goUrl="mypageChangePwdForm.do";
+		}
+		mav.addObject("msg", msg);
+		mav.addObject("goUrl", goUrl);
+		mav.setViewName("view/mypage/memberMsg");
+		return mav;
 	}
 	
 	/**마이페이지 회원탈퇴  폼*/
@@ -82,7 +142,9 @@ public class MypageController {
 	}
 	
 	@RequestMapping("/mypageDeleteMember.do")
-	public ModelAndView mypageDeleteMemberSubmit(HttpServletRequest req, MemberDTO dto) {
+	public ModelAndView mypageDeleteMemberSubmit(HttpServletRequest req, 
+												MemberDTO dto,
+												HttpSession session) {
 		String memberIdx_s=req.getParameter("memberIdx");
 		int memberIdx=Integer.parseInt(memberIdx_s);
 		String userPwd_s=req.getParameter("userPwd");
@@ -93,12 +155,12 @@ public class MypageController {
 		
 		int result = memberdao.memberUpdateState(dto);
 		ModelAndView mav = new ModelAndView();
-		System.out.println("3");
 		String msg=null;
 		String goUrl=null;
 		if(pwd.equals(userPwd)) {
 			if(result>0) {
 				msg="회원탈퇴를 하였습니다.";
+				session.invalidate();
 				goUrl="main.do";
 				
 			}else {

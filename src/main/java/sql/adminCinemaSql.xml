@@ -43,7 +43,7 @@
 	</select>
 	
 	<select id="theaterCinemaName" parameterType="String" resultType="cdto">
-		select cinemaName,cinemaIdx
+		select *
 		from cinema
 		where cinemaCity = #{cinemaCity}
 	</select>
@@ -113,4 +113,5 @@
 			)
 	</insert>
 	
+
 </mapper>

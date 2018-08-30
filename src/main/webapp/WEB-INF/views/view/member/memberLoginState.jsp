@@ -1,23 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<!DOCTYPE html>
-<html lang="ko">
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Yello egg</title>
-    <!-- 부트스트랩 -->
-    <link href="/yelloMovie/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
-    <script src="/yelloMovie/bootstrap/js/bootstrap.min.js"></script>
-  </head>
-  	<!-- memberCSS -->
 	<link href="/yelloMovie/css/member/memberLogin.css" rel="stylesheet">
-
-  
-  <body>
+	
 <div class="container" id="divStateContainer">
     <div>
 		<form role="form" name="memberLoginState" action="memberLogout.do">
@@ -28,7 +13,7 @@
 				
 				<div class="row">
 					<div class="col-xs-6">
-                        <p class="text-center" style="font-size:20px;">${sessionScope.mdto.id}님</p>
+                        <p class="text-center" style="font-size:20px;">${sessionScope.smdto.id}님</p>
 					</div>
 					<div class="col-xs-6">
 						<p class="text-center" style="font-size:20px; color: green;">달걀</p>
@@ -40,7 +25,7 @@
                         <p class="text-center" style="font-size:20px; color: blue;">마일리지 포인트</p>
 					</div>
 					<div class="col-xs-6">
-						<p class="text-center" style="font-size:20px; color:green;">0P</p>
+						<p class="text-center" style="font-size:20px; color:green;">${dtos.mileagePrice}P</p>
 					</div>
 				</div>
 				<hr>
@@ -67,17 +52,11 @@
 						<input type="submit" class="btn btn-info btn-sm" value="로그아웃" onclick="memberLogout()"> 
 					</div>
 					<div class="col-xs-1" style="margin-top:3px;">
-						<a href="main.do"><button type="button" class="close" aria-label="Close" ><span aria-hidden="true">&times;</span></button></a>
+						<button type="button" class="close" aria-label="Close" ><span aria-hidden="true">&times;</span></button>
 					</div>
-					
 				</div>
 				<hr class="colorgraph" style="margin-top: 5px;">
 			</fieldset>
 		</form>
 	</div>
-
 </div>
-	
-
-  </body>
-</html>

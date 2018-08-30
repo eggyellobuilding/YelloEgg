@@ -15,34 +15,54 @@
       	    <!-- mypage css -->
     <link href="/yelloMovie/css/mypage/mypage.css" rel="stylesheet">
   </head>
+<style>
+#genderRadio1 {
+	width: 20px;
+	height: 14px;
+	margin-right: 10px;
+}
 
-    <script type="text/javascript">
-  function changePwdForm() {
-	location.href='mypageChangePwdForm.do';
+#genderRadio2 {
+	width: 20px;
+	height: 14px;
+	margin-left: 20px;
+	margin-right: 10px;
 }
-  
-  function cancelUpdateMember() {
-	location.href='mypageInquiryList.do';
-}
-  function deleteMemberForm() {
+</style>
+<script type="text/javascript">
+	function changePwdForm() {
+		location.href = 'mypageChangePwdForm.do';
+	}
 
-	location.href='mypageDeleteMemberForm.do';
-}
-  </script>
-  <body>
+	function cancelUpdateMember() {
+		location.href = 'mypageForm.do';
+	}
+	
+	function deleteMemberForm() {
+		location.href = 'mypageDeleteMemberForm.do';
+	}
+
+</script>
+<body>
 	<%@include file="../commonsView/header.jsp" %>
+	<c:if test="${empty sessionScope.smdto.memberIdx}">
+		<script type="text/javascript">
+			window.alert('로그인후 사용하시기를 바랍니다.');
+			location.href = 'main.do';
+		</script>
+	</c:if>	
 <div class="container" id="divMypageContainer">
  	<div class="mypageHeader"><h2><b>My YelloMovie</b></h2></div>
  		<div class="row" id="mypageNav">
 			<div class="col-xs-2" id="mypageCol">
-				<p><a href="mypageInquiryList.do"><img src="/yelloMovie/img/mypage/mypage.jpg"
+				<p><a href="mypageQaboardList.do?memberIdx=${sessionScope.smdto.memberIdx}"><img src="/yelloMovie/img/mypage/mypage.jpg"
 					style="margin-left: 7px;" width="50%" height="50%"
 					alt="myYelloMovie" class="img-rounded"></a>
 				</p>
 				<span style="color:#A4A4A4;"><strong>나의 문의내역</strong></span>
 			</div>
 			<div class="col-xs-2" id="mypageCol">
-				<p><a href="mypageUpdateMemberForm.do"><img
+				<p><a href="mypageUpdateMemberForm.do?memberIdx=${sessionScope.smdto.memberIdx}"><img
 					src="/yelloMovie/img/mypage/reservation.jpg" width="50%" height="50%"
 					alt="updateMember" class="img-rounded"></a>
 				</p>
@@ -77,42 +97,57 @@
 		
 		
 		<div style="border-top: 4px solid #F4FA58; margin-top: 20px;">
-			<form class="form-group" name="mypageUpdateMemberForm" action="mypageUpdateMember.do" method="post">
-				<input type="hidden" name="memberIdx" id="memberIdx" value="${sessionScope.dto.memberIdx}"/>
+			<form class="form-group" action="mypageUpdateMember.do" method="post">
+				<input type="hidden" name="memberIdx" value="${sessionScope.smdto.memberIdx}"/>
 				<table class="table table-striped">
 					<tr>
-						<th id="updateTr"> * 비밀번호</th>
-						<td id="updateTd"><input type="password" name="pwd" id="pwd" class="form-control" style="width: 20%"></input></td>
-					</tr>
-					<tr>
-						<th id="updateTr"> * 이름</th>
-						<td id="updateTd"><input type="text" name="name" id="name" class="form-control" style="width: 20%"></input></td>
-					</tr>
-					<tr>
-						<th id="updateTr"> * 생년월일</th>
-						<td class="form-inline" id="updateTd">
-						<input type="text" name="year" id="year" class="form-control" style="width: 8%"/> 년
-						<input type="text" name="month" id="month" class="form-control" style="width: 6%"/> 월
-						<input type="text" name="date" id="date" class="form-control" style="width: 6%"/> 일
+						<th id="updateTr">회원등급</th>
+						<td id="updateTd">
+						<input type="text" class="form-control" name="gradeName" value="${dtos.gradeName}" style="width: 20%" readonly="readonly" />
 						</td>
 					</tr>
 					<tr>
-						<th id="updateTr"> * 휴대폰번호</th>
-						<td class="form-inline" id="updateTd">
-						<input type="text" name="tel1" id="tel1" class="form-control" style="width: 7%"/> -
-						<input type="text" name="tel2" id="tel2" class="form-control" style="width: 8%"/> -
-						<input type="text" name="tel3" id="tel3" class="form-control" style="width: 8%"/>
+						<th id="updateTr">이름</th>
+						<td id="updateTd">
+						<input type="text" name="name" value="${dtos.name}" readonly="readonly" class="form-control" style="width: 20%"/>
 						</td>
 					</tr>
 					<tr>
-						<th id="updateTr"> 이메일</th>
-						<td id="updateTd"><input type="email" name="email" id="email" class="form-control" style="width: 30%"></input>
+						<th id="updateTr">생년월일</th>
+						<td id="updateTd">
+						<input type="text" name="birthDate" value="${dtos.birthDate}" style="width: 20%" class="form-control" readonly="readonly"/>
+						</td>
+					</tr>
+					<tr>
+						<th id="updateTr">성별</th>
+						<c:if test="${'남자'eq dtos.gender}">
+							<td id="updateTd">
+								<input type="radio" name="gender" value="남자" checked="checked" disabled="disabled" id="genderRadio1"/>남자 
+								<input type="radio"	name="gender" value="여자" disabled="disabled" id="genderRadio2"/>여자
+							</td>
+						</c:if>
+						<c:if test="${'여자'eq dtos.gender}">
+							<td id="updateTd">
+								<input type="radio" name="gender" value="남자" disabled="disabled" id="genderRadio1"/>남자
+								<input type="radio" name="gender" value="여자" checked="checked" disabled="disabled" id="genderRadio2"/>여자
+							</td>
+						</c:if>
+					</tr>
+					<tr>
+						<th id="updateTr">휴대폰번호</th>
+						<td id="updateTd">
+						<input type="text" name="tel" value="${dtos.tel}"class="form-control" style="width: 20%"/>
+						</td>
+					</tr>
+					<tr>
+						<th id="updateTr">Email</th>
+						<td id="updateTd"><input type="email" name="email" value="${dtos.email}" class="form-control" style="width: 30%"></input>
 						</td>
 					</tr>
 					<tr>
 						<td colspan="2" align="center" style="padding-top: 20px;">
-						<button type="button" style="margin-right: 20px;width:120px;height: 46px;" class="btn btn-default btn-lg" onclick="cancelUpdateMember()">Cancel</button>
-						<button type="submit" style="width:120px;" class="btn btn-primary btn-lg">Submit</button>
+						<button type="button" style="margin-right: 20px;width:120px;" class="btn btn-default btn-lg" onclick="cancelUpdateMember()">취소</button>
+						<button type="submit" style="width:120px;" class="btn btn-primary btn-lg">확인</button>
 						</td>
 					</tr>
 				</table>

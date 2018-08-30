@@ -1,28 +1,13 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<!DOCTYPE html>
-<html lang="ko">
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Yello egg</title>
-    <!-- 부트스트랩 -->
-    <link href="/yelloMovie/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
-    <script src="/yelloMovie/bootstrap/js/bootstrap.min.js"></script>
-  </head>
-	<!-- memberCSS -->
-	<link href="/yelloMovie/css/member/memberLogin.css" rel="stylesheet">
-
-  <body>
-    <div class="container" id="divLoginContainer">
+<%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>    
+ <link href="/yelloMovie/css/member/memberLogin.css" rel="stylesheet">
+    <div class="container" id="divLoginContainer" >
 			  <div>
-				<form role="form" name="memberLoginForm" action="memberLogin.do" method="post">
+				<form role="form" action="memberLogin.do" method="post">
 					<fieldset style="margin:0px auto;">
-					<button type="button" class="close" aria-label="Close"><span aria-hidden="true"  onclick="close()">&times;</span></button>
-						<h2>Please Sign In</h2>
+					<button type="button" class="close" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+						<h2>YelloEgg 로그인</h2>
 						<hr class="colorgraph">
 							<div class="form-group">
 								<div class="input-group">
@@ -62,7 +47,3 @@
 				</form>
 			</div>
 	</div>
-
-    
-  </body>
-</html>
