@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="yello.statics">
+ 
+	<select id="adminStaticsCityScheduleCount" parameterType="map" resultType="String">
+		select count(theaterIdx) 
+		from(select theaterIdx
+		from (select cinemaIdx from cinema where cinemaCity = #{city})a , theater b
+		where a.cinemaIdx = b.theaterCinemaIdx)c , schedule d
+		where c.theaterIdx = d.scheduleTheaterIdx and d.scheduleDate between #{startDay} and #{endDay}
+	</select>
+	
+	<select id="adminStaticsMovieRate" parameterType="map" resultType="int">
+		select nvl(sum(ticketPrice),0) as ticketPrice
+		from(select *
+		from(select scheduleIdx
+		from(select theaterIdx
+		from (select cinemaIdx from cinema where cinemaCity =#{city})a , theater b
+		where a.cinemaIdx = b.theaterCinemaIdx)c , schedule d
+		where c.theaterIdx = d.scheduleTheaterIdx)e , reservation f
+		where e.scheduleIdx = f.reservationScheduleIdx and f.reservationStatus='Y' and reservationDate between #{startDay} and #{endDay})g , ticketInfo h
+		where g.reservationTicketIdx = h.ticketIdx
+	</select>
+	
+	<select id="adminStaticsReservationCount" parameterType="map" resultType="String">
+		select count(*)as reservationCount
+		from(select scheduleIdx
+		from(select theaterIdx
+		from (select cinemaIdx from cinema where cinemaCity =#{city})a , theater b
+		where a.cinemaIdx = b.theaterCinemaIdx)c , schedule d
+		where c.theaterIdx = d.scheduleTheaterIdx)e , reservation f
+		where e.scheduleIdx = f.reservationScheduleIdx and f.reservationStatus='Y' and reservationDate between #{startDay} and #{endDay}
+	</select>
+	
+	<select id="adminStaticsAllScheduleCount" parameterType="map" resultType="String">
+		select count(*)
+		from schedule 
+		where scheduleDate between #{startDay} and #{endDay}
+	</select>
+	
+	<select id="adminStaticsAllMovieRate" parameterType="map" resultType="String">
+		select count(*)
+		from reservation  
+		where reservationDate between #{startDay} and #{endDay}
+	</select>
+</mapper>  

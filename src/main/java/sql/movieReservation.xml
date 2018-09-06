@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="yello.movie">
+	<select id="movieList" resultType="rdto">
+		select *
+		from(select distinct(scheduleMovieIdx) from schedule)a , movieInfo b
+		where a.scheduleMovieIdx = b.movieIdx
+	</select>
+	
+	<select id="reservationCinemaCity" resultType="rdto">
+		select distinct(cinemaCity) 
+		from
+		cinema
+		where cinemaIdx not in(0)
+	</select>
+	
+	<select id="reservationCinema" parameterType="String" resultType="rdto">
+		select * 
+		from
+		cinema
+		where cinemaCity =#{cinemaCity}
+	</select>
+	
+
+	<select id="reservationYear" parameterType="rdto" resultType="String">
+		select distinct(to_char(a.scheduleDate,'YYYY-MM'))as scheduleMonth  
+		from(select * 
+		from schedule
+		where scheduleDate <![CDATA[>=]]> #{scheduleDate})a
+		order by scheduleMonth asc
+	</select>
+	
+	<select id="reservationFirstSchedule" parameterType="rdto" resultType="rdto">
+		select a.*
+		from(select distinct(scheduleDate),to_char(scheduleDate,'YYYY-MM')as scheduleMonth
+		from schedule
+		where scheduleDate <![CDATA[>=]]> #{scheduleDate})a
+		where scheduleMonth = #{reservationMonth}  
+		order by scheduleDate asc
+	</select>
+	
+	<select id="reservationSchedule" parameterType="String" resultType="rdto">
+		select a.*
+		from(select distinct(scheduleDate),to_char(scheduleDate,'YYYY-MM')as scheduleMonth
+		from schedule)a
+		where a.scheduleMonth = #{month}
+		order by scheduleDate asc
+	</select>
+</mapper>
