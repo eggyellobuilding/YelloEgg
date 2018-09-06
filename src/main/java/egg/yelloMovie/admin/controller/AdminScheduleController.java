@@ -2,9 +2,6 @@ package egg.yelloMovie.admin.controller;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -18,10 +15,16 @@ import egg.cinema.admin.model.CinemaDAO;
 import egg.cinema.admin.model.CinemaDTO;
 import egg.schedule.admin.model.AdminScheduleDAO;
 import egg.schedule.admin.model.AdminScheduleDTO;
-
+import java.util.*;
 @Controller
 public class AdminScheduleController {
 
+	Calendar cal =  Calendar.getInstance();
+	int year = cal.get(Calendar.YEAR);
+	int month = cal.get(Calendar.MONTH) + 1;
+	int day = cal.get(Calendar.DATE);
+	
+	String nowday = year+"-"+month+"-"+day;
 	@Autowired
 	private AdminScheduleDAO asdao;
 	
@@ -30,15 +33,15 @@ public class AdminScheduleController {
 	//스캐줄 메인
 	@RequestMapping(value="adminSchedule.do",method=RequestMethod.GET)
 	public ModelAndView adminSchedule(@RequestParam(value="cinemaIdx",defaultValue="-1")int cinemaIdx) {
-		
+	
 		CinemaDTO cdto = new CinemaDTO();
-		List<CinemaDTO> lists=null;
+		List<CinemaDTO> theaterLists=null;
 		//마스터 접속
 		if(cinemaIdx == 0) {
 			
 		}else {
 			cdto = asdao.adminScheduleMain(cinemaIdx);
-			lists = asdao.adminScheduleTheater(cinemaIdx);
+			theaterLists = asdao.adminScheduleTheater(cinemaIdx);
 		}
 		//시간 계산
 		ArrayList<String> arr = new ArrayList<String>();
@@ -64,9 +67,42 @@ public class AdminScheduleController {
 		ModelAndView mav = new ModelAndView("admin/schedule/adminScheduleMain");
 		mav.addObject("arr",arr);
 		mav.addObject("cdto",cdto);
-		mav.addObject("lists",lists);
+		mav.addObject("lists",theaterLists);
+
 		return mav;
 	}
+	
+	//스캐줄 전체 목록 json
+	@RequestMapping(value="/adminScheduleMainJquery.do",method=RequestMethod.POST)
+	public ModelAndView adminScheduleMain(@RequestParam("cinemaIdx")int cinemaIdx,
+			@RequestParam(value="date",defaultValue="now")String date) {
+
+		CinemaDTO cdto = new CinemaDTO();
+		List<CinemaDTO> theaterLists=null;
+		Map<Integer ,List<AdminScheduleDTO>> map = new HashMap<Integer ,List<AdminScheduleDTO>>();
+		
+		cdto = asdao.adminScheduleMain(cinemaIdx);
+		theaterLists = asdao.adminScheduleTheater(cinemaIdx);
+		
+		cdto = asdao.adminScheduleMain(cinemaIdx);
+		theaterLists = asdao.adminScheduleTheater(cinemaIdx);
+		java.sql.Date date2= java.sql.Date.valueOf(date);
+		
+		for(int i =0; i < theaterLists.size();i++) {
+			AdminScheduleDTO asdto = new AdminScheduleDTO();
+			asdto.setScheduleDate(date2);
+			asdto.setScheduleTheaterIdx(theaterLists.get(i).getTheaterIdx());
+			List<AdminScheduleDTO> asdtoList = asdao.adminScheduleList(asdto);
+			map.put(theaterLists.get(i).getTheaterIdx(), asdtoList);
+		}
+		
+		
+		ModelAndView mav = new ModelAndView("yongJson");
+		mav.addObject("scheduleMap",map);
+		mav.addObject("theaterList",theaterLists);
+		return mav;
+	}
+	
 	//영화관 시 목록  json
 	@RequestMapping(value="/adminCinemaFindJquery.do",method=RequestMethod.GET)
 	public ModelAndView adminScheduleCinemaFind() {
@@ -113,7 +149,6 @@ public class AdminScheduleController {
 			Date date=null;
 			try {
 				date = new SimpleDateFormat("yyyy-MM-dd").parse(schedule[0]);
-				System.out.println(date);
 			} catch (ParseException e) {
 				e.printStackTrace();
 			}
@@ -137,6 +172,7 @@ public class AdminScheduleController {
 	public ModelAndView adminScheduleAdd(@RequestParam("theaterIdx")int theaterIdx,
 			@RequestParam("scheduleDate")String scheduleDate){
 		AdminScheduleDTO dto = new AdminScheduleDTO();
+		
 		java.sql.Date date= java.sql.Date.valueOf(scheduleDate);
 		
 

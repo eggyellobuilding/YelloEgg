@@ -1,7 +1,9 @@
 package egg.schedule.admin.model;
 
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import egg.cinema.admin.model.CinemaDTO;
 

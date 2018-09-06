@@ -1,7 +1,10 @@
 package egg.schedule.admin.model;
 
+import java.sql.Date;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.mybatis.spring.SqlSessionTemplate;
 
@@ -45,7 +48,6 @@ public class AdminScheduleDAOImple implements AdminScheduleDAO {
 	}
 	
 	public List<AdminScheduleDTO> adminScheduleList(AdminScheduleDTO asdto) {
-		System.out.println("ㄴ날짜"+asdto.getScheduleDate());
 		List<AdminScheduleDTO> scheduleList = sqlMap.selectList("adminScheduleList",asdto);
 		return scheduleList;
 	}

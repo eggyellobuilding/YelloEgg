@@ -3,7 +3,30 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="yello.movie">
-	<select id="movieOfficeInfo" resultType="egg.movie.model.MovieDTO">
+	<select id="movieOfficeInfo" resultType="mvdto">
 		select * from movieInfo
+	</select>
+	<select id="movieLatestInfo" resultType="mvdto">
+		select * from movieInfo where sysdate<![CDATA[>]]>movieReleaseDate order by movieReleaseDate desc
+	</select>
+	<select id="movieExpectationInfo" resultType="mvdto">
+		select * from movieInfo where sysdate<![CDATA[<]]>movieReleaseDate order by movieReleaseDate desc
+	</select>
+	<select id="mvRepleList" resultType="mvdto">
+		select mv.*,m.id from movieReple mv,member m 
+		where repleMemberIdx=memberIdx
+	</select>
+	<insert id="movieRepleAdd" parameterType="mvdto">
+		insert into movieReple values(
+		movieRepleSq.nextval,
+		#{repleScore},
+		#{repleContent},
+		sysdate,
+		#{repleMemberIdx},
+		#{repleMovieIdx})
+	</insert>
+	<select id="movieRepleList" resultType="mvdto" parameterType="mvdto">
+		select mv.*,m.id from movieReple mv,member m 
+		where repleMemberIdx=memberIdx and repleMovieIdx=#{repleMovieIdx}
 	</select>
 </mapper>

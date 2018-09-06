@@ -1,5 +1,6 @@
 package egg.movie.admin.model;
 
+import java.sql.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -14,11 +15,10 @@ public class AdminMovieDAOImple implements AdminMovieDAO {
 		this.sqlMap = sqlMap;
 	}
 
-	/** 영화 정보 업로드 */
+	/** 영화 정보 등록 */
 	public int movieInfoAdd(AdminMovieDTO dto) {
 		int count = sqlMap.insert("adminMovieAdd", dto);
 		return count;
-
 	}
 
 	/** 영화 정보 인덱스 */

@@ -77,7 +77,7 @@
 			<li class="header"><a href="scheduleInfo.do" style="margin: 0px;">상영시간표</a></li>
 			<li class="header"><a href="#" style="margin: 0px;">스토어</a></li>
 			<li class="header"><a href="#" style="margin: 0px;">공지&이벤트</a></li>
-			<li class="header"><a href="#" style="margin: 0px;">빠른예매</a></li>
+			<li class="header"><a href="movieReservation.do" style="margin: 0px;">빠른예매</a></li>
 			<c:if test="${!empty smdto}">
 				<li class="header" style="width:13%;"><a href="#" style="margin: 0px;" onclick="loginState(${smdto.memberIdx})"><small>${smdto.id}님</small></a></li>			
 			</c:if>

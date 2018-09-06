@@ -1,6 +1,7 @@
 package egg.cinema.admin.model;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -20,7 +21,7 @@ public interface CinemaDAO {
 	//상영관 등록 -- 영화관 이름 가져오기
 	public List<CinemaDTO> theaterCinemaName(String cinemaCity);
 	//상영관 등록
-	public int theaterAdd(Map<String, String> map);
+	public int theaterAdd(ArrayList<CinemaDTO> arr);
 	//좌석 상영관리스트
 	public List<CinemaDTO> seatsTheaterList(int cinemaIdx);
 	//상영관 좌석 등록 여부
@@ -31,4 +32,8 @@ public interface CinemaDAO {
 	public Map<String,List<CinemaDTO>> exitsSeatsList(int seatTheaterIdx);
 	//출입구 등록
 	public String exitsAdd(ArrayList<CinemaDTO> arr);
+	//theater 리스트
+	public List<HashMap<String, String>> getCinemaNameList(int cinemaIdx);
+	//theater이름업데이트
+	public int updateTheaterName(HashMap<String, String>theaterDto);
 }

@@ -1,9 +1,13 @@
 package egg.yelloMovie.admin.controller;
 
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -51,7 +55,7 @@ public class CinemaController {
 	public ModelAndView adminCinemaAdd(@RequestParam("addr")String addr,
 			@RequestParam("cinemaAddr")String cinemaAddr,
 			@RequestParam("cinemaName")String cinemaName,
-			@RequestParam("cinemaTheater")int cinemaTheater){
+			@RequestParam("cinemaTheater")String theater[]){
 		CinemaDTO cdto = new CinemaDTO();
 		
 		//주소 자르기
@@ -62,11 +66,23 @@ public class CinemaController {
 		cdto.setCinemaBungi( addr_a[2]);
 		cdto.setCinemaName(cinemaName);
 		cdto.setCinemaAddr(cinemaAddr);
-		cdto.setCinemaTheater(cinemaTheater);
-
+		cdto.setCinemaTheater(theater.length);
 		int result = cdao.cinemaAdd(cdto);
+		//영화관 idx 가져오기
 		
-		String msg = result>0?"등록 성공":"등록 실패";
+		
+		//상영관 이름 등록
+		
+		ArrayList<CinemaDTO> arr = new ArrayList<CinemaDTO>();
+		for(int i = 0 ; i < theater.length;i++) {
+			CinemaDTO cdto2 = new CinemaDTO();
+			cdto2.setTheaterName(theater[i]);
+			cdto2.setTheaterCinemaIdx(result);
+			arr.add(cdto2);
+		}
+		int result2=cdao.theaterAdd(arr);
+		
+		String msg = result2==arr.size()?"등록 완료":"등록 실패";
 		
 		ModelAndView mav = new ModelAndView("admin/cinema/adminCinemaMsg");
 		mav.addObject("gopage","adminCinema.do");
@@ -78,17 +94,17 @@ public class CinemaController {
 	@RequestMapping(value="/adminTheaterAdd.do",method=RequestMethod.GET)
 	public ModelAndView adminTheaterAddForm(@RequestParam(value="cinemaIdx",defaultValue="0")int cinemaIdx) {
 		List<CinemaDTO> lists = cdao.cinemaCount(cinemaIdx);
-	
 		int count = 0 ;
 		int idx = 0 ; 
 		if(lists.size()==0) {
 			lists=null;	
 		}else {
-		count = lists.get(0).getCinemaTheater();
-		idx = lists.get(0).getCinemaIdx();
+			count = lists.get(0).getCinemaTheater();
+			idx = lists.get(0).getCinemaIdx();
 		}
+		List<HashMap<String, String>> cinemaNameList = cdao.getCinemaNameList(cinemaIdx);
 		ModelAndView mav = new ModelAndView("admin/cinema/theaterAdd");
-		
+		mav.addObject("cinemaNameList", cinemaNameList);
 		mav.addObject("idx",idx);
 		mav.addObject("count",count);
 		return mav;
@@ -96,14 +112,28 @@ public class CinemaController {
 	
 	//상영관 등록
 	@RequestMapping(value="/adminTheaterAdd.do",method=RequestMethod.POST)
-	public ModelAndView adminTheatereAdd(@RequestParam Map<String,String>map) {
-		int result = cdao.theaterAdd(map);
+	public ModelAndView adminTheatereAdd(HttpServletRequest req) throws UnsupportedEncodingException {
+		req.setCharacterEncoding("UTF-8");
+		String theaterIdx[] = req.getParameterValues("theaterCinemaIdx");
+		String theaterName[] = req.getParameterValues("theatername");
+		ArrayList<HashMap<String, String>> theaterList = new ArrayList<HashMap<String,String>>();
+		int result = 0;
+		if(theaterIdx != null && theaterIdx.length > 0) {
+			for(int i = 0; i < theaterIdx.length; i++) {
+				HashMap<String, String> theaterDto = new HashMap<String, String>();
+				theaterDto.put("theateridx", theaterIdx[i]);
+				theaterDto.put("theatername", theaterName[i]);
+				result += cdao.updateTheaterName(theaterDto);
+				theaterList.add(theaterDto);
+			}
+		}
+		
 		ModelAndView mav = new ModelAndView("admin/cinema/adminCinemaMsg");
-		mav.addObject("msg","상영관이 등록되었습니다.");
+		mav.addObject("msg", result + "개의 상영관 이름이 수정되었습니다.");
 		mav.addObject("gopage","adminCinema.do");
 		return mav;
 	}
-	
+
 	//상영관 등록--> 영화관 찾기
 	@RequestMapping("/adminCinemaFind.do")
 	public ModelAndView adminTheaterCinemaFind() {
@@ -121,6 +151,32 @@ public class CinemaController {
 		
 		ModelAndView mav = new ModelAndView("admin/cinema/json/findCinemaName");
 		mav.addObject("nameLists",nameLists);
+		return mav;
+	}
+	//영화관 목록 --좌석
+	@RequestMapping(value="seatAjax.do")
+	public ModelAndView seatAjax(@RequestParam("theaterIdx")int theaterIdx) {
+		ModelAndView mav = new ModelAndView("yongJson");
+		try {
+			Map<String,List<CinemaDTO>> map = cdao.exitsSeatsList(theaterIdx);
+			List<CinemaDTO> xList = map.get("x");
+			List<CinemaDTO> yList = map.get("y");
+			List<CinemaDTO> seatsList = map.get("seatsList");
+			ArrayList<String> alt = new ArrayList<String>();
+			for(int i =0 ; i<yList.size();i++) {
+				alt.add(String.valueOf((char)(i+'A')));
+			}
+			
+			mav.addObject("xSize",map.get("x").get(map.get("x").size()-1).getSeatX());
+			mav.addObject("ySize",map.get("y").get(map.get("y").size()-1).getSeatY());
+			mav.addObject("alt",alt);
+			mav.addObject("theaterIdx",theaterIdx);
+			mav.addObject("xList",xList);
+			mav.addObject("yList",yList);
+			mav.addObject("seatsList",seatsList);
+		} catch (Exception e) {
+			e.printStackTrace();
+		} 
 		return mav;
 	}
 	//좌석 등록 폼

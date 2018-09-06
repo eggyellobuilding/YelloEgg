@@ -69,6 +69,40 @@
         $("#date1").change(function(){
             var changeDate=$(this).val().split("-",3);
             $("#topDate").text($(this).val());
+            window.alert($('#selectCinemaIdxInput').val());
+        	$.ajax({
+        		   url:'adminScheduleMainJquery.do?date='+$('#topDate').text()+'&cinemaIdx='+$('#selectCinemaIdxInput').val(),
+        		   type:'post',
+        		   success:function(data){
+        			    var movieInfoList = data.scheduleMap;
+        			    var theaterList = data.theaterList;
+					
+        			 
+							
+							for(var j = 0 ; j <theaterList.length;j++){
+								var dto = movieInfoList[theaterList[j].theaterIdx];
+								
+								for(var k = 0; k < dto.length;k++){
+									var list = dto[k];
+									var blockCount=Math.floor(list.movieRunTime/30)+1;
+									var id= list.scheduleStartTime+'_'+list.scheduleTheaterIdx;
+										$("#"+id).attr("rowspan",blockCount).html('<h3 style="text-align:center">'+list.movieName+'</h3>').addClass('on')
+									
+									for(var l = 1 ; l < blockCount ;l++){
+										var id2= (parseInt(list.scheduleStartTime)+l)+'_'+list.scheduleTheaterIdx;
+											$('#'+id2).addClass('on'+l).css('display','none');
+										}
+								}
+							}
+								
+						      			    
+            			var result='';
+        	        	var temp ='';
+        	      
+        	        	result+=temp;
+        		   }
+        	   })
+
             });
         
         
@@ -160,10 +194,14 @@
     	   })
        });
     
-     
+
     });
+    //메인 상영관 보여주기
+    
+	   	   
     //ajax 영화관 이름
     function findCinemaName(cinemaCity){
+    	
       	$.ajax({
 		        	url:'adminCinemaNameFindJquery.do?cinemaCity='+cinemaCity,
 		        	type:'get',
@@ -181,6 +219,7 @@
 		        		temp +='</ul>';
 		        		result = temp;
 		        		$("#cinemaNameList").html(result);
+		        		
 		        	}
       	});
       };
@@ -245,6 +284,7 @@
        //상영관 선택
        function selectTheaterName(theaterIdx,theaterName){
     	   $('#theaterName').text(theaterName);
+    	   $('#selectedTheaterIdx').val(theaterIdx);
     	   var params = "theaterIdx="+theaterIdx+"&scheduleDate="+$('#scheduleDate').text();
     	   $.ajax({
 	        	url:'adminScheduleSelectJquery.do?'+params,
@@ -260,7 +300,7 @@
 	        		
 	        		//스캐줄 탬플릿
 	        		temp += '<div class="panel-heading" id="theaterName2">'+theaterName+'</div>';
-	        		temp += '<table class="table">';
+	        		temp += '<table class="table text-center">';
 	        		temp += '<tr>';
 	        		temp += '<th>시간</th>';
 	        		temp += '<th>영화</th>';
@@ -270,7 +310,7 @@
 						var time = timeData[i];
 							temp +='<tr>';
 							temp +='<th class="time">'+time+'</th>';
-							temp +='<td id="time'+count+'" onclick="startTime('+count+')"></td>';
+							temp +='<td style="vertical-align:middle;"id="time'+count+'" onclick="startTime('+count+')"></td>';
 							temp +='</tr>';	
 							count++;
 						}
@@ -330,9 +370,9 @@
 	   				}
 	    		   
 	    		   //첫 시작 크기 변경
-		    		   $('#time'+count).attr('rowspan',blockCount).addClass('on').html('<img style="width:100%;height:21%" src="'+$("#movieTitleCut").val()+'">');
+		    		   $('#time'+count).attr('rowspan',blockCount).addClass('on').html('<h3>'+$('#movieName').val()+'</h3>');
 	    	
-		    			var scheduleInfo = $('#scheduleDate').text()+','+count+','+$('#theaterIdx').val()+','+$("#movieIdx").val();
+		    			var scheduleInfo = $('#scheduleDate').text()+','+count+','+$('#selectedTheaterIdx').val()+','+$("#movieIdx").val();
 		    			var movieIdx = '<input type="hidden" name="scheduleInfo" value="'+scheduleInfo+'">';
 		    			$('#time'+count).append(movieIdx);
 		    			   for(var i = parseInt(count)+1; i<blockCount+parseInt(count);i++){
@@ -366,6 +406,7 @@
 					<div class="btn-group">
 						<button type="button" class="btn btn-default" id="theaterName">상영관
 							선택</button>
+							<input type="hidden" id="selectedTheaterIdx">
 						<button type="button" class="btn btn-default dropdown-toggle"
 							data-toggle="dropdown">
 							<span class="caret"></span> <span class="sr-only">Toggle
@@ -374,10 +415,10 @@
 						<!-- 상영관 이름 리스트 -->
 						<ul class="dropdown-menu">
 							<c:forEach items="${lists}" var="tdto">
-								<li
-									onclick="selectTheaterName('${tdto.theaterIdx}','${tdto.theaterName}')"><input
-									type="hidden" value="${tdto.theaterIdx}" id="theaterIdx"><a
-									href="#">${tdto.theaterName}</a></li>
+								<li onclick="selectTheaterName('${tdto.theaterIdx}','${tdto.theaterName}')">
+									<input type="hidden" value="${tdto.theaterIdx}" id="theaterIdx">
+									<a href="#">${tdto.theaterName}</a>
+								</li>
 							</c:forEach>
 						</ul>
 					</div>
@@ -444,8 +485,7 @@
 							class="btn btn-default">
 							영화관 선택 <span class="caret"></span>
 						</button>
-						<input type="hidden" value="" id="selectCinemaIdxInput"
-							name="selectCinemaIdxInput">
+					
 					</div>
 				</form>
 				<div id="div" style="display: none;"></div>
@@ -454,8 +494,8 @@
 				<!-- 영화관 관리자  &  마스터-->
 				<c:if test="${!empty cdto }">
 					<div class="container">
-						<h1 id="cinemaName">${cdto.cinemaName }영화관 스캐줄</h1>
-
+						<h1 id="cinemaName">${cdto.cinemaName}영화관 스캐줄</h1>
+							<input type="hidden" value="${cdto.cinemaIdx}" id="selectCinemaIdxInput" name="selectCinemaIdxInput">
 						<div class="row" style="margin-top: 30px;">
 							<div class="input-group" style="width: 160px; height: 40px;">
 								<input type="text" name="date" id="date1" size="12"
@@ -463,7 +503,7 @@
 									class="input-group-addon glyphicon glyphicon-calendar"></span>
 							</div>
 							<div class="row text-center">
-								<h2 id="topDate"></h2>
+								<h2 id="topDate" onchange="changeSchedulList()"></h2>
 							</div>
 
 							<div class="text-right">
@@ -484,7 +524,7 @@
 									<tr>
 										<th class="time">${t}</th>
 										<c:forEach items="${lists}" var="tdto">
-											<td id="${time.count},${tdto.theaterIdx}"></td>
+											<td style="vertical-align:middle;" id="${time.count}_${tdto.theaterIdx}"></td>
 										</c:forEach>
 									</tr>
 								</c:forEach>

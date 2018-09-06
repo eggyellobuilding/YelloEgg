@@ -18,7 +18,8 @@ public class CinemaDAOImple implements CinemaDAO {
 
 	public int cinemaAdd(CinemaDTO cdto) {
 		int result = sqlMap.insert("cinemaAdd",cdto);
-		return result;
+		int cinemaIdx = sqlMap.selectOne("recentCinemaIdx");
+		return cinemaIdx;
 	}
 	
 	public List<CinemaDTO> cinemaList() {
@@ -56,18 +57,11 @@ public class CinemaDAOImple implements CinemaDAO {
 		List<CinemaDTO> lists = sqlMap.selectList("theaterCinemaName",cinemaCity);
 		return lists;
 	}
-	public int theaterAdd(Map<String,String> map) {
+	public int theaterAdd(ArrayList<CinemaDTO> arr) {
 		int result = 0;
-		int theaterCinemaIdx = Integer.parseInt(map.get("theaterCinemaIdx"));
-		for(int i = 1 ; i <map.size();i++) {
-			CinemaDTO cdto = new CinemaDTO();
-			cdto.setTheaterCinemaIdx(theaterCinemaIdx);
-			
-			cdto.setTheaterName(map.get(String.valueOf(i)));
-			result =+ sqlMap.insert("theaterAdd",cdto);
-			
+		for(int i = 0 ; i <arr.size();i++) {
+			result += sqlMap.insert("theaterAdd",arr.get(i));
 		}
-		 
 		return result;
 	}
 	public List<CinemaDTO> seatsTheaterList(int cinemaIdx) {
@@ -125,5 +119,13 @@ public class CinemaDAOImple implements CinemaDAO {
 			msg =count+"개의 출입구가 등록 되었습니다.";
 		}
 		return msg;
+	}
+	
+	public List<HashMap<String, String>> getCinemaNameList(int cinemaIdx) {
+		return sqlMap.selectList("getCinemaNameList", cinemaIdx);
+	}
+
+	public int updateTheaterName(HashMap<String, String> theaterDto) {
+		return sqlMap.update("updateTheaterName", theaterDto);
 	}
 }

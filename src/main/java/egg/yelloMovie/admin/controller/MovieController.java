@@ -4,10 +4,13 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.sql.Date;
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -33,13 +36,15 @@ public class MovieController {
 		System.out.println("업로드된 파일:"+genid+"_"+titleUpload.getOriginalFilename());
 		
 		try {
+			
 			byte bytes[]=titleUpload.getBytes();
-			String path = "C:/Users/user/git/eggYello/src/main/webapp/img/movieTitle/"+genid+"_"+titleUpload.getOriginalFilename();
+			String path = "C:/Users/user/git/yelloEgg/src/main/webapp/img/movieTitle/"+genid+"_"+titleUpload.getOriginalFilename();
 			String titleCutPath="img/movieTitle/"+genid+"_"+titleUpload.getOriginalFilename();
 			File outFile = new File(path);
 			FileOutputStream fos = new FileOutputStream(outFile);
 			fos.write(bytes);
 			fos.close();
+
 			return titleCutPath;
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -56,7 +61,7 @@ public class MovieController {
 		try {
 			
 			byte bytes[]=steelCutUpload.getBytes();	
-			String path = "C:/Users/user/git/eggYello/src/main/webapp/img/movieSteelCut/"+genid+"_"+steelCutUpload.getOriginalFilename();
+			String path = "C:/Users/user/git/yelloEgg/src/main/webapp/img/movieSteelCut/"+genid+"_"+steelCutUpload.getOriginalFilename();
 			String steelCutPath="img/movieSteelCut/"+genid+"_"+steelCutUpload.getOriginalFilename();
 			File outFile = new File(path);
 			FileOutputStream fos = new FileOutputStream(outFile);

@@ -31,11 +31,49 @@ public class MovieDTO {
 	private int repleMemberIdx;
 	private int repleMovieIdx;
 	
+	/** 상영관 */
+	private int theaterIdx;
+	private String theaterName;
+	
+	/** 영화관 */
+	private int cinemaIdx;
+	private String cinemaCity;
+	private String cinemaGu;
+	private String cinemaBungi;
+	private String cinemaaddr;
+	private String cinemaname;
+	private int cinemaTheater;
+	
+	/** 영화 스케쥴 */
+	private int scheduleIdx;
+	private Date scheduleDate;
+	private String scheduleStartTime;
+	
+	/** 티켓 정보 */
+	private int ticketIdx;
+	private int ticketAge;
+	private int ticketPrice;
+	
+	/** 영화예약 좌석 */
+	private int seatTheaterIdx;
+	private int seatX;
+	private int seatY;
+	
+	/** 영화예약 좌석 출구 */
+	private int exitX;
+	private int exitY;
+	
+	/** 사용자 ID */
+	private String id;
 	/** 재료 */
 	private String runTime;
 	private String grade;
 	private String releaseDate;
 	private String endDate;
+	private String seatNumber;
+	private String reScore;
+	private String reMemberIdx;
+	private String reMovieIdx;
 	
 	public MovieDTO() {
 		super();
@@ -45,7 +83,12 @@ public class MovieDTO {
 			String movieSummary, int movieRunTime, String movieTitleCut, int movieGrade, String movieGenre,
 			Date movieEndDate, String movieDistributer, int steelCutIdx, String steelCutFileName, int steelCutMovieIdx,
 			int repleIdx, int repleScore, String repleContent, Date repleWriteDate, int repleMemberIdx,
-			int repleMovieIdx, String runTime, String grade, String releaseDate, String endDate) {
+			int repleMovieIdx, int theaterIdx, String theaterName, int cinemaIdx, String cinemaCity, String cinemaGu,
+			String cinemaBungi, String cinemaaddr, String cinemaname, int cinemaTheater, int scheduleIdx,
+			Date scheduleDate, String scheduleStartTime, int ticketIdx, int ticketAge, int ticketPrice,
+			int seatTheaterIdx, int seatX, int seatY, int exitX, int exitY, String id, String runTime, String grade,
+			String releaseDate, String endDate, String seatNumber, String reScore, String reMemberIdx,
+			String reMovieIdx) {
 		super();
 		this.movieIdx = movieIdx;
 		this.movieReleaseDate = movieReleaseDate;
@@ -68,10 +111,35 @@ public class MovieDTO {
 		this.repleWriteDate = repleWriteDate;
 		this.repleMemberIdx = repleMemberIdx;
 		this.repleMovieIdx = repleMovieIdx;
+		this.theaterIdx = theaterIdx;
+		this.theaterName = theaterName;
+		this.cinemaIdx = cinemaIdx;
+		this.cinemaCity = cinemaCity;
+		this.cinemaGu = cinemaGu;
+		this.cinemaBungi = cinemaBungi;
+		this.cinemaaddr = cinemaaddr;
+		this.cinemaname = cinemaname;
+		this.cinemaTheater = cinemaTheater;
+		this.scheduleIdx = scheduleIdx;
+		this.scheduleDate = scheduleDate;
+		this.scheduleStartTime = scheduleStartTime;
+		this.ticketIdx = ticketIdx;
+		this.ticketAge = ticketAge;
+		this.ticketPrice = ticketPrice;
+		this.seatTheaterIdx = seatTheaterIdx;
+		this.seatX = seatX;
+		this.seatY = seatY;
+		this.exitX = exitX;
+		this.exitY = exitY;
+		this.id = id;
 		this.runTime = runTime;
 		this.grade = grade;
 		this.releaseDate = releaseDate;
 		this.endDate = endDate;
+		this.seatNumber = seatNumber;
+		this.reScore = reScore;
+		this.reMemberIdx = reMemberIdx;
+		this.reMovieIdx = reMovieIdx;
 	}
 
 	public int getMovieIdx() {
@@ -242,6 +310,174 @@ public class MovieDTO {
 		this.repleMovieIdx = repleMovieIdx;
 	}
 
+	public int getTheaterIdx() {
+		return theaterIdx;
+	}
+
+	public void setTheaterIdx(int theaterIdx) {
+		this.theaterIdx = theaterIdx;
+	}
+
+	public String getTheaterName() {
+		return theaterName;
+	}
+
+	public void setTheaterName(String theaterName) {
+		this.theaterName = theaterName;
+	}
+
+	public int getCinemaIdx() {
+		return cinemaIdx;
+	}
+
+	public void setCinemaIdx(int cinemaIdx) {
+		this.cinemaIdx = cinemaIdx;
+	}
+
+	public String getCinemaCity() {
+		return cinemaCity;
+	}
+
+	public void setCinemaCity(String cinemaCity) {
+		this.cinemaCity = cinemaCity;
+	}
+
+	public String getCinemaGu() {
+		return cinemaGu;
+	}
+
+	public void setCinemaGu(String cinemaGu) {
+		this.cinemaGu = cinemaGu;
+	}
+
+	public String getCinemaBungi() {
+		return cinemaBungi;
+	}
+
+	public void setCinemaBungi(String cinemaBungi) {
+		this.cinemaBungi = cinemaBungi;
+	}
+
+	public String getCinemaaddr() {
+		return cinemaaddr;
+	}
+
+	public void setCinemaaddr(String cinemaaddr) {
+		this.cinemaaddr = cinemaaddr;
+	}
+
+	public String getCinemaname() {
+		return cinemaname;
+	}
+
+	public void setCinemaname(String cinemaname) {
+		this.cinemaname = cinemaname;
+	}
+
+	public int getCinemaTheater() {
+		return cinemaTheater;
+	}
+
+	public void setCinemaTheater(int cinemaTheater) {
+		this.cinemaTheater = cinemaTheater;
+	}
+
+	public int getScheduleIdx() {
+		return scheduleIdx;
+	}
+
+	public void setScheduleIdx(int scheduleIdx) {
+		this.scheduleIdx = scheduleIdx;
+	}
+
+	public Date getScheduleDate() {
+		return scheduleDate;
+	}
+
+	public void setScheduleDate(Date scheduleDate) {
+		this.scheduleDate = scheduleDate;
+	}
+
+	public String getScheduleStartTime() {
+		return scheduleStartTime;
+	}
+
+	public void setScheduleStartTime(String scheduleStartTime) {
+		this.scheduleStartTime = scheduleStartTime;
+	}
+
+	public int getTicketIdx() {
+		return ticketIdx;
+	}
+
+	public void setTicketIdx(int ticketIdx) {
+		this.ticketIdx = ticketIdx;
+	}
+
+	public int getTicketAge() {
+		return ticketAge;
+	}
+
+	public void setTicketAge(int ticketAge) {
+		this.ticketAge = ticketAge;
+	}
+
+	public int getTicketPrice() {
+		return ticketPrice;
+	}
+
+	public void setTicketPrice(int ticketPrice) {
+		this.ticketPrice = ticketPrice;
+	}
+
+	public int getSeatTheaterIdx() {
+		return seatTheaterIdx;
+	}
+
+	public void setSeatTheaterIdx(int seatTheaterIdx) {
+		this.seatTheaterIdx = seatTheaterIdx;
+	}
+
+	public int getSeatX() {
+		return seatX;
+	}
+
+	public void setSeatX(int seatX) {
+		this.seatX = seatX;
+	}
+
+	public int getSeatY() {
+		return seatY;
+	}
+
+	public void setSeatY(int seatY) {
+		this.seatY = seatY;
+	}
+
+	public int getExitX() {
+		return exitX;
+	}
+
+	public void setExitX(int exitX) {
+		this.exitX = exitX;
+	}
+
+	public int getExitY() {
+		return exitY;
+	}
+
+	public void setExitY(int exitY) {
+		this.exitY = exitY;
+	}
+
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
+	}
+
 	public String getRunTime() {
 		return runTime;
 	}
@@ -274,6 +510,36 @@ public class MovieDTO {
 		this.endDate = endDate;
 	}
 
-	
+	public String getSeatNumber() {
+		return seatNumber;
+	}
+
+	public void setSeatNumber(String seatNumber) {
+		this.seatNumber = seatNumber;
+	}
+
+	public String getReScore() {
+		return reScore;
+	}
+
+	public void setReScore(String reScore) {
+		this.reScore = reScore;
+	}
+
+	public String getReMemberIdx() {
+		return reMemberIdx;
+	}
+
+	public void setReMemberIdx(String reMemberIdx) {
+		this.reMemberIdx = reMemberIdx;
+	}
+
+	public String getReMovieIdx() {
+		return reMovieIdx;
+	}
+
+	public void setReMovieIdx(String reMovieIdx) {
+		this.reMovieIdx = reMovieIdx;
+	}
 	
 }

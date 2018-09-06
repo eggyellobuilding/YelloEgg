@@ -17,6 +17,13 @@
 		)
 	</insert>
 	 
+	 <select id="recentCinemaIdx" resultType="int">
+	 	select * from
+	 	cinema
+	 	where rownum =1
+	 	order by cinemaIdx desc
+	 </select>
+	 
 	<select id="cinemaList" resultType="cdto" >
 		select * from cinema  
 	</select>
@@ -113,5 +120,12 @@
 			)
 	</insert>
 	
+	<select id="getCinemaNameList" parameterType="int" resultType="hashmap">
+		select * from theater where theatercinemaidx = #{cinemaIdx} 
+	</select>
+	
+	<update id="updateTheaterName" parameterType="hashmap">
+		update theater set theatername = #{theatername} where theateridx = #{theateridx}
+	</update>
 
 </mapper>

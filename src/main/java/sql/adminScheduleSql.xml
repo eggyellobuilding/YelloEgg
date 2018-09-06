@@ -9,6 +9,7 @@
   		where cinemaIdx = #{cinemaIdx}
   		order by cinemaIdx asc
   	</select>
+  	
   	<select id="adminScheduleTheater" parameterType="int" resultType="cdto">
   		select * from
   		theater

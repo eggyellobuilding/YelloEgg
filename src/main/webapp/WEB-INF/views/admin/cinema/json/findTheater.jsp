@@ -3,7 +3,7 @@
 <%@taglib uri="http://java.sun.com/jsp/jstl/core"  prefix="c"%>
 <c:if test="${!empty theaterLists}">
 <c:forEach items="${theaterLists}" var="cdto">
-	<a href="#" class="list-group-item">${cdto.theaterName}</a>
+	<a class="list-group-item" onclick="openSeatModal(this);" id="${ cdto.theaterIdx }">${cdto.theaterName}</a>
 </c:forEach>
 </c:if>
 <c:if test="${empty theaterLists}">

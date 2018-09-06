@@ -12,7 +12,7 @@
 <link href="/yelloMovie/bootstrap/css/bootstrap.min.css"
 	rel="stylesheet">
 <link href="/yelloMovie/css/movie/movieInfo.css" rel="stylesheet">
-
+<script type="text/javascript" src="js/httpRequest.js"></script>
 <style>
 .starR {
 	background:
@@ -34,16 +34,59 @@
 	font-size: 20px;
 }
 </style>
-<script>
-/* window.load 사용시 html 다 읽고 그 후 읽어야 모달 롤링 정상적으로 작동 나중에 확인하기 */
+<script type="text/javascript">
+
+/** 별점 넣기 */
+function starScore(score,mvIdx){
+	var star = document.getElementById('score'+mvIdx);
+	star.value=score;
+}
+
+/** 감상평 등록 및 가져오기 */
+function repAdd(idx){
+	
+	var content = document.getElementById('content'+idx);
+	var score = document.getElementById('score'+idx);
+	var member = document.getElementById('member'+idx);
+	var movie = document.getElementById('movie'+idx);
+	
+	var repleAdd = 'repleContent='+content.value+'&reScore='+score.value+'&reMemberIdx='+member.value+'&reMovieIdx='+movie.value;
+	sendRequest('movieReple.do',repleAdd,repResult,'GET');	
 		
+}
+function repResult(){
+	if(XHR.readyState==4){
+		if(XHR.status==200){
+			var data=XHR.responseText;
+			var objData=eval('('+data+')');
+			var lists=objData.repleLists;
+			var mRep='';
+			var mReple=document.getElementById('repList'+lists[0].repleMovieIdx);
+			for(var i=0; i<lists.length;i++){
+				$('#repList'+lists[0].repleMovieIdx).append(
+				'<div>작성자:'+lists[i].id+'<br>날짜:'
+				+lists[i].repleWriteDate+'<br>평점:'+lists[i].repleScore+
+				'<br>내용:'+lists[i].repleContent+'<hr></div>');
+			}
+			
+		}
+	}
+}
+/** 스틸컷 정보 */
+function cutUpdate(count){
+	$('#steelCutPlus'+count).append(
+		'<pre id="cut'+count+'"><input type="file" name="steelCutFileImg" style="float: left;"><button onclick="minus('
+		+ count + ')">-</button></pre>');
+		count++;
+}
+
 </script>
 </head>
 <body>
 	<%@include file="../commonsView/header.jsp"%>
 							
 	<nav class="navbar navbar-default navbar-static-top"
-		style="margin-top: 100px; padding-top: 15px;">
+		style="margin-top: 100px; padding-top: 15px; z-index: 1;">
 		<div class="container">
 			<ul class="movieNav" style="padding-left: 180px;">
 				<li><a href="movieBoxOffice.do"
@@ -99,8 +142,9 @@
 							<div class="topInfo">배급사:${office.movieDistributer}</div>
 							<br> <br>
 							<div>
-								<h4>줄거리</h4>
-								<br> <br> <br> <br> <br> <br> <br>
+								<h4 style="margin-top: 20px;">줄거리</h4>
+								${office.movieSummary}
+								<hr>
 							</div>
 							<div>
 								<h4>스틸컷</h4>
@@ -140,13 +184,17 @@
 								<h4>감상평</h4>
 								<br>
 								<div class="starRev">
-									<span class="starR on">별1</span> <span class="starR">별2</span>
-									<span class="starR">별3</span> <span class="starR">별4</span> <span
-										class="starR">별5</span>
-									&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="text"
-										name="repleContent" style="width: 500px;"><input
-										type="button" value="등록" class="btn">
+									<span class="starR on" onclick="starScore(1,${office.movieIdx})">별1</span> <span class="starR" onclick="starScore(2,${office.movieIdx})">별2</span>
+									<span class="starR" onclick="starScore(3,${office.movieIdx})">별3</span> <span class="starR" onclick="starScore(4,${office.movieIdx})">별4</span> <span
+										class="starR" onclick="starScore(5,${office.movieIdx})">별5</span>
+									&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+									<input type="text" name="repleContent" style="width: 500px;" id="content${office.movieIdx}">
+										<input type="button" value="등록" class="btn" onclick="repAdd(${office.movieIdx})">
+										<input type="hidden" value="${sessionScope.smdto.memberIdx}" name="reMemberIdx" id="member${office.movieIdx}">
+										<input type="hidden" value="1" name="reScore"  id="score${office.movieIdx}">
+										<input type="hidden" value="${office.movieIdx}" name="reMovieIdx" id="movie${office.movieIdx}">
 								</div>
+								<div id="repList${office.movieIdx}"></div>
 							</div>
 						</div>
 						<div class="modal-footer">
@@ -174,7 +222,7 @@ $('.starRev span').click(function() {
 	$(this).addClass('on').prevAll('span').addClass('on');
 	return false;
 });
-		
+
 	</script>
 </html>
 

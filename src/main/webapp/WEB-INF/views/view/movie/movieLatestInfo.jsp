@@ -29,8 +29,15 @@
 .starR.on {
 	background-position: 0 0;
 }
-</style>
 
+.topInfo{
+	font-size: 20px;
+}
+</style>
+<script>
+/* window.load 사용시 html 다 읽고 그 후 읽어야 모달 롤링 정상적으로 작동 나중에 확인하기 */
+		
+</script>
 </head>
 <body>
 	<%@include file="../commonsView/header.jsp"%>
@@ -48,23 +55,24 @@
 		</div>
 	</nav>
 	<div class="row" style="margin: 25px auto; padding-left: 100px;">
-		<c:forEach var="office" items="${officeList }">
+		<c:forEach var="latest" items="${LatestList }">
 			<c:set var="count" value="${count + 1}" />
+			<c:set var="steelCutCount" value="${0}"/>
 			<ul class="col-xs-2"
 				style="display: inline; margin-left: 25px; width: 250px;">
 				<li style="height: 360px; width: 250px; border: 1px solid red;"><img
-					alt="eggFire" src="${office.movieTitleCut}"
+					alt="eggFire" src="${latest.movieTitleCut}"
 					style="width: 248px; height: 358px;"></li>
 				<li
 					style="height: 40px; width: 250px; border: 1px solid red; padding-top: 23px;">평점
 					및 별점</li>
 				<li
-					style="height: 30px; width: 250px; border: 1px solid red; text-align: center; padding-top: 4px;">${office.movieName }</li>
+					style="height: 30px; width: 250px; border: 1px solid red; text-align: center; padding-top: 4px;">${latest.movieName }</li>
 				<li
 					style="height: 50px; width: 250px; border: 1px solid red; padding-top: 7px;">
-					<button style="margin-left: 35px; margin-right: 30px;"
+					<a href="#" style="margin-left: 35px; margin-right: 30px;"
 					class="btn btn-warning btn-sm" data-toggle="modal"
-					data-target="#movieInfo${count}">상세정보</button> 
+					data-target="#movieInfo${count}" id="aw${count}">상세정보</a> 
 					<a href="movieReservation.do" class="btn btn-warning btn-sm">예약하기</a>
 				</li>
 			</ul>
@@ -79,21 +87,21 @@
 								aria-label="Close">
 								<span aria-hidden="true">&times;</span>
 							</button>
-							<h4 class="modal-title" id="myModalLabel">${office.movieName}</h4>
+							<h4 class="modal-title" id="myModalLabel">${latest.movieName}</h4>
 						</div>
 						<div class="modal-body">
-							<img alt="" src="${office.movieTitleCut }"
-								style="height: 250px; width: 200px; float: left; margin-right: 5px;">
-							<div style="margin-top: 130px;">타입:</div>
-							<div>개봉일:</div>
-							<div>감독:</div>
-							<div>출연진:</div>
-							<div>장르:</div>
-							<div>제작사:</div>
+							<img alt="" src="${latest.movieTitleCut }"
+								style="height: 250px; width: 200px; float: left; margin-right: 10px;">
+							<div class="topInfo" style="margin-top: 60px;">개봉일:${latest.releaseDate}</div>
+							<div class="topInfo">감독:${latest.movieDirector }</div>
+							<div class="topInfo">배우:${latest.movieActor}</div>
+							<div class="topInfo">장르:${latest.movieGenre }</div>
+							<div class="topInfo">배급사:${latest.movieDistributer}</div>
 							<br> <br>
 							<div>
-								<h4>줄거리</h4>
-								<br> <br> <br> <br> <br> <br> <br>
+								<h4 style="margin-top: 20px;">줄거리</h4>
+								${latest.movieSummary}
+								<hr>
 							</div>
 							<div>
 								<h4>스틸컷</h4>
@@ -102,19 +110,16 @@
 									style="background-color: black; padding-top: 10px; padding-bottom: 10px;">
 
 									<!-- Wrapper for slides -->
-									<div class="carousel-inner" role="listbox"style="padding-left: 0px;">
-										<div class="item active" style="margin-left: 187px;">
-											<img src="${office.movieTitleCut}" alt="..."
-												style="height: 600px; width: 500px; float: left; padding-right: 10px;">
-										</div>
-											
+									<div class="carousel-inner" role="listbox">
 										<c:forEach var="steelCutImg" items="${steelCutList}">
-											<c:if test="${office.movieIdx==steelCutImg.steelCutMovieIdx}">
-											<div class="item" style="margin-left: 187px;">
+											<c:if test="${latest.movieIdx==steelCutImg.steelCutMovieIdx}">
+											<c:set var="steelCutCount" value="${steelCutCount+1}"></c:set>
+											<div class="item ${steelCutCount }" id="item${steelCutCount }"style="margin-left: 187px;">
 												<img src="${steelCutImg.steelCutFileName }" alt="..." style="height: 600px; width: 500px; float: left; padding-right: 10px;">
 											</div>
 											</c:if>
 										</c:forEach>
+											
 									</div>
 
 									<!-- Controls -->
@@ -157,13 +162,20 @@
 	<%@include file="../commonsView/footer.jsp"%>
 	<script	src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
 	<script src="/yelloMovie/bootstrap/js/bootstrap.min.js"></script>
-	<script>
-		$('.starRev span').click(function() {
-			$(this).parent().children('span').removeClass('on');
-			$(this).addClass('on').prevAll('span').addClass('on');
-			return false;
-		});
-	</script>
-
+	
 </body>
+<script>
+
+$(window).load(function(){
+	$('.1').attr('class','item active'); 
+});
+
+$('.starRev span').click(function() {
+	$(this).parent().children('span').removeClass('on');
+	$(this).addClass('on').prevAll('span').addClass('on');
+	return false;
+});
+		
+	</script>
 </html>
+
