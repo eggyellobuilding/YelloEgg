@@ -8,7 +8,8 @@
 	      	<li><a href="adminMovieList.do">영화 관리</a></li>
 	      	<li><a href="adminCinema.do">영화관 관리</a></li>
 	      	<li><a href="adminSchedule.do">스캐줄 관리</a></li>
-	      	<li><a href="adStore.do">상품 관리</a></li>
+	      	<li><a href="adminStoreList.do">상품 관리</a></li>
+	      	<li><a href="adminNotice.do">공지사항 관리</a></li>
 	      	<li><a href="#">1:1문의 관리</a></li>
 	      	<li><a href="adminStatics.do">통계표</a></li>
       	</ul>

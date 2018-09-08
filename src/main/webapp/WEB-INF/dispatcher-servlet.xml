@@ -96,6 +96,21 @@
 			<ref bean="sqlSessionTemplate"/>
 		</constructor-arg>
 	</bean>
+	<bean id="adminStoreDAO" class="egg.store.admin.model.AdminStoreDAOImple">
+		<constructor-arg>
+	 		<ref bean="sqlSessionTemplate"/>
+	 	</constructor-arg>
+	</bean>
+	<bean id="adminNoticeDAO" class="egg.notice.admin.model.AdminNoticeDAOImple">
+		<constructor-arg>
+			<ref bean="sqlSessionTemplate"/>		
+		</constructor-arg>
+	</bean>
+	<bean id="NoticeDAO" class="egg.notice.commons.model.NoticeDAOImple">
+		<constructor-arg>
+			<ref bean="sqlSessionTemplate"/>		
+		</constructor-arg>
+	</bean>
 	
 <!-- sendMail -->
    <bean id="mailSender" class = "org.springframework.mail.javamail.JavaMailSenderImpl">

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="egg.adminstore">
+	<insert id="storeAdd" parameterType="astdto">
+		insert into store
+		values(storesq.nextval,
+		#{storeName},
+		#{storeImg},
+		#{storeCount},
+		#{storeCtg},
+		#{storePrice},
+		sysdate,
+		default,
+		#{storeInfo}
+		)
+	</insert>
+	<select id="storeList" resultType="astdto">
+		select * from store
+		order by storeIdx desc
+	</select>
+	<update id="storeupdate" parameterType="int">
+		update store set storeState='N' where storeIdx=#{storeIdx}
+	</update>
+	<select id="totalcnt" resultType="int">
+		select count(*) from store
+	</select>
+	<select id="pageStoreList" parameterType="Map" resultType="astdto" >
+  		select *from
+		(select rownum as rnum, a.* from  
+		(select * from store order by storeIdx desc)a)b
+		where rnum<![CDATA[>=]]>#{startnum} and rnum<![CDATA[<=]]>#{endnum}
+  	
+  	</select>
+</mapper>

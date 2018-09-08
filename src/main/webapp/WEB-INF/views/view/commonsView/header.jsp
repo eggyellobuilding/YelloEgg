@@ -75,8 +75,8 @@
 			<li class="header logo"><a href="main.do"><img src="/yelloMovie/img/log.PNG" class="img-rounded" height="20" width="100"></a></li>
 			<li class="header"><a href="movieBoxOffice.do" style="margin: 0px;">영화</a></li>
 			<li class="header"><a href="scheduleInfo.do" style="margin: 0px;">상영시간표</a></li>
-			<li class="header"><a href="#" style="margin: 0px;">스토어</a></li>
-			<li class="header"><a href="#" style="margin: 0px;">공지&이벤트</a></li>
+			<li class="header"><a href="storeView.do" style="margin: 0px;">스토어</a></li>
+			<li class="header"><a href="NoticeList.do" style="margin: 0px;">공지&이벤트</a></li>
 			<li class="header"><a href="movieReservation.do" style="margin: 0px;">빠른예매</a></li>
 			<c:if test="${!empty smdto}">
 				<li class="header" style="width:13%;"><a href="#" style="margin: 0px;" onclick="loginState(${smdto.memberIdx})"><small>${smdto.id}님</small></a></li>			
@@ -86,18 +86,6 @@
 			</c:if>
 			
 		</ul>
-	</div>
-	<div id="headerAllMenu"	style="position: absolute;left:26%;top:50px;">
-		<div class="btn-group">
-			<a class="btn dropdown-toggle btn btn-warning" data-toggle="dropdown"
-				href="#" id="allMenu"> <span class="icon-align-justify"></span>전체메뉴
-			</a>
-			<ul class="dropdown-menu">
-				<li>영화</li>
-				<li><a tabindex="0" href="#">asd</a></li>
-				<li><a tabindex="0" href="#">asdasdas</a></li>
-			</ul>
-		</div>
 	</div>
 <div id="divLogin" style="z-index: 1;"></div>
 </body>

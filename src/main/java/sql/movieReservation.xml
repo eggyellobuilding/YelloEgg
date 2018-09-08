@@ -48,4 +48,94 @@
 		where a.scheduleMonth = #{month}
 		order by scheduleDate asc
 	</select>
+	
+	<select id="reservationMovieScheduleTheaterIdx" parameterType="map" resultType="rdto">
+		select distinct(scheduleTheaterIdx)  
+		from schedule
+		where scheduleMovieIdx = #{movieIdx} and scheduleDate <![CDATA[>=]]> #{date}
+	</select>
+	
+	<select id="reservationMovieScheduleDate" parameterType="map" resultType="rdto">
+		select distinct(scheduleDate) 
+		from schedule
+		where scheduleMovieIdx = #{movieIdx} and scheduleDate <![CDATA[>=]]> #{date}
+	</select>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<select id="reservationScheduleTheater" parameterType="map" resultType="rdto">
+		select *
+		from(select distinct(theaterIdx) 
+		from(select theaterIdx 
+		from theater 
+		where theaterCinemaIdx = #{cinemaIdx})a , schedule b
+		where a.theaterIdx = b.scheduleTheaterIdx and scheduleMovieIdx= #{movieIdx}  and scheduleDate = #{date})c, theater d
+		where c.theaterIdx = d.theaterIdx
+		
+	</select>
+	
+	<select id="reservationScheduleList" parameterType="map" resultType="rdto">
+		select *
+		from schedule
+		where scheduleTheaterIdx = #{theaterIdx} and scheduleDate =#{date} and scheduleMovieIdx= #{movieIdx}
+		order by scheduleStartTime asc
+	</select>
+	
+	<select id="reservationScheduleSeat" parameterType="int" resultType="int">
+		select nvl(count(seatTheaterIdx),0) 
+		from seat
+		where seatTheaterIdx = #{theaterIdx}
+	</select>
+	
+	<select id="reservationScheduleReservedSeat" parameterType="rdto" resultType="int">
+		select nvl(count(reservationIdx),0)
+		from reservation
+		where reservationScheduleIdx = #{scheduleIdx}
+	</select>
+	
+	<select id="reservationScheduleIdxKey" parameterType="map" resultType="int">
+		select scheduleIdx
+		from(select *
+		from (select cinemaIdx 
+		from cinema 
+		where cinemaIdx= #{cinemaIdx} )a , theater b
+		where b.theaterCinemaIdx = a.cinemaIdx)c , schedule d
+		where c.theaterIdx = d.scheduleTheaterIdx and scheduleDate =#{date} and scheduleMovieIdx =#{movieIdx}
+		order by scheduleStartTime asc
+	</select>
+	
+	
 </mapper>

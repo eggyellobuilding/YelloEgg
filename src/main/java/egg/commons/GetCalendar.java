@@ -9,8 +9,16 @@ public class GetCalendar {
 		Calendar cal = Calendar.getInstance();
 		int h = cal.get(Calendar.HOUR);
 		int m = cal.get(Calendar.MINUTE);
-		int s = cal.get(Calendar.SECOND);
-		return h + ":" + m + ":" + s;
+		return h + ":" + m ;
+	}
+	
+	public int getStartTime() {
+		Calendar cal = Calendar.getInstance();
+		int h = cal.get(Calendar.HOUR);
+		int hm=h*60;
+		int m = cal.get(Calendar.MINUTE);
+		int startTime = hm+m/30;
+		return startTime ;
 	}
 	
 	public String getMonth() {

@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="yello.notice">
+	
+	<select id="getNoticeCount" resultType="int">
+		select count(*) from notice
+	</select>
+	
+	<select id="getAllList" resultType="adto">
+		<![CDATA[
+		select b.* from (
+		select rownum as rnum, a.* from (
+		select n.*, c.cinemaname as cinemaname, c.cinemaidx as cinemaidx from notice n, cinema c where n.noticecinemaidx = c.cinemaidx
+		order by n.noticeWriteDate desc) a) b
+		where rnum > #{start} and rnum <= #{end}
+		]]>		
+	</select>
+	
+	<select id="NoticeList" resultType="ndto">
+	<![CDATA[
+		select b.* from (
+		select rownum as rnum, a.* from (
+		select n.*, c.cinemaname as cinemaname, c.cinemaidx as cinemaidx from notice n, cinema c where n.noticecinemaidx = c.cinemaidx
+		order by n.noticeidx desc) a) b
+		where rnum > #{start} and rnum <= #{end}
+		]]>
+	
+	</select>
+	<update id="plusReadnum" parameterType="int">
+		update notice set noticereadnum=noticereadnum+1 where noticeidx=#{noticeidx}
+	</update>
+	<select id="getNotice" resultType="adto">
+		select n.*, c.cinemaname as cinemaname, c.cinemaidx as cinemaidx from notice n, cinema c where n.noticecinemaidx = c.cinemaidx and n.noticeidx = #{noticeidx}
+	</select>
+	
+	<select id="Notice" resultType="ndto">
+		select n.*, c.cinemaname as cinemaname, c.cinemaidx as cinemaidx from notice n, cinema c where n.noticecinemaidx = c.cinemaidx and n.noticeidx = #{noticeidx}
+	</select>
+	
+	<insert id="insertNotice" parameterType="adto">
+		insert into notice values(
+			noticeSq.nextval,
+			sysdate,
+			0,
+			#{noticeTitle},
+			#{noticeContent},
+			default,
+			#{noticeCinemaIdx}
+		)
+	</insert>
+	<update id="updateNotice" parameterType="adto">
+		update notice 
+		set 
+		noticeWriteDate=sysdate,
+		noticeTitle = #{noticeTitle},
+		noticeContent = #{noticeContent},
+		noticecinemaidx = #{cinemaIdx}
+		where noticeidx = #{noticeIdx}
+	</update>
+</mapper>  

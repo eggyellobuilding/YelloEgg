@@ -170,12 +170,16 @@ li {
 	float: left;
 }
 
+.seatDetail {
+	border: 1px solid black;
+}
+
 .seatList ul li {
-	width: 79px;
+	width: 98px;
 	list-style: none;
 	float: left;
 	margin-left: 3px;
-	margin-right: 23px;
+	margin-right: 5px;
 }
 
 .movieList {
@@ -226,24 +230,109 @@ li {
 	padding-top: 26px;
 	padding-left: 93px;
 }
-#movieInfo{
+
+#movieInfo {
 	float: left;
-	width:212px;
-	border-right:1px solid #2D2D2D;
+	width: 212px;
+	border-right: 1px solid #2D2D2D;
 }
+
 #movieInfo span {
 	width: 173px;
 	height: 100px;
 	float: left;
 	padding-top: 20px;
 	padding-left: 20px;
-	font-size:32px;
+	font-size: 32px;
 }
-#theaterInfoSpan{
+
+#theaterInfoSpan {
 	width: 173px;
 	height: 100px;
 	float: left;
 	padding-top: 20px;
 	padding-left: 20px;
-	font-size:32px;
+	font-size: 32px;
+}
+
+.seatListActive {
+	color: white;
+	font-weight: bold;
+	border: 1px solid black;
+	background-color: #333333;
+}
+
+.seatList li:hover {
+	cursor: pointer;
+}
+
+ul li {
+	float: left;
+}
+
+.ticketInfo {
+	
+}
+
+.ticketCount {
+	width: 30px;
+	height: 30px;
+	border: 1px solid lightgray;
+	display: block;
+	font-size: 18px;
+	font-weight: bold;
+	text-align: center;
+	margin-left: 10px;
+}
+
+.ticketCount a {
+	color: black;
+	text-decoration: none;
+}
+
+.count {
+	text-decoration: none;
+}
+
+.title {
+	width: 55px;
+	height: 22px;
+	font-size: 18px;
+	margin-right: 10px;
+}
+
+#cinemaName {
+	border-right: 1px solid lightgray;
+	padding-right: 5px;
+}
+
+#theaterName {
+	border-right: 1px solid lightgray;
+	padding-left: 5px;
+	padding-right: 5px;
+}
+
+#leftSeat {
+	border-right: 1px solid lightgray;
+	padding-left: 5px;
+}
+
+.reservationTime {
+	font-size: 34px;
+	font-weight: bold;
+}
+
+#screen {
+	font-size: 20px;
+	font-weight: bold;
+	width: 90%;
+	margin: 0px auto;
+	background-color: #9d9d9d;
+}
+
+#theaterInfo {
+	margin-top: 4px;
+	float: left;
+	width: 187px;
+	border-right: 1px solid #2D2D2D;
 }

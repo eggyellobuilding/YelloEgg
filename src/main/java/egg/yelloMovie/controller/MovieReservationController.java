@@ -3,6 +3,7 @@ package egg.yelloMovie.controller;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import egg.cinema.admin.model.CinemaDAO;
+import egg.cinema.admin.model.CinemaDTO;
 import egg.commons.GetCalendar;
 import egg.reservation.model.ReservationDAO;
 import egg.reservation.model.ReservationDTO;
@@ -42,53 +44,10 @@ public class MovieReservationController {
 		String now = cal.getDay();
 		java.sql.Date now2= java.sql.Date.valueOf(now);
 		rdto.setScheduleDate(now2);
-	/*	//년
-		List<String> year = new ArrayList<String>();
-		int countY = 0 ;
-		//월
-		List<String> month =new ArrayList<String>();
-		int countM = 0 ;
-		//일
-		List<String> date =new ArrayList<String>();
-		//요일
-		List<String> day = new ArrayList<String>();
-		for(int i = 0 ; i < dateList.size() ;i++) {
-			 DateFormat dateFormat = new SimpleDateFormat("YYYY-MM-dd");
-			 String strDate = dateFormat.format(dateList.get(i).getScheduleDate());
-			 String day2 ="";
-				//요일
-				try {
-					day2 = cal.getDateDay(strDate, "YYYY-MM-dd");
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-				
-			 String scheduleDate[] =strDate.split("-",3);
-			 if(countY==0) {
-				 
-				 year.add(scheduleDate[0]);
-				 countY++;
-			 }else if(!year.get(countY).equals(scheduleDate[0])) {
-				 year.add(scheduleDate[0]);
-			 	 countY++;
-			 }else {
-				 break;
-			 }
-			 	
-			 if(countM==0) {
-				month.add(scheduleDate[1]);
-				countM++;
-			 }else if(month.get(countM).equals(scheduleDate[1])) {
-				month.add(scheduleDate[1]);
-			 	countM++;
-			 }else {
-				 break;
-			 }
-				 date.add(scheduleDate[2]);
-				 day.add(day2);
-		}*/
+		String stage = "1";
 		mav.addObject("movieList", movieList);
 		mav.addObject("cinemaSiList",cinemaSiList);
+		mav.addObject("stage",stage);
 		mav.setViewName("view/reservation/reservationMovie");
 		return mav;
 	}
@@ -122,6 +81,66 @@ public class MovieReservationController {
 		ModelAndView mav = new ModelAndView("yongJson");
 		mav.addObject("scheduleList",map);
 		mav.addObject("key",mapkey);
+		return mav;
+	}
+	/**스케줄 가져오기*/
+	@RequestMapping("/reservationScheduleListJquery.do")
+	public ModelAndView reservationScheduleListJquery(@RequestParam("cinemaIdx")int cinemaIdx,
+			@RequestParam("date")String date,
+			@RequestParam("movieIdx")int movieIdx) {
+		java.sql.Date now= java.sql.Date.valueOf(date);
+		
+		GetCalendar cal = new GetCalendar();
+		int startTime = cal.getStartTime();
+		Map<String,Object> map = new HashMap<String, Object>();
+		map.put("date", now);
+		map.put("startTime", startTime);
+		map.put("movieIdx", movieIdx);
+		//map value값
+		Map<String, Map<Integer, List<Object>>> resultMap =rdao.reservationScheduleList(map, cinemaIdx);
+		//상영관 IDX 키값
+		List<ReservationDTO> theaterIdxKey = rdao.reservationScheduleTheaterNameKey(map,cinemaIdx);
+		List<String> list = new ArrayList<String>();
+		for(int i = 0 ; i <theaterIdxKey.size(); i++) {
+			list.add(theaterIdxKey.get(i).getTheaterName()); 
+		}
+		//스캐줄 IDX 키 값
+		List<Integer> scheduleIdxKey = rdao.reservationScheduleIdxkey(map,cinemaIdx);
+		ModelAndView mav = new ModelAndView("yongJson");
+		mav.addObject("map",resultMap);
+		mav.addObject("theaterIdxKey",list);
+		mav.addObject("scheduleIdxKey",scheduleIdxKey);
+		return mav;
+	}
+	
+	/**좌석 가져오기*/
+	@RequestMapping("/reservationScheduleSeatListJquery.do")
+	public ModelAndView reservationScheduleSeatListJquery(@RequestParam("theaterIdx")int theaterIdx,
+			@RequestParam("scheduleIdx")int scheduleIdx) {
+		ModelAndView mav = new ModelAndView("yongJson");
+		//좌석 뿌려주기
+			try {
+				Map<String,List<CinemaDTO>> map = cdao.exitsSeatsList(theaterIdx);
+				List<CinemaDTO> xList = map.get("x");
+				List<CinemaDTO> yList = map.get("y");
+				List<CinemaDTO> seatsList = map.get("seatsList");
+				ArrayList<String> alt = new ArrayList<String>();
+				for(int i =0 ; i<yList.size();i++) {
+					alt.add(String.valueOf((char)(i+'A')));
+				}
+				
+				mav.addObject("xSize",map.get("x").get(map.get("x").size()-1).getSeatX());
+				mav.addObject("ySize",map.get("y").get(map.get("y").size()-1).getSeatY());
+				mav.addObject("alt",alt);
+				mav.addObject("theaterIdx",theaterIdx);
+				mav.addObject("xList",xList);
+				mav.addObject("yList",yList);
+				mav.addObject("seatsList",seatsList);
+			} catch (Exception e) {
+				e.printStackTrace();
+			} 
+			
+			
 		return mav;
 	}
 }

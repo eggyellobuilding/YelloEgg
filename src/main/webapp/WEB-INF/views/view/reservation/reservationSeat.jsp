@@ -9,8 +9,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Yello egg</title>
 <!-- 부트스트랩 -->
-<link href="/yelloMovie/bootstrap/css/bootstrap.min.css"
-	rel="stylesheet">
+<link href="/yelloMovie/bootstrap/css/bootstrap.min.css" rel="stylesheet">
 <script>
 	/** 화면에 상영관 좌석정보 뿌리기 */
 	window.onload = function() {
@@ -275,7 +274,7 @@ li {
 			<div class="col-xs-2">
 				<span id="seatInfo">좌석정보</span>
 			</div>
-			<div class="col-xs-2">
+			<div class="col-xs-2">s
 				<span id="moneyInfo">금액정보</span>
 			</div>
 			<div class="col-xs-2">

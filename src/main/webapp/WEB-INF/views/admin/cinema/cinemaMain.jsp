@@ -95,7 +95,7 @@ function openSeatModal(e){
 		<div class="container">
 			<%@include file="../adminCommonsViews/adminNavi.jsp"%>
 			<div class="col-xs-10"
-				style="padding: 0px; padding-left: 5px; border-left: 1px solid #E1E1E1; height: 1900px;">
+				style="padding: 0px; padding-left: 5px; border-left: 1px solid #E1E1E1; height: 900px;">
 				<ul class="nav nav-tabs">
 					<li class="active"><a href="adminCinema.do">영화관 목록</a></li>
 					<li><a href="adminCinemaAdd.do">영화관 등록</a></li>
@@ -125,7 +125,7 @@ function openSeatModal(e){
 						</table>
 					</div>
 					<div class="col-xs-1"
-						style="padding: 0px; padding-left: 5px; border-left: 1px solid #E1E1E1; height: 1900px; width: 0.1%"></div>
+						style="padding: 0px; padding-left: 5px; border-left: 1px solid #E1E1E1; height: 854px; width: 0.1%"></div>
 
 					<div class="col-xs-4">
 						<h2>상영관 목록</h2>
