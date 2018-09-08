@@ -1,0 +1,294 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="egg.mypage">
+	<insert id="mypageQaboardWrite" parameterType="mpdto">
+		insert into qaboard values(
+		qaboardSq.nextval,
+		#{qaTitle},
+		#{qaContent},
+		sysdate,
+		#{qaCate},
+		default,
+		#{qaMemberIdx},
+		#{qaCinemaIdx}
+		)
+	
+	</insert>
+	<select id="mypageQaboardList" parameterType="map" resultType="mpdto">
+	select * from
+	(select rownum as rnum,a.* from
+	(select	qa.*,m.name,m.birthDate,m.tel,m.gender,m.email,c.cinemaCity,c.cinemaName,
+	g.GradeName, an.answerAnswer, an.answerDate
+	from qaboard qa, member m,	cinema c , grade g , answer an
+	where memberIdx=qaMemberIdx and	qaCinemaIdx=cinemaIdx and memberGradeIdx=gradeIdx 
+	and qaIdx =	answerQaIdx(+) and memberIdx=#{memberIdx} order by qaIdx desc)a)b
+	where rnum<![CDATA[>=]]>#{startnum}	and rnum<![CDATA[<=]]>#{endnum}	
+	</select>
+	
+	<select id="qaboardTotalCnt" parameterType="int" resultType="int">
+		select count(*) from qaboard where qaMemberIdx=#{qaMemberIdx}
+	</select>
+	
+	<select id="adminQaboardTotalCnt" resultType="int">
+		select count(*) from qaboard
+	</select>
+	
+	<select id="adminQaboardList" parameterType="map" resultType="mpdto">
+	select * from
+	(select rownum as rnum,a.* from
+	( select qa.*,m.name,m.birthDate,m.tel,m.gender,m.email,c.cinemaCity,c.cinemaName,
+	g.GradeName, an.answerAnswer, an.answerDate
+	from qaboard qa, member m, cinema c , grade g , answer an
+	where memberIdx=qaMemberIdx and qaCinemaIdx=cinemaIdx and
+	memberGradeIdx=gradeIdx	and qaIdx = answerQaIdx(+) order by qaIdx desc)a)b
+	where rnum<![CDATA[>=]]>#{startnum}	and rnum<![CDATA[<=]]>#{endnum}	
+	</select>
+
+	<insert id="adminQaboardAnswer" parameterType="mpdto">
+		insert into answer values(
+		answerSq.nextval,
+		#{answerAnswer},
+		#{answerAdminIdx},
+		#{answerQaIdx},
+		sysdate
+		)
+	</insert>
+	
+	<update id="updateQaAnswer" parameterType="int">
+		update qaboard set qaAnswer='Y' where qaIdx=#{qaIdx}
+	</update>
+	
+	<select id="countAnswerWait" resultType="int">
+		select count(*) from qaboard  where qaAnswer='N'
+	</select>
+	
+	<select id="mypageStoreBuyList" parameterType="map" resultType="mpdto">
+	select * from
+	(select rownum as rnum,a.* from
+	(select sp.*,(sp.storePayCount*s.storePrice)as storePayPrice,
+	s.storeName,s.storePrice,m.id,m.name 
+	from storePayment sp, member m, store s
+	where memberIdx=storePayMemberIdx 
+	and storeIdx=storePayStoreIdx
+	and storePayState='결제완료'
+	and memberIdx=#{memberIdx}
+	order by storePayIdx desc)a)b
+	where rnum<![CDATA[>=]]>#{startnum}	and rnum<![CDATA[<=]]>#{endnum}	
+	</select>
+	
+	<select id="storeBuyTotalCnt" parameterType="int" resultType="int">
+		select count(*) from storePayment 
+		where storePayState='결제완료' and storePayMemberIdx=#{storePayMemberIdx}
+	</select>
+	
+	<select id="adminStoreBuyTotalCnt" resultType="int">
+		select count(*) from storePayment 
+		where storePayState='결제완료' 
+	</select>
+	
+	<update id="mypageUpdateStoreState" parameterType="int">
+		update storePayment set storePayState='결제취소' where storePayIdx=#{storePayIdx}
+	</update>
+
+	<insert id="mypageCancelStoreBuy" parameterType="int">
+		insert into storeDelPayment values(
+		#{delPaymentStorePayIdx},
+		sysdate
+		)
+	</insert>
+	
+	<select id="getUseStoreMileage" parameterType="int" resultType="int">
+		select storePayMileage from storePayment
+		where storePayIdx=#{storePayIdx}
+	</select>
+	
+	<insert id="refundStoreMileage" parameterType="mpdto">
+		insert into mileage values(
+		mileageSq.nextval,
+		#{mileagePrice},
+		'스토어구매 취소',
+		#{mileageMemberIdx}
+		)
+	</insert>
+	<select id="mypageStoreCancelList" parameterType="map" resultType="mpdto">
+	select * from
+	(select rownum as rnum,a.* from
+	(select sp.*,(sp.storePayCount*s.storePrice)as storePayPrice,  
+	m.id,m.name,s.storeName,s.storePrice,sdp.delPaymentDate
+	from storePayment sp, member m, store s,storeDelPayment sdp
+	where memberIdx=storePayMemberIdx 
+	and storeIdx=storePayStoreIdx
+	and storePayIdx=delPaymentStorePayIdx
+	and memberIdx=#{memberIdx}
+	and storePayState='결제취소'
+	order by storePayIdx desc)a)b
+	where rnum<![CDATA[>=]]>#{startnum}	and rnum<![CDATA[<=]]>#{endnum}	
+	</select>
+	
+	<select id="storeCancelTotalCnt" parameterType="int" resultType="int">
+		select count(*) from storePayment 
+		where storePayState='결제취소' and storePayMemberIdx=#{storePayMemberIdx}
+	</select>
+	
+	<select id="adminStoreCancelTotalCnt" resultType="int">
+		select count(*) from storePayment where storePayState='결제취소'
+	</select>
+	
+	<select id="adminStoreBuyList" parameterType="map" resultType="mpdto">
+	select * from
+	(select rownum as rnum,a.* from
+	(select sp.*,(sp.storePayCount*s.storePrice)as storePayPrice,s.storeName,
+	s.storePrice,m.id,g.gradeName  
+    from storePayment sp, member m, store s,grade g 
+	where memberIdx=storePayMemberIdx 
+	and storeIdx=storePayStoreIdx
+	and memberGradeIdx=gradeIdx
+	and storePayState='결제완료'
+	order by storePayIdx desc )a)b
+	where rnum<![CDATA[>=]]>#{startnum}	and rnum<![CDATA[<=]]>#{endnum}	
+	</select>
+	
+	<select id="adminStoreCancelList" parameterType="map" resultType="mpdto">
+	select * from
+	(select rownum as rnum,a.* from
+	(select sp.*,(sp.storePayCount*s.storePrice)as storePayPrice, 
+	m.id,m.name,s.storeName,s.storePrice,sdp.delPaymentDate,g.gradeName
+	from storePayment sp, member m, store s,storeDelPayment sdp,grade g
+	where memberIdx=storePayMemberIdx 
+	and storeIdx=storePayStoreIdx
+	and storePayIdx=delPaymentStorePayIdx
+	and memberGradeIdx=gradeIdx
+	and storePayState='결제취소'
+	order by storePayIdx desc)a)b
+	where rnum<![CDATA[>=]]>#{startnum}	and rnum<![CDATA[<=]]>#{endnum}	
+	</select>
+	
+	<select id="mypageReservationList" parameterType="map" resultType="mpdto">
+	select * from
+	(select rownum as rnum,a.* from
+	(select	rv.*,m.id,m.name,m.gender,g.gradeName,ti.ticketPrice,sd.*,t.*,
+	ci.cinemaIdx,ci.cinemaName,mi.movieName
+	from reservation rv, member m,grade g,ticketInfo ti,schedule sd,
+	theater t,cinema ci,movieInfo mi
+	where memberIdx=reservationMemberIdx
+	and memberGradeIdx=gradeIdx
+	and reservationTicketIdx=ticketIdx
+	and reservationScheduleIdx=scheduleIdx
+	and scheduleTheaterIdx=theaterIdx
+	and theaterCinemaIdx=cinemaIdx
+	and scheduleMovieIdx=movieIdx
+	and reservationStatus='Y'
+	and memberIdx=#{memberIdx}
+	order by reservationIdx desc)a)b
+	where rnum<![CDATA[>=]]>#{startnum}	and rnum<![CDATA[<=]]>#{endnum}	
+	</select>
+	
+	<select id="reservationTotalCnt" parameterType="int" resultType="int">
+		select count(*) from reservation 
+		where reservationMemberIdx=#{reservationMemberIdx}
+		and reservationStatus='Y'
+	</select>
+	
+	<update id="mypageUpdateReservationState" parameterType="int">
+		update reservation set reservationStatus='N' 
+		where reservationIdx=#{reservationIdx}
+	</update>
+
+	<insert id="mypageCancelReservation" parameterType="int">
+		insert into delReservation values(
+		#{delReservationIdx},
+		sysdate
+		)
+	</insert>
+		<select id="getUseReservationMileage" parameterType="int" resultType="int">
+		select reservationMileage from reservation
+		where reservationIdx=#{reservationIdx}
+	</select>
+	
+	<insert id="refundReservationMileage" parameterType="mpdto">
+		insert into mileage values(
+		mileageSq.nextval,
+		#{mileagePrice},
+		'영화예매 취소',
+		#{mileageMemberIdx}
+		)
+	</insert>
+	<select id="mypageReservationCancelList" parameterType="map" resultType="mpdto">
+		select * from
+	(select rownum as rnum,a.* from
+	(select	rv.*,m.id,m.name,m.gender,g.gradeName,ti.ticketPrice,sd.*,t.*,
+	ci.cinemaIdx,ci.cinemaName,mi.movieName,dr.delReservationDate
+	from reservation rv, member m,grade g,ticketInfo ti,schedule sd,delReservation dr,
+	theater t,cinema ci,movieInfo mi
+	where memberIdx=reservationMemberIdx
+	and memberGradeIdx=gradeIdx
+	and reservationTicketIdx=ticketIdx
+	and reservationScheduleIdx=scheduleIdx
+	and scheduleTheaterIdx=theaterIdx
+	and theaterCinemaIdx=cinemaIdx
+	and scheduleMovieIdx=movieIdx
+	and reservationIdx=delReservationIdx
+	and memberIdx=#{memberIdx}
+	and reservationStatus='N'
+	order by reservationIdx desc)a)b
+	where rnum<![CDATA[>=]]>#{startnum}	and rnum<![CDATA[<=]]>#{endnum}	
+	</select>
+	
+	<select id="reservationCancelTotalCnt" parameterType="int" resultType="int">
+		select count(*) from reservation 
+		where reservationStatus='N' 
+		and reservationMemberIdx=#{reservationMemberIdx}
+	</select>
+	
+	<select id="adminReservationConfirmList" parameterType="map" resultType="mpdto">
+		select * from
+	(select rownum as rnum,a.* from
+	(select	rv.*,m.id,m.name,m.gender,g.gradeName,ti.ticketPrice,sd.*,t.*,
+	ci.cinemaIdx,ci.cinemaName,mi.movieName
+	from reservation rv, member m,grade g,ticketInfo ti,schedule sd,
+	theater t,cinema ci,movieInfo mi
+	where memberIdx=reservationMemberIdx
+	and memberGradeIdx=gradeIdx
+	and reservationTicketIdx=ticketIdx
+	and reservationScheduleIdx=scheduleIdx
+	and scheduleTheaterIdx=theaterIdx
+	and theaterCinemaIdx=cinemaIdx
+	and scheduleMovieIdx=movieIdx
+	and reservationStatus='Y'
+	order by reservationIdx desc)a)b
+	where rnum<![CDATA[>=]]>#{startnum}	and rnum<![CDATA[<=]]>#{endnum}
+	</select>
+	
+	<select id="adminReservationCancelList" parameterType="map" resultType="mpdto">
+		select * from
+	(select rownum as rnum,a.* from
+	(select	rv.*,m.id,m.name,m.gender,g.gradeName,ti.ticketPrice,sd.*,t.*,
+	ci.cinemaIdx,ci.cinemaName,mi.movieName,dr.delReservationDate
+	from reservation rv, member m,grade g,ticketInfo ti,schedule sd,delReservation dr,
+	theater t,cinema ci,movieInfo mi
+	where memberIdx=reservationMemberIdx
+	and memberGradeIdx=gradeIdx
+	and reservationTicketIdx=ticketIdx
+	and reservationScheduleIdx=scheduleIdx
+	and scheduleTheaterIdx=theaterIdx
+	and theaterCinemaIdx=cinemaIdx
+	and scheduleMovieIdx=movieIdx
+	and reservationIdx=delReservationIdx
+	and reservationStatus='N'
+	order by reservationIdx desc)a)b
+	where rnum<![CDATA[>=]]>#{startnum}	and rnum<![CDATA[<=]]>#{endnum}
+	</select>
+	
+	<select id="adminReservationCancelTotalCnt" resultType="int">
+	 select count(*) from reservation
+	 where reservationStatus='N'
+	</select>
+	
+	<select id="adminReservationConfirmTotalCnt" resultType="int">
+		select count(*) from reservation
+		where reservationStatus='Y'
+	</select>
+	
+</mapper>  

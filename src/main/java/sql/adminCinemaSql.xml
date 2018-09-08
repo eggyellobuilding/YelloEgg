@@ -17,15 +17,23 @@
 		)
 	</insert>
 	 
-	 <select id="recentCinemaIdx" resultType="int">
-	 	select * from
-	 	cinema
-	 	where rownum =1
-	 	order by cinemaIdx desc
-	 </select>
-	 
-	<select id="cinemaList" resultType="cdto" >
-		select * from cinema  
+	<select id="cinemaList" parameterType="map" resultType="cdto" >
+		select * from
+		(select rownum as rnum,a.* from
+		(select	* from cinema order by cinemaIdx desc)a)b
+		where rnum<![CDATA[>=]]>#{startnum}	and rnum<![CDATA[<=]]>#{endnum}	  
+	</select>
+	
+	<select id="adminCinemaTotalCnt" resultType="int">
+		select count(*) from cinema
+	</select>
+	
+	<select id="getCinemaNameList" parameterType="int" resultType="hashmap">
+		select * from theater where theatercinemaIdx =#{cinemaIdx}
+	</select>
+	
+	<select id="updateTheaterName" parameterType="hashmap">
+		update theater set theatername = #{theatername} where theateridx = #{theateridx}
 	</select>
 	
 	<select id="theaterList" resultType="cdto">
@@ -120,12 +128,5 @@
 			)
 	</insert>
 	
-	<select id="getCinemaNameList" parameterType="int" resultType="hashmap">
-		select * from theater where theatercinemaidx = #{cinemaIdx} 
-	</select>
-	
-	<update id="updateTheaterName" parameterType="hashmap">
-		update theater set theatername = #{theatername} where theateridx = #{theateridx}
-	</update>
 
 </mapper>

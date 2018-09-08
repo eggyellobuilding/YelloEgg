@@ -111,7 +111,16 @@
 			<ref bean="sqlSessionTemplate"/>		
 		</constructor-arg>
 	</bean>
-	
+	<bean id="mypageDAO" class="egg.mypage.model.MypageDAOImple">
+		<constructor-arg>
+			<ref bean="sqlSessionTemplate"/>
+		</constructor-arg>
+	</bean>
+	<bean id="storeDAO" class="egg.store.model.StoreDAOImple">
+		<constructor-arg>
+			<ref bean="sqlSessionTemplate"/>
+		</constructor-arg>
+	</bean>
 <!-- sendMail -->
    <bean id="mailSender" class = "org.springframework.mail.javamail.JavaMailSenderImpl">
       <property name="host" value="smtp.gmail.com" />

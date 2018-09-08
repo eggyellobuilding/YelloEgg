@@ -206,7 +206,7 @@
 				<ul class="nav nav-tabs">
 					<li><a href="adminCinema.do">영화관 목록</a></li>
 					<li><a href="adminCinemaAdd.do">영화관 등록</a></li>
-					<li><a href="adminTheaterAdd.do">상영관 등록</a></li>
+					<li><a href="adminTheaterAdd.do">상영관 수정</a></li>
 					<li class="active"><a href="adminSeatsAdd.do">좌석 등록</a></li>
 				</ul>
 				<div class="container">

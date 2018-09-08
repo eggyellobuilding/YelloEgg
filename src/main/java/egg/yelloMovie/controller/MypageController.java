@@ -2,6 +2,8 @@ package egg.yelloMovie.controller;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -9,17 +11,28 @@ import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import egg.cinema.admin.model.CinemaDAO;
+import egg.cinema.admin.model.CinemaDTO;
 import egg.member.model.MemberDAO;
 import egg.member.model.MemberDTO;
+import egg.mypage.model.MypageDAO;
+import egg.mypage.model.MypageDTO;
 
-@Controller
+@Controller 
 public class MypageController {
 
 	@Autowired
 	private MemberDAO memberdao;
+	
+	@Autowired
+	private MypageDAO mypagedao;
+	
+	@Autowired
+	private CinemaDAO cdao;
 	
 	/**비밀번호 암호화 메서드*/
   	public String testMD5(String str){
@@ -54,14 +67,61 @@ public class MypageController {
 	
 	/**마이페이지 1:1문의 내역*/
 	@RequestMapping("/mypageQaboardList.do")
-	public String mypageQaboardList() {
-		return "view/mypage/mypageQaboardList";
+	public ModelAndView mypageQaboardList(@RequestParam(value="cp",defaultValue="1")int cp,
+										@RequestParam(value="memberIdx")int memberIdx) {
+		int totalCnt=mypagedao.qaboardTotalCnt(memberIdx);
+		int listSize=10;
+		int pageSize=10;
+		List<MypageDTO> lists=mypagedao.mypageQaboardList(listSize, cp, memberIdx);
+		String pageStr=egg.commons.PageModule2.makePage("mypageQaboardList.do", totalCnt, listSize, pageSize, cp, memberIdx);
+		ModelAndView mav=new ModelAndView();
+		mav.addObject("pageStr", pageStr);
+		mav.addObject("lists", lists);
+		mav.setViewName("view/mypage/mypageQaboardList");
+		return mav;
 	}
 	
-	/**마이페이지 1:1문의 글 쓰기*/
+	@RequestMapping("/adminQaCinemaFindJquery.do")
+	public ModelAndView adminQaCinemaFindJquery() {
+		List<CinemaDTO> cityLists =  cdao.theaterCinemaCity();
+		ModelAndView mav = new ModelAndView("yongJson");
+		mav.addObject("cityLists", cityLists);
+		return mav;
+	}
+	
+	//영화관 이름 목록  json
+	@RequestMapping(value="/adminQaCinemaNameFindJquery.do",method=RequestMethod.GET)
+	public ModelAndView adminScheduleCinemaNameFind(@RequestParam("cinemaCity")String cinemaCity) {
+		List<CinemaDTO> nameLists = cdao.theaterCinemaName(cinemaCity);
+		ModelAndView mav = new ModelAndView("yongJson");
+		mav.addObject("nameLists",nameLists);
+		return mav;
+	}
+	
+	/**마이페이지 1:1문의 글 쓰기 폼*/
 	@RequestMapping("/mypageQaboardWriteForm.do")
 	public String mypageQaboardWriteForm() {
 		return "view/mypage/mypageQaboardWriteForm";
+	}
+	
+	/**마이페이지 1:1문의 글 쓰기 submit*/
+	@RequestMapping("/mypageQaboardWrite.do")
+	public ModelAndView mypageQaboardWriteSubmit(@RequestParam(value="qaCinemaIdx")int qaCinemaIdx,
+												@RequestParam(value="memberIdx")int memberIdx,
+												@RequestParam(value="qaTitle")String qaTitle,
+												@RequestParam(value="qaContent")String qaContent,
+												MypageDTO qadto) {
+		qadto.setQaCinemaIdx(qaCinemaIdx);
+		qadto.setQaMemberIdx(memberIdx);
+		qadto.setQaTitle(qaTitle);
+		qadto.setQaContent(qaContent);
+		int result = mypagedao.mypageQaboardWrite(qadto);
+		String msg=result>0?"1:1문의글 작성을 하였습니다.":"1:1문의글 작성을 실패하였습니다.";
+		ModelAndView mav = new ModelAndView();
+		mav.addObject("msg", msg);
+		mav.addObject("goUrl", "mypageQaboardList.do?memberIdx="+memberIdx);
+		mav.setViewName("view/mypage/mypageMsg");
+		return mav;
 	}
 	
 	/**마이페이지 회원정보 수정 폼*/
@@ -88,7 +148,7 @@ public class MypageController {
 		String msg=result>0?"회원정보 수정하였습니다.":"회원정보 수정 실패하였습니다.";
 		mav.addObject("msg",msg);
 		mav.addObject("goUrl", "mypageForm.do");
-		mav.setViewName("view/mypage/memberMsg");
+		mav.setViewName("view/mypage/mypageMsg");
 		return mav;
 	}
 	/**마이페이지 비밀번호 변경 폼*/
@@ -131,7 +191,7 @@ public class MypageController {
 		}
 		mav.addObject("msg", msg);
 		mav.addObject("goUrl", goUrl);
-		mav.setViewName("view/mypage/memberMsg");
+		mav.setViewName("view/mypage/mypageMsg");
 		return mav;
 	}
 	
@@ -174,33 +234,156 @@ public class MypageController {
 		}
 		mav.addObject("msg", msg);
 		mav.addObject("goUrl", goUrl);
-		mav.setViewName("view/mypage/memberMsg");	
+		mav.setViewName("view/mypage/mypageMsg");	
 		return mav;		
 	}
 	
 
 	/**마이페이지 예약내역*/
 	@RequestMapping("/mypageReservationList.do")
-	public String mypageReservationList() {
-		return "view/mypage/mypageReservationList";
+	public ModelAndView mypageReservationList(@RequestParam(value="cp",defaultValue="1")int cp,
+											@RequestParam(value="memberIdx")int memberIdx) {
+		int totalCnt=mypagedao.reservationTotalCnt(memberIdx);
+		int listSize=10;
+		int pageSize=10;
+		List<MypageDTO> lists=mypagedao.mypageReservationList(listSize, cp, memberIdx);
+		String pageStr=egg.commons.PageModule2.makePage("mypageReservationList.do", totalCnt, listSize, pageSize, cp, memberIdx);
+		ModelAndView mav=new ModelAndView();
+		mav.addObject("pageStr", pageStr);
+		mav.addObject("lists", lists);
+		mav.setViewName("view/mypage/mypageReservationList");
+		return mav;
+		
 	}
+	
+	/**예매 취소*/
+	@RequestMapping("/mypageCancelReservation.do")
+	public ModelAndView mypageCancelRservation(@RequestParam(value="reservationIdx")int reservationIdx,
+												HttpServletRequest req,
+												MypageDTO mpdto) {
+
+		String memberIdx_s=req.getParameter("memberIdx");
+		int memberIdx=Integer.parseInt(memberIdx_s);
+		int reservationMileage = mypagedao.getUseReservationMileage(reservationIdx);
+		mpdto.setMileageMemberIdx(memberIdx);
+		mpdto.setMileagePrice(reservationMileage);		
+		ModelAndView mav = new ModelAndView();
+		int result=mypagedao.mypageUdpateReservationState(reservationIdx);
+		int result_s=mypagedao.mypageCancelReservation(reservationIdx);
+		int result_t=mypagedao.refundReservationMileage(mpdto);
+		String msg=null;
+		if(result>0) {
+			if(result_s>0) {
+				if(result_t>0) {
+					if(reservationMileage==0) {
+						msg="예매를 취소하였습니다.";
+					}else {
+						msg="예매를 취소하였습니다."+reservationMileage+"P를 반환해드렸습니다.";
+					}
+				}else {
+					msg="마일리지 반환을 실패하였습니다.";
+				}
+			}else {
+				msg="예매취소날짜 입력을 실패하였습니다.";
+			}
+		}else {
+			msg="예매취소에 실패하였습니다.";
+		}
+		mav.addObject("msg", msg);
+		mav.addObject("goUrl", "mypageReservationList.do?memberIdx="+memberIdx);
+		mav.setViewName("view/mypage/mypageMsg");
+		return mav;
+	}
+	
 	
 	/**마이페이지 에약취소내역*/
 	@RequestMapping("/mypageReservationCancelList.do")
-	public String mypageReservationCancelList() {
-		return "view/mypage/mypageReservationCancelList";
+	public ModelAndView mypageReservationCancelList(@RequestParam(value="cp",defaultValue="1")int cp,
+													@RequestParam(value="memberIdx")int memberIdx) {
+		int totalCnt=mypagedao.reservationCancelTotalCnt(memberIdx);
+		int listSize=10;
+		int pageSize=10;
+		List<MypageDTO> lists=mypagedao.mypageReservationCancelList(listSize, cp, memberIdx);
+		String pageStr=egg.commons.PageModule2.makePage("mypageReservationCancelList.do", totalCnt, listSize, pageSize, cp, memberIdx);
+						
+		ModelAndView mav=new ModelAndView();
+		mav.addObject("pageStr", pageStr);
+		mav.addObject("lists", lists);
+		mav.setViewName("view/mypage/mypageReservationCancelList");
+		return mav;
+
 	}
 	
 	/**마이페이지 스토어 구매 내역*/
 	@RequestMapping("/mypageStoreBuyList.do")
-	public String mypageStoreBuyList() {
-		return "view/mypage/mypageStoreBuyList";
+	public ModelAndView mypageStoreBuyList(@RequestParam(value="cp",defaultValue="1")int cp,
+											@RequestParam(value="memberIdx")int memberIdx) {
+		
+		int totalCnt=mypagedao.storeBuyTotalCnt(memberIdx);
+		int listSize=10;
+		int pageSize=10;
+		List<MypageDTO> lists=mypagedao.mypageStoreBuyList(listSize, cp, memberIdx);
+		String pageStr=egg.commons.PageModule2.makePage("mypageStoreBuyList.do", totalCnt, listSize, pageSize, cp, memberIdx);
+		ModelAndView mav=new ModelAndView();
+		mav.addObject("pageStr", pageStr);
+		mav.addObject("lists", lists);
+		mav.setViewName("view/mypage/mypageStoreBuyList");
+		return mav;
 	}
 	
+	
+	@RequestMapping("/mypageCancelStoreBuy.do")
+	public ModelAndView mypageCancelStoreBuy(HttpServletRequest req,
+											MypageDTO mpdto) {
+		String storePayIdx_s=req.getParameter("storePayIdx");
+		int storePayIdx=Integer.parseInt(storePayIdx_s);
+		String memberIdx_s=req.getParameter("memberIdx");
+		int memberIdx=Integer.parseInt(memberIdx_s);
+		int storePayMileage=mypagedao.getUseStoreMileage(storePayIdx);
+		mpdto.setMileagePrice(storePayMileage);
+		mpdto.setMileageMemberIdx(memberIdx);
+		ModelAndView mav = new ModelAndView();
+		int result=mypagedao.mypageUdpateStoreState(storePayIdx);
+		int result_s=mypagedao.mypageCancelStoreBuy(storePayIdx);
+		int result_t=mypagedao.refundStoreMileage(mpdto);
+		String msg=null;
+		if(result>0) {
+			if(result_s>0) {
+				if(result_t>0) {
+					if(storePayMileage==0) {
+						msg="구매를 취소하였습니다.";
+					}else {
+						msg="구매를 취소하였습니다."+storePayMileage+"P를 반환해 드렸습니다.";
+					}
+				}else {
+					msg="마일리지 반환을 실패하였습니다.";
+				}
+			}else {
+				msg="취소날짜입력을 실패하였습니다.";
+			}
+		}else {
+			msg="구매취소에 실패하였습니다.";
+		}
+		mav.addObject("msg", msg);
+		mav.addObject("goUrl", "mypageStoreBuyList.do?memberIdx="+memberIdx);
+		mav.setViewName("view/mypage/mypageMsg");
+		return mav;
+	}
 	/**마이페이지 스토어 취소 내역*/
 	@RequestMapping("/mypageStoreCancelList.do")
-	public String mypageStoreCancelList() {
-		return "view/mypage/mypageStoreCancelList";
+	public ModelAndView mypageStoreCancelList(@RequestParam(value="cp",defaultValue="1")int cp,
+												@RequestParam(value="memberIdx")int memberIdx) {
+		
+		int totalCnt=mypagedao.storeCancelTotalCnt(memberIdx);
+		int listSize=10;
+		int pageSize=10;
+		List<MypageDTO> lists=mypagedao.mypageStoreCancelList(listSize, cp, memberIdx);
+		String pageStr=egg.commons.PageModule2.makePage("mypageStoreCancelList.do", totalCnt, listSize, pageSize, cp, memberIdx);
+		ModelAndView mav=new ModelAndView();
+		mav.addObject("pageStr", pageStr);
+		mav.addObject("lists", lists);
+		mav.setViewName("view/mypage/mypageStoreCancelList");
+		return mav;
 	}
 	
 }

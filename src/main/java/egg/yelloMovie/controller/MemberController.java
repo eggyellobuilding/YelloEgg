@@ -25,7 +25,7 @@ import egg.member.model.MemberDAO;
 import egg.member.model.MemberDTO;
 
 @Controller
-public class MemberController {
+public class MemberController { 
 
 	@Autowired
 	private MemberDAO memberdao;
@@ -110,8 +110,24 @@ public class MemberController {
 		dto.setEmail(email);
 		
 		ModelAndView mav= new ModelAndView();
+		
 		int result = memberdao.memberJoin(dto);
-		String msg = result>0?"회원가입을 하였습니다.":"회원가입에 실패하였습니다.";
+		String msg=null;
+		int mileageMemberIdx=0;
+		
+		if (result > 0) {
+			mileageMemberIdx = memberdao.getMemberIdx(dto.getEmail());
+			dto.setMileageMemberIdx(mileageMemberIdx);
+			int result_s = memberdao.mileageAdd(dto);
+			if (result_s > 0) {
+				msg = "회원가입을 하였습니다.";
+			} else {
+				msg = "마일리지 추가에 실패하였습니다.";
+			}
+		} else {
+			msg = "회원가입에 실패하였습니다.";
+		}
+
 		mav.addObject("msg", msg);
 		mav.addObject("goUrl", "main.do");
 		mav.setViewName("view/member/memberMsg");
@@ -207,20 +223,26 @@ public class MemberController {
 			dto.setAdminPwd(pwd_s);
 			
 			MemberDTO dto_admin=memberdao.adminLogin(dto);
-			
-			if(!(dto_admin.getAdminId().equals(id))||!(dto_admin.getAdminPwd().equals(pwd_s))) {
-				
+			if(dto_admin==null|| dto_admin.equals("")) {
 				mav.addObject("msg", "아이디 혹은 패스워드가 맞지않습니다.");
 				mav.addObject("goUrl", "main.do");
 				mav.setViewName("view/member/memberMsg");
+			}else {
+				if(!(dto_admin.getAdminId().equals(id))||!(dto_admin.getAdminPwd().equals(pwd_s))) {
+					
+					mav.addObject("msg", "아이디 혹은 패스워드가 맞지않습니다.");
+					mav.addObject("goUrl", "main.do");
+					mav.setViewName("view/member/memberMsg");
+					
+				}else if(dto_admin.getAdminId().equals(id)&&dto_admin.getAdminPwd().equals(pwd_s)) {
+					
+					session.setAttribute("saddto", dto_admin);
+					mav.addObject("addto", dto_admin);
+					mav.addObject("msg", dto_admin.getAdminId()+"님, 환영합니다!");
+					mav.addObject("goUrl", "admin.do");
+					mav.setViewName("view/member/memberMsg");
+				}
 				
-			}else if(dto_admin.getAdminId().equals(id)&&dto_admin.getAdminPwd().equals(pwd_s)) {
-				
-				session.setAttribute("saddto", dto_admin);
-				mav.addObject("addto", dto_admin);
-				mav.addObject("msg", dto_admin.getAdminId()+"님, 환영합니다!");
-				mav.addObject("goUrl", "admin.do");
-				mav.setViewName("view/member/memberMsg");
 			}
 			
 		}else {
@@ -228,46 +250,50 @@ public class MemberController {
 			String pwd=testMD5(pwd_s);
 	
 			MemberDTO dto_member=memberdao.memberLogin(dto);
-			
-		
-			if(dto_member.getState().equals("Y")) {
-				
-				mav.addObject("msg", "탈퇴된 아이디 입니다.");
+			if(dto_member==null || dto_member.equals("")) {
+				mav.addObject("msg", "아이디 혹은 패스워드가 맞지않습니다.");
 				mav.addObject("goUrl", "main.do");
 				mav.setViewName("view/member/memberMsg");
 				
-			}else if(dto_member.getState().equals("N")){
-				
-				if(!(dto_member.getId().equals(id))||!(dto_member.getPwd().equals(pwd))) {
+			}else {
+				if(dto_member.getState().equals("Y")) {
 					
-					mav.addObject("msg", "아이디 혹은 패스워드가 맞지않습니다.");
+					mav.addObject("msg", "탈퇴된 아이디 입니다.");
 					mav.addObject("goUrl", "main.do");
 					mav.setViewName("view/member/memberMsg");
 					
-				}else if(dto_member.getId().equals(id)&&dto_member.getPwd().equals(pwd)) {
+				}else if(dto_member.getState().equals("N")){
 					
-					session.setAttribute("smdto", dto_member);
-					Cookie ck1=new Cookie("lastday", today);
-					ck1.setMaxAge(60*60*24*30);
-					resp.addCookie(ck1);
-					
-					if(rememberId==null||rememberId.equals("")) {
-						Cookie ck=new Cookie("rememberId", id);
-						ck.setMaxAge(0);
-						resp.addCookie(ck);
+					if(!(dto_member.getId().equals(id))&&!(dto_member.getPwd().equals(pwd))) {
 						
-					}else {			
-						Cookie ck=new Cookie("rememberId", id);
-						ck.setMaxAge(60*60*24*30);
-						resp.addCookie(ck);
+						mav.addObject("msg", "아이디 혹은 패스워드가 맞지않습니다.");
+						mav.addObject("goUrl", "main.do");
+						mav.setViewName("view/member/memberMsg");
+						
+					}else if(dto_member.getId().equals(id)&&dto_member.getPwd().equals(pwd)) {
+						
+						session.setAttribute("smdto", dto_member);
+						Cookie ck1=new Cookie("lastday", today);
+						ck1.setMaxAge(60*60*24*30);
+						resp.addCookie(ck1);
+						
+						if(rememberId==null||rememberId.equals("")) {
+							Cookie ck=new Cookie("rememberId", id);
+							ck.setMaxAge(0);
+							resp.addCookie(ck);
+							
+						}else {			
+							Cookie ck=new Cookie("rememberId", id);
+							ck.setMaxAge(60*60*24*30);
+							resp.addCookie(ck);
+						}
+						
+						mav.addObject("msg", dto_member.getId()+"님, 환영합니다!");
+						mav.addObject("goUrl", "main.do");
+						mav.setViewName("view/member/memberMsg");
 					}
 					
-					mav.addObject("msg", dto_member.getId()+"님, 환영합니다!");
-					mav.addObject("goUrl", "main.do");
-					mav.setViewName("view/member/memberMsg");
 				}
-				
-				
 			}
 			
 		}		
@@ -285,7 +311,7 @@ public class MemberController {
 	
 	/**로그아웃*/
 	@RequestMapping("/memberLogout.do")
-	public String memberLogout(HttpSession session,
+	public String memberLogoutSubmit(HttpSession session,
 			Model model) {
 		session.invalidate();
 		model.addAttribute("msg", "로그아웃하였습니다.");
@@ -293,7 +319,7 @@ public class MemberController {
 		return "view/member/memberMsg";
 	}
 	
-	/**아이디/패스워드 찾기*/
+	/**아이디&패스워드 찾기*/
 	@RequestMapping("/memberFindForm.do")
 	public String memberFindForm() {
 		return "view/member/memberFindForm";
@@ -337,13 +363,10 @@ public class MemberController {
 											@RequestParam(value="id")String id,
 											@RequestParam(value="email")String email,
 											MemberDTO dto) {
-		System.out.println(name);
-		System.out.println(email);
-		System.out.println(id);
+
 		ModelAndView mav = new ModelAndView();
 		String findPwd=memberdao.memberFindPwd(id, name, email);
-		System.out.println("3");
-		System.out.println(findPwd);
+
 		String msg=null;
 		
 		if(findPwd==null) {
@@ -352,7 +375,8 @@ public class MemberController {
 			
 		}else {
 			
-			String extraPwd=findPwd.substring(0, 11);
+			String extraPwd_s=findPwd.substring(0, 8);
+			String extraPwd="egg"+extraPwd_s;
 			String pwd=testMD5(extraPwd);
 			dto.setPwd(pwd);
 			dto.setEmail(email);
@@ -383,17 +407,6 @@ public class MemberController {
 		mav.setViewName("view/member/memberMsg");
 		return mav;
 	}
-	
-	
 		
-	
-	
-	
-	
-	
-	
-	
-	
-	
 	
 }

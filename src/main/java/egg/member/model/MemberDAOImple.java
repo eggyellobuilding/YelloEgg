@@ -29,6 +29,18 @@ public class MemberDAOImple implements MemberDAO {
 		return count;
 	}
 
+	/**회원가입시 memberIdx가져오기*/
+	public int getMemberIdx(String email) {
+		int memberIdx=sqlMap.selectOne("getMemberIdx", email);
+		return memberIdx;
+	}
+	
+	/**회원가입시 마일리지 보너스로 주기*/
+	public int mileageAdd(MemberDTO dto) {
+		int count = sqlMap.insert("mileageAdd", dto);
+		return count;
+	}
+	
 	/**로그인*/
 	public MemberDTO memberLogin(MemberDTO dto) {
 		MemberDTO dto_member=sqlMap.selectOne("memberLogin", dto);
@@ -74,10 +86,16 @@ public class MemberDAOImple implements MemberDAO {
 		int count = sqlMap.update("memberUpdateState", dto);
 		return count;
 	}
-	/**totalcnt 가져오기*/
-	public int getTotalCnt() {
-		int result=sqlMap.selectOne("totalCnt");
-		return result;
+	/**멤버 totalcnt 가져오기*/
+	public int memberTotalCnt() {
+		int count=sqlMap.selectOne("memberTotalCnt");
+		return count;
+	}
+	
+	/**탈퇴된 멤버 totalCnt가져오기*/
+	public int deleteMemberTotalCnt() {
+		int count=sqlMap.selectOne("deleteMemberTotalCnt");
+		return count;
 	}
 	
 	/**회원목록*/
@@ -136,16 +154,10 @@ public class MemberDAOImple implements MemberDAO {
 		List<MemberDTO> lists=sqlMap.selectList("adminEmployeeList",data);
 		return lists;
 	}
-		
+			
 	/**사원삭제*/
 	public int adminDeleteEmployee(int adminIdx) {
 		int count =sqlMap.delete("adminDeleteEmployee", adminIdx);
-		return count;
-	}
-	
-	/**관리자 아이디 중복확인*/
-	public int adminIdCheck(String adminId) {
-		int count = sqlMap.selectOne("adminIdCheck", adminId);
 		return count;
 	}
 	
@@ -163,9 +175,10 @@ public class MemberDAOImple implements MemberDAO {
 	
 	/**회원정보 수정*/
 	public int updateMember(MemberDTO dto) {
-		int count = sqlMap.update("mypageUpdateMember", dto);
+		int count = sqlMap.update("updateMember", dto);
 		return count;
 	}
+	
 	/**어드민 검색 jquery*/
 	public int adminCount(int cinemaIdx) {
 		int result = sqlMap.selectOne("adminCount",cinemaIdx);
@@ -175,7 +188,6 @@ public class MemberDAOImple implements MemberDAO {
 	/**admintotalcnt 가져오기*/
 	public int adminTotalCnt() {
 		int result=sqlMap.selectOne("adminTotalCnt");
-		System.out.println(result);
 		return result;
 	}
 }

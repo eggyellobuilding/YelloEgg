@@ -22,10 +22,16 @@
 		select count(*) from movieInfo
 	</select>
 	<select id="searchList" parameterType="Map" resultType="amvdto">
-	select * from(select rownum as rnum,a.* from
-	(select * from movieInfo where movieName like '%'||#{mName}||'%' and 
-	movieGenre like '%'||#{mGenre}||'%' and movieDistributer like '%'||#{mDistributer}||'%' 
-	order by movieIdx desc)a)b where rnum<![CDATA[>=]]>#{startnum} and rnum<![CDATA[<=]]>#{endnum}
+		select * from(select rownum as rnum,a.* from
+		(select * from movieInfo where movieName like '%'||#{mName}||'%' and 
+		movieGenre like '%'||#{mGenre}||'%' and movieDistributer like '%'||#{mDistributer}||'%' 
+		order by movieIdx desc)a)b where rnum<![CDATA[>=]]>#{startnum} and rnum<![CDATA[<=]]>#{endnum}
 	</select>
-	
+	<select id="repleList" resultType="amvdto">
+		select mv.*,m.id from movieReple mv, member m 
+		where repleMemberIdx=memberIdx order by repleIdx desc
+	</select>
+	<delete id="repleDel" parameterType="int">
+		delete from movieReple where repleIdx=#{repleIdx}
+	</delete>
 </mapper>

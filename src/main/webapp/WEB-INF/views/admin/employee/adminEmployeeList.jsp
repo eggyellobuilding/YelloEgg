@@ -96,14 +96,13 @@ function selectCinemaName(cinemaIdx,cinemaName,cinemaCity){
 	    	type:'post',
 	    	success:function(data){
 	    		var count = data.count;
-	    		window.alert(count);
 	    		var adminId = "admin"+cinemaIdx+count; 
 	    			$('#adminId').val(adminId);
 	    		}
 				
 			}); 
 	}
-	
+
 function adminIdCheck() {
 	var adminId=document.getElementById('adminId').value;
 	alert(adminId);
@@ -120,13 +119,15 @@ function adminIdCheckResult() {
 }
 
 
-function adminDeleteEmployee() {
+function adminDeleteEmployee(adminIdx_s) {
+	var adminIdx=adminIdx_s.value;
+	alert(adminIdx);
 	var result =window.confirm('진짜 삭제하시겠습니까?');
 	if(result){
-		return true;
+		location.href='adminDeleteEmployee.do?adminIdx='+adminIdx;
 	}else{
 		window.alert('삭제를 취소하였습니다.');
-		return false;
+		location.href='adminEmployeeList.do';
 	}
 }
 
@@ -152,6 +153,7 @@ function adminDeleteEmployee() {
 					<h2>사원 목록</h2>
 					
 					<c:if test="${'1' eq sessionScope.saddto.adminGrade}">
+					
 					<form style="margin-top: 35px; overflow: auto; width: 95%;">
 						<table id="adminEmployeeTable" class="table table-hover">
 							<thead>
@@ -173,18 +175,17 @@ function adminDeleteEmployee() {
 									</tr>
 								</c:if>
 								<c:forEach  var="addto" items="${lists}">
+								<c:if test="${'3' ne addto.adminGrade}">
 								
-									<tr>
-									<c:if test="${'3' ne addto.adminGrade}">
+									<tr data-toggle="modal" data-target="#cinemaNameEmployeeModal">
 										<td>${addto.adminIdx}</td>
 										<td>${addto.adminGrade}</td>
 										<td>${addto.adminId}</td>
 										<td>${addto.cinemaCity}</td>
 										<td>${addto.cinemaName}</td>
 										<td>${addto.adminJoinDate}</td>
-									</c:if>
 									</tr>
-									
+									</c:if>
 								</c:forEach>
 							</tbody>
 							<tfoot>
@@ -192,17 +193,7 @@ function adminDeleteEmployee() {
 									<td colspan="6">
 										<nav>
 											<ul class="pagination">
-												<li><a href="#" aria-label="Previous"> <span
-														aria-hidden="true">&laquo;</span>
-												</a></li>
-												<li><a href="#">1</a></li>
-												<li><a href="#">2</a></li>
-												<li><a href="#">3</a></li>
-												<li><a href="#">4</a></li>
-												<li><a href="#">5</a></li>
-												<li><a href="#" aria-label="Next"> <span
-														aria-hidden="true">&raquo;</span>
-												</a></li>
+												${pageStr}
 											</ul>
 										</nav>
 									</td>
@@ -211,8 +202,11 @@ function adminDeleteEmployee() {
 						</table>
 					</form>
 					</c:if>
+					
 					<c:if test="${('2' eq sessionScope.saddto.adminGrade) or ('3' eq sessionScope.saddto.adminGrade)}">
-					<form action="adminDeleteEmployee.do" method="post" style="margin-top: 35px; overflow: auto; width: 95%;">
+					
+					<form method="post" style="margin-top: 35px; overflow: auto; width: 95%;">
+						
 						<table id="adminEmployeeTable" class="table table-hover">
 							<thead>
 								<tr>
@@ -234,7 +228,7 @@ function adminDeleteEmployee() {
 									</tr>
 								</c:if>
 								<c:forEach  var="addto" items="${lists}">
-									
+								<input type="hidden" name=adminIdx${addto.adminIdx} value="${addto.adminIdx}"/>	
 									<tr>
 									<c:if test="${'3' ne addto.adminGrade}">
 										<td>${addto.adminIdx}</td>
@@ -245,11 +239,11 @@ function adminDeleteEmployee() {
 										<td>${addto.adminJoinDate}</td>
 										<td>
 										<c:if test="${'3' eq sessionScope.saddto.adminGrade}">
-										<input type="submit" value="삭제" class="btn btn-danger" onsubmit="return adminDeleteEmployee()"/>
+										<input type="button" value="삭제" class="btn btn-danger" onclick="adminDeleteEmployee(adminIdx${addto.adminIdx})"/>
  										</c:if>
  										<c:if test="${'2' eq sessionScope.saddto.adminGrade}">
  										<c:if test="${'1' eq addto.adminGrade}">
-										<input type="submit" value="삭제" class="btn btn-danger" onsubmit="return adminDeleteEmployee()"/>
+										<input type="button" value="삭제" class="btn btn-danger" onclick="adminDeleteEmployee(adminIdx${addto.adminIdx})"/>
  										</c:if>
  										</c:if>
 										</td>
@@ -259,7 +253,7 @@ function adminDeleteEmployee() {
 									<tr>
 										<td colspan="6"></td>
 										<td>
-										<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">
+										<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#AdminEmployeeRegister">
 										 사원등록
 										</button>
 										</td>
@@ -283,14 +277,14 @@ function adminDeleteEmployee() {
 			</div>
 		</div>
 		<!-- Modal -->
-<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<div class="modal fade" id="AdminEmployeeRegister" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
         <h4 class="modal-title" id="myModalLabel">YelloEgg 사원등록처</h4>
       </div>
-      	<form class="form-group" name="adminRegisterEmployeeForm" action="adminRegisterEmployee.do" method="post">
+      	<form class="form-group" action="adminRegisterEmployee.do" method="post">
       <div class="modal-body">
       		<table class="table table-striped">
       		     <tr>
@@ -309,7 +303,7 @@ function adminDeleteEmployee() {
       			</tr>
       			<tr>
       				<th>ID</th>
-      				<td class="form-inline"><input type="text" name="adminId" id="adminId" class="form-control" readonly/>
+      				<td><input type="text" name="adminId" id="adminId" class="form-control" readonly/>
       				</td>
       			</tr>
       			<tr>
@@ -320,14 +314,12 @@ function adminDeleteEmployee() {
       				<th>관리자 등급</th>
       				<c:if test="${'3' eq sessionScope.saddto.adminGrade}">
       				<td>
-      					<input type="radio" style="width:20px;height: 14px;" name="adminGrade" value="3" disabled="disabled"/>마스터
       					<input type="radio" style="width:20px;height: 14px;" name="adminGrade" value="2"/>관리자
       					<input type="radio" style="width:20px;height: 14px;" name="adminGrade" value="1"/>사원
       				</td>
       				</c:if>
       				<c:if test="${'2' eq sessionScope.saddto.adminGrade}">
       				<td colspan="2">
-      					<input type="radio" style="width:20px;height: 14px;" name="adminGrade" value="3" disabled="disabled"/>마스터
       					<input type="radio" style="width:20px;height: 14px;" name="adminGrade" value="2" disabled="disabled"/>관리자
       					<input type="radio" style="width:20px;height: 14px;" name="adminGrade" value="1"/>사원
       				</td>
@@ -344,7 +336,6 @@ function adminDeleteEmployee() {
     </div>
   </div>
 </div>
-
 	</div>
 </body>
     <script src="/yelloMovie/bootstrap/js/bootstrap.min.js"></script>

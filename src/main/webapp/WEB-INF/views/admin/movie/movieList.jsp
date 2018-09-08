@@ -12,8 +12,8 @@
 	rel="stylesheet">
 
 <script>
-	function replyGo() {
-		location.href = 'adminMovieRepleList.do';
+	function repleDel(repleNum){
+		location.href = 'adminRepleDel.do?repleIdx='+repleNum;
 	}
 	function upGo() {
 		location.href = 'adminMovieUpdate.do';
@@ -107,12 +107,16 @@
 																<td>Content</td>
 																<td>Btn</td>
 															</tr>
+															<c:forEach var="rep" items="${repList}">
+															<c:if test="${rep.repleMovieIdx == movieList.movieIdx}">
 															<tr>
-																<td>1</td>
-																<td>2</td>
-																<td>3</td>
-																<td><button class="btn btn-primary">삭제</button></td>
+																<td>${rep.repleIdx}</td>
+																<td>${rep.id}</td>
+																<td>${rep.repleContent}</td>
+																<td><input type="button" class="btn btn-primary" onclick="repleDel(${rep.repleIdx})" value="삭제"></td>
 															</tr>
+															</c:if>
+															</c:forEach>
 														</table>
 													</div>
 													<div class="modal-footer">
@@ -124,10 +128,10 @@
 										</div> <!-- 영화정보 수정 모달 -->
 										<form id="movieUpdateForm${count }">
 										<!-- <form id="movieAdd" enctype="multipart/form-data" method="post" action="adminMovieAdd.do"> -->
-										<button type="button" class="btn btn-primary"
+										<%-- <button type="button" class="btn btn-primary"
 											data-toggle="modal"
 											data-target="#movieUpdateModal${count}">영화
-											수정</button> <!-- movie Update Modal -->
+											수정</button> --%> <!-- movie Update Modal -->
 										<div class="modal fade"
 											id="movieUpdateModal${count}" tabindex="-1"
 											role="dialog" aria-labelledby="myModalLabel"
@@ -275,12 +279,16 @@
 																<td>Content</td>
 																<td>Btn</td>
 															</tr>
+															<c:forEach var="rep" items="${repList}">
+															<c:if test="${rep.repleMovieIdx == searchInfo.movieIdx}">
 															<tr>
-																<td>1</td>
-																<td>2</td>
-																<td>3</td>
-																<td><button class="btn btn-primary">삭제</button></td>
+																<td>${rep.repleIdx}</td>
+																<td>${rep.id}</td>
+																<td>${rep.repleContent}</td>
+																<td><input type="button" class="btn btn-primary" onclick="repleDel(${rep.repleIdx})" value="삭제"></td>
 															</tr>
+															</c:if>
+															</c:forEach>
 														</table>
 													</div>
 													<div class="modal-footer">
@@ -292,10 +300,10 @@
 										</div> <!-- 영화정보 수정 모달 -->
 										<form id="movieUpdateForm${count }">
 										<!-- <form id="movieAdd" enctype="multipart/form-data" method="post" action="adminMovieAdd.do"> -->
-										<button type="button" class="btn btn-primary"
+										<%-- <button type="button" class="btn btn-primary"
 											data-toggle="modal"
 											data-target="#movieUpdateModal${count}">영화
-											수정</button> <!-- movie Update Modal -->
+											수정</button> --%> <!-- movie Update Modal -->
 										<div class="modal fade"
 											id="movieUpdateModal${count}" tabindex="-1"
 											role="dialog" aria-labelledby="myModalLabel"

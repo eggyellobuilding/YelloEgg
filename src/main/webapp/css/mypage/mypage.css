@@ -26,6 +26,24 @@
 	background-color: #F3E2A9;
 }
 
+#changeTr {
+	width: 20%;
+	font-size: 15px;
+	padding-top: 15px;
+	text-align: center;
+	background-color: #F3E2A9;
+}
+
+#deleteTr {
+	width: 20%;
+	font-size: 15px;
+	padding-top: 15px;
+	text-align: center;
+	background-color: #F3E2A9;
+}
+
+
+
 #inquiryCol {
 	width: 20%;
 	font-size: 15px;
@@ -35,6 +53,14 @@
 }
 
 #updateTd {
+	padding-left: 40px;
+}
+
+#deleteTd {
+	padding-left: 40px;
+}
+
+#changeTd {
 	padding-left: 40px;
 }
 

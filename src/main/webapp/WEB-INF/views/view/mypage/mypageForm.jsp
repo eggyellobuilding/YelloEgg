@@ -27,31 +27,36 @@
     	<div class="mypageHeader"><h2><b>My YelloMovie</b></h2></div>
  		<div class="row" id="mypageNav">
 			<div class="col-xs-2" id="mypageCol">
-				<p><a href="mypageQaboardList.do?memberIdx=${sessionScope.smdto.memberIdx}"><img src="/yelloMovie/img/mypage/mypage.jpg"
-					style="margin-left: 7px;background-color: bule;" width="50%" height="50%"
+				<p><a href="mypageQaboardList.do?memberIdx=${sessionScope.smdto.memberIdx}">
+				<img src="/yelloMovie/img/mypage/mypageQaboard.png" 
+				style="margin-left: 7px;" width="50px" height="50px"
 					alt="qaboard" class="img-rounded"></a>
 				</p>
 				<span style="color:#A4A4A4;"><strong>나의 문의내역</strong></span>
 			</div>
 			<div class="col-xs-2" id="mypageCol">
 				<p><a href="mypageUpdateMemberForm.do?memberIdx=${sessionScope.smdto.memberIdx}"><img
-					src="/yelloMovie/img/mypage/reservation.jpg" width="50%" height="50%"
+					src="/yelloMovie/img/mypage/mypageUpdate.png" width="50px" height="50px"
 					alt="updateMember" class="img-rounded"></a>
 				</p>
 				<span style="color:#A4A4A4;"><strong>개인정보수정</strong></span>
 			</div>
 			<div class="col-xs-2" id="mypageCol">
-				<p><a href="mypageReservationList.do"><img
-					src="/yelloMovie/img/mypage/reservation.jpg" width="50%" height="50%"
+				<p><a href="mypageReservationList.do?memberIdx=${sessionScope.smdto.memberIdx}"><img
+					src="/yelloMovie/img/mypage/mypageReservation.png" width="61px" height="50px"
 					alt="reservationImfo" class="img-rounded"></a>
 				</p>
 				<span style="color:#A4A4A4;"><strong>예매확인/취소</strong></span>
 			</div>
 			<div class="col-xs-2" id="mypageCol">
-				<p><a href="mypageStoreBuyList.do"><img src="/yelloMovie/img/mypage/store.jpg"
-					width="50%" height="50%" alt="storeImfo" class="img-rounded"></a>
+				<p><a href="mypageStoreBuyList.do?memberIdx=${sessionScope.smdto.memberIdx}">
+				<img src="/yelloMovie/img/mypage/mypageStore.png"
+					width="50px" height="50px" alt="storeImfo" class="img-rounded"></a>
 				</p>
 				<span style="color:#A4A4A4;"><strong>스토어 구매내역</strong></span>
+			</div>
+			<div>
+				
 			</div>
 		</div>
 	</div>

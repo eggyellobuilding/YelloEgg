@@ -3,18 +3,47 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="yello.movie">
+
 	<select id="movieOfficeInfo" resultType="mvdto">
-		select * from movieInfo
+		select mi.movieIdx, mi.moviereleasedate, mi.moviename, mi.moviedirector, mi.movieactor, 
+        mi.moviesummary, mi.movieruntime, mi.movietitleCut, mi.moviedistributer, 
+        mi.moviegrade,mi.moviegenre, mi.movieenddate,sum(replescore) as replesum, avg(replescore) as replescoreavg
+        from movieInfo mi, moviereple mr
+		where movieIdx=repleMovieIdx and sysdate <![CDATA[<=]]> movieenddate and sysdate <![CDATA[>=]]> movieReleaseDate
+		group by mi.movieIdx, mi.moviereleasedate, mi.moviename, mi.moviedirector, mi.movieactor, 
+        mi.moviesummary, mi.movieruntime, mi.movietitleCut, mi.moviedistributer, 
+        mi.moviegrade,mi.moviegenre, mi.movieenddate
+		order by repleSum desc
+
 	</select>
 	<select id="movieLatestInfo" resultType="mvdto">
-		select * from movieInfo where sysdate<![CDATA[>]]>movieReleaseDate order by movieReleaseDate desc
+		select * from movieInfo
+		where sysdate <![CDATA[>=]]> movieReleaseDate and sysdate <![CDATA[<=]]> movieEndDate
+		order by movieReleaseDate desc 
 	</select>
 	<select id="movieExpectationInfo" resultType="mvdto">
-		select * from movieInfo where sysdate<![CDATA[<]]>movieReleaseDate order by movieReleaseDate desc
+		select * from movieInfo
+		where sysdate <![CDATA[<=]]> movieReleaseDate and sysdate <![CDATA[<=]]> movieEndDate
+		order by movieIdx desc 
 	</select>
-	<select id="mvRepleList" resultType="mvdto">
-		select mv.*,m.id from movieReple mv,member m 
-		where repleMemberIdx=memberIdx
+	
+	<select id="repleSum" resultType="mvdto" parameterType="int">
+		select replemovieidx,sum(replescore)as replesum, avg(replescore)as replescoreavg from moviereple
+		where repleMovieidx = #{movieIdx}
+		group by replemovieidx
+	</select>
+	
+	<select id="repleTotalCut" resultType="mvdto">
+		select a.movieidx,count(*) as repleCount
+		from
+		(select mi.movieIdx, mr.repleMovieIdx
+		from movieReple mr, movieInfo mi 
+		where mr.repleMovieIdx(+)=mi.movieIdx)a
+		group by a.movieidx
+	</select>
+	<select id="movieReple" resultType="mvdto">
+		select mv.*,m.id from movieReple mv, member m 
+		where repleMemberIdx=memberIdx order by repleIdx desc
 	</select>
 	<insert id="movieRepleAdd" parameterType="mvdto">
 		insert into movieReple values(
@@ -28,5 +57,9 @@
 	<select id="movieRepleList" resultType="mvdto" parameterType="mvdto">
 		select mv.*,m.id from movieReple mv,member m 
 		where repleMemberIdx=memberIdx and repleMovieIdx=#{repleMovieIdx}
+		order by repleMovieIdx desc
+	</select>
+	<select id="steelCut" resultType="mvdto">
+		select * from steelCut
 	</select>
 </mapper>

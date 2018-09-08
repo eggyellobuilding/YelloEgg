@@ -10,4 +10,7 @@ public interface AdminMovieDAO {
 	public List<AdminMovieDTO> movieList(int cp, int ls);
 	public List<AdminMovieDTO> searchList(int cp, int ls, AdminMovieDTO dto);
 	public int movieTotalCut();
+	public List<AdminMovieDTO> repleList();
+	public int repleDel(int repleIdx);
+
 }

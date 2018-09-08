@@ -53,7 +53,7 @@ h2{
 										<th>생년월일</th>
 										<th>휴대폰번호</th>
 										<th>Email</th>
-										<th>탈퇴한 날짜</th>
+										<th>탈퇴 날짜</th>
 									</tr>
 									</thead>
 									<tbody>

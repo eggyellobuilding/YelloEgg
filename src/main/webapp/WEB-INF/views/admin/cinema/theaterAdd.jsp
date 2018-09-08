@@ -26,11 +26,11 @@
 				<ul class="nav nav-tabs">
 					<li><a href="adminCinema.do">영화관 목록</a></li>
 					<li><a href="adminCinemaAdd.do">영화관 등록</a></li>
-					<li class="active"><a href="adminTheaterAdd.do">상영관 등록</a></li>
+					<li class="active"><a href="adminTheaterAdd.do">상영관 수정</a></li>
 					<li><a href="adminSeatsAdd.do">좌석 등록</a></li>
 				</ul>
 				<div class="container">
-					<h1>상영관 정보 등록</h1>
+					<h1>상영관 정보 수정</h1>
 					<!-- 영화관 고르기 -->
 					<form class="form-inline">
 						영화관 이름 :

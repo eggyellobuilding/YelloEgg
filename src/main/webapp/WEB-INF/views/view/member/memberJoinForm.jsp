@@ -35,6 +35,53 @@
 
 </style>
  <script type="text/javascript">
+	function checkBlank() {
+		var id=document.getElementById('id').value;
+		var pwd=document.getElementById('pwd').value;
+		var pwdConfirm=document.getElementById('pwdConfirm').value;
+		var name=document.getElementById('name').value;
+		var tel1=document.getElementById('tel1').value;
+		var tel2=document.getElementById('tel2').value;
+		var tel3=document.getElementById('tel3').value;
+		var year=document.getElementById('year').value;
+		var month=document.getElementById('month').value;
+		var date=document.getElementById('date').value;
+		var gender=document.getElementById('gender').checked;
+		var email=document.getElementById('email').value;
+		
+		if(id==''){
+			alert('아이디를 입력하세요.');
+			return false;
+		}
+		if(pwd==''){
+			alert('비밀번호를 입력하세요.');
+			return false;
+		}
+		if(pwdConfirm==''){
+			alert('비밀번호 확인을 입력하세요.');
+			return false;
+		}
+		if(name==''){
+			alert('이름를 입력하세요.');
+			return false;
+		}
+		if(gender==false){
+			alert('성별을 클릭하세요.');
+			return false;
+		}
+		if(tel1,tel2,tel3==''){
+			alert('휴대폰번호를 입력하세요.');
+			return false;
+		}
+		if(year,month,date==''){
+			alert('생년월일을 입력하세요.');
+			return false;
+		}
+		if(email==''){
+			alert('이메일을 입력하세요.');
+			return false;
+		}
+	}
 	
 	function cancelMemberJoin() {
 		alert('회원가입이 취소되었습니다.');
@@ -243,14 +290,14 @@
 	<hr class="colorgraph">
         <h2>Please Sign Up <small>It's free and always will be.</small></h2>
     <div id="divJoin">
-			<form class="form-group" id="memberJoin" action="memberJoin.do" method="post">
+			<form class="form-group" id="memberJoin" action="memberJoin.do" method="post" onsubmit="return checkBlank()">
 				<input type="hidden" readonly="readonly" name="code" id="code" value="${random}">
 				<input type="hidden" readonly="readonly" name="randomCode" id="randomCode">
 				<table class="table table-striped">
 					<tr>
  					<th class="text-center" style="width:30%;">*아이디<br>
  					<span style="color:red"><small>(*문자,숫자를 포함 8~16자리)</small></span></th>
- 					<td class="form-inline"><input type="text" style="width:30%;margin-right: 20px;margin-top:6px;" name="id" id="id" class="form-control" onchange="idExp()"/>
+ 					<td class="form-inline"><input type="text" style="width:140px;margin-right: 20px;margin-top:6px;" name="id" id="id" class="form-control" onchange="idExp()"/>
  					<input type="button" class="btn btn-info" value="중복확인" id="CheckButton" onclick="memberIdCheck()"/>
  					<div id="idCheckMsg" style="color:blue"></div>
  					</td>
@@ -258,47 +305,47 @@
  				<tr>
  					<th class="text-center">*비밀번호<br>
  					<span style="color:red"><small>(*문자,숫자,특수문자를 포함 8~16자리)</small></span></th>
- 					<td><input type="password" class="form-control" style="width:30%;margin-top:6px;" name="pwd" id="pwd" onchange="isSame()"/>
+ 					<td><input type="password" class="form-control" style="width:140px;margin-top:6px;" name="pwd" id="pwd" onchange="isSame()"/>
  					</td>
  				</tr>
  				<tr>
  					<th class="text-center">*비밀번호 확인<br>
  					<span style="color:red"><small >(문자,숫자,특수문자를 포함 8~16자리)</small></span></th>
- 					<td class="form-inline"><input type="password" style="width:30%;margin-top:6px;" class="form-control" name="pwdConfirm" id="pwdConfirm" onchange="isSame()"/>
+ 					<td class="form-inline"><input type="password" style="width:140px;margin-top:6px;" class="form-control" name="pwdConfirm" id="pwdConfirm" onchange="isSame()"/>
  					<span id="same" style="margin-left: 30px;"></span>
  					</td>
  				</tr>
  				<tr>
  					<th class="text-center">*이름</th>
- 					<td><input type="text" name="name" id="name" onchange="nameExp()" class="form-control" style="width:30%;"/></td>
+ 					<td><input type="text" name="name" id="name" onchange="nameExp()" class="form-control" style="width:140px;"/></td>
  				</tr>
  				<tr>
  					<th class="text-center">*성별</th>
- 					<td ><input type="radio" name="gender" value="남자" id="genderRadio1"/>남자
- 					<input type="radio" name="gender"value="여자" id="genderRadio2"/>여자</td>
+ 					<td ><input type="radio" name="gender" id="gender" value="남자" id="genderRadio1"/>남자
+ 					<input type="radio" name="gender" id="gender" value="여자" id="genderRadio2"/>여자</td>
  				</tr>
  				<tr>
  					<th class="text-center">휴대폰번호</th>
  					<td class="form-inline" colspan="2" onchange="telExp()">
- 					<input type="text" class="form-control" name="tel1" id="tel1" style="width:9%"/> -
- 					<input type="text" class="form-control" name="tel2" id="tel2" style="width:11%"/> -
- 					<input type="text" class="form-control"  name="tel3" id="tel3" style="width:11%"/>
+ 					<input type="text" class="form-control" name="tel1" id="tel1" style="width:60px;"/> -
+ 					<input type="text" class="form-control" name="tel2" id="tel2" style="width:70px;"/> -
+ 					<input type="text" class="form-control" name="tel3" id="tel3" style="width:70px;"/>
  					</td>
  				</tr>
  				<tr>
  					<th class="text-center">*생년월일</th>
  					<td class="form-inline" onchange="birthDateExp()">
- 					<input type="text" name="year" id="year" style="width:12%" class="form-control"/>년
- 					<input type="text" name="month" id="month" style="width:8%" class="form-control"/> 월
- 					<input type="text" name="date" id="date" style="width:8%" class="form-control"/> 일
+ 					<input type="text" name="year" id="year" style="width:70px;" class="form-control"/>년
+ 					<input type="text" name="month" id="month" style="width:55px;" class="form-control"/> 월
+ 					<input type="text" name="date" id="date" style="width:55px;" class="form-control"/> 일
  					</td>
  				</tr>
  				<tr>
  					<th  class="text-center">*이메일</th>
- 					<td  class="form-inline"><input type="email" name="email" id="email"class="form-control" onchange="emailExp()"/>
+ 					<td  class="form-inline"><input type="email" name="email" id="email" style="width: 250px;" class="form-control" onchange="emailExp()"/>
  					<input type="button" class="btn btn-info" value="이메일인증" style="margin-left: 10px;"onclick="sendCodeCheck()"/>
- 					<div class="form-inline"><input type="hidden" id="inputCode" name="inputCode" style="width:35%;margin-top:12px;" 
-					class="form-control" onkeyup="checkCode()" placeholder="인증번호를 입력해주세요.">
+ 					<div class="form-inline"><input type="hidden" id="inputCode" name="inputCode" style="width:200px;margin-top:12px;" 
+					class="form-control" onkeyup="checkCode()" required="required" placeholder="인증번호를 입력해주세요.">
 					<span id="checkCode" style="margin-left: 20px;"></span></div>
  					</td>
  				</tr>							

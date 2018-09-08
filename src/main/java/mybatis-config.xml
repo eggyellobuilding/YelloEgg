@@ -9,12 +9,13 @@
 		<typeAlias type="egg.movie.admin.model.AdminMovieDTO" alias="amvdto"/>
 		<typeAlias type="egg.movie.model.MovieDTO" alias="mvdto"/>
 		<typeAlias type="egg.member.model.MemberDTO" alias="mdto"/>
-		<typeAlias type="egg.moviePayment.model.MoviePaymentDTO" alias="mpdto"/>
 		<typeAlias type="egg.reservation.model.ReservationDTO" alias="rdto"/>
 		<typeAlias type="egg.statics.admin.model.AdminStaticsDTO" alias="atdto"/>
 		<typeAlias type="egg.store.admin.model.AdminStoreDTO" alias="astdto"/>
-		<typeAlias alias="ndto" type="egg.notice.commons.model.NoticeDTO"/>
-  		<typeAlias alias="adto" type="egg.notice.admin.model.AdminNoticeDTO"/>
+		<typeAlias type="egg.notice.commons.model.NoticeDTO"  alias="ndto"/>
+  		<typeAlias type="egg.notice.admin.model.AdminNoticeDTO" alias="adto"/>
+  		<typeAlias type="egg.mypage.model.MypageDTO" alias="mpdto"/>
+  		<typeAlias type="egg.store.model.StoreDTO" alias="sdto"/>
   	</typeAliases>
   	<mappers>
 		<mapper resource="sql/adminSteelCutSql.xml"/>
@@ -30,5 +31,7 @@
 		<mapper resource="sql/movieReservation.xml"/>
 		<mapper resource="sql/moviePayment.xml"/>
 		<mapper resource="sql/adminStaticsSql.xml"/>
+		<mapper resource="sql/mypageSql.xml"/>
+		<mapper resource="sql/storeSql.xml"/>
   	</mappers>
   </configuration>  

@@ -28,13 +28,16 @@ h2{
 function adminUpdateMemberForm(memberIdx) {
 	location.href='adminUpdateMemberForm.do?memberIdx='+memberIdx;
 }
-function adminDeleteMember(memberIdx) {
+function adminDeleteMember(memberIdx_s) {
+	var memberIdx=memberIdx_s.value;
+	alert(memberIdx);
 	var result =window.confirm('진짜 삭제하시겠습니까?');
 	if(result){
-		return true;
+		location.href='adminDeleteMember.do?memberIdx='+memberIdx;
 	}else{
 		window.alert('삭제를 취소하였습니다.');
-		return false;
+		location.href='adminMemberList.do';
+		
 	}
 }
 </script>
@@ -57,8 +60,8 @@ function adminDeleteMember(memberIdx) {
 					<div class="container">
 				
 						<h2>가입된 회원목록</h2>
-							<form action="adminDeleteMember.do" method="post" style="margin-top:35px;overflow: auto;width:95%;">
-								<input type="hidden" name="memberIdx" id="memberIdx" value="${mdto.memberIdx}"/>
+							<form method="post" style="margin-top:35px;overflow: auto;width:95%;">
+								
 								<table id="adminMemberTable" class="table table-hover">
 									<thead>
 									<tr>
@@ -84,6 +87,7 @@ function adminDeleteMember(memberIdx) {
 									</tr>
 								</c:if>
 								<c:forEach var="mdto" items="${lists}">
+								<input type="hidden" name=memberIdx${mdto.memberIdx} id="memberIdx" value="${mdto.memberIdx}"/>
 									<tr>
 										<td>${mdto.memberIdx}</td>
 										<td>${mdto.gradeName}</td>
@@ -97,7 +101,7 @@ function adminDeleteMember(memberIdx) {
 										<td>${mdto.joinDate}</td>
 										<td>
 										<input type="button" value="수정" class="btn btn-default"  onclick="adminUpdateMemberForm(${mdto.memberIdx})">
-										<input type="submit" value="삭제" class="btn btn-danger" onsubmit="return adminDeleteMember()">
+										<input type="button" value="삭제" class="btn btn-danger" onclick="adminDeleteMember(memberIdx${mdto.memberIdx})" >
 										</td>
 									</tr>
 								</c:forEach>

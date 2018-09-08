@@ -39,7 +39,7 @@ public class NoticeController {
 			temp.put("start", ((cp -1) * pagesize) + "");
 			temp.put("end", (((cp -1) * pagesize) + pagesize) + "");
 			List<NoticeDTO> arr = adao.NoticeList(temp);
-			String pageStr = egg.commons.PageModule.makepage("NoticeList.do", totalcnt, listsize, pagesize, cp);
+			String pageStr = egg.commons.PageModule.makePage("NoticeList.do", totalcnt, listsize, pagesize, cp);
 			mav.addObject("pageStr", pageStr);
 			mav.addObject("arr", arr);
 			mav.addObject("cp", cp);

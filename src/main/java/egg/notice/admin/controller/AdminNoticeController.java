@@ -37,7 +37,7 @@ public class AdminNoticeController {
 		temp.put("start", ((cp -1) * pagesize) + "");
 		temp.put("end", (((cp -1) * pagesize) + pagesize) + "");
 		List<AdminNoticeDTO> arr = adao.getAllList(temp);
-		String pageStr = egg.commons.PageModule.makepage("adminNotice.do", totalcnt, listsize, pagesize, cp);
+		String pageStr = egg.commons.PageModule.makePage("adminNotice.do", totalcnt, listsize, pagesize, cp);
 		mav.setViewName("admin/adminNotice/noticeList");
 		mav.addObject("pageStr", pageStr);
 		mav.addObject("arr", arr);

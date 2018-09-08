@@ -13,7 +13,7 @@ public class CinemaDAOImple implements CinemaDAO {
 	
 	public CinemaDAOImple(SqlSessionTemplate sqlMap) {
 		super();
-		this.sqlMap = sqlMap;
+		this.sqlMap = sqlMap; 
 	}
 
 	public int cinemaAdd(CinemaDTO cdto) {
@@ -22,13 +22,22 @@ public class CinemaDAOImple implements CinemaDAO {
 		return cinemaIdx;
 	}
 	
-	public List<CinemaDTO> cinemaList() {
-		List<CinemaDTO> list = sqlMap.selectList("cinemaList");
+	public List<CinemaDTO> cinemaList(int ls, int cp) {
+		Map data=new HashMap();
+		int startnum=(cp-1)*ls+1;
+		int endnum=cp*ls;
+		data.put("startnum", startnum);
+		data.put("endnum", endnum);
+		List<CinemaDTO> list = sqlMap.selectList("cinemaList",data);
 		for(int i = 0  ;i < list.size() ;i++) {
 			String addr= list.get(i).getCinemaCity()+" "+ list.get(i).getCinemaGu()+" "+list.get(i).getCinemaBungi() +" "+ list.get(i).getCinemaAddr();
 			list.get(i).setCinemaAddr(addr);
 		}
 		return list;
+	}
+	public int adminCinemaTotalCnt() {
+		int count = sqlMap.selectOne("adminCinemaTotalCnt");
+		return count;
 	}
 	
 	public List<CinemaDTO> theaterList(int cinemaIdx) {

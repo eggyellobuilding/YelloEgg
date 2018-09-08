@@ -38,7 +38,11 @@ public class AdminMovieDAOImple implements AdminMovieDAO {
 		List<AdminMovieDTO> dto = sqlMap.selectList("steelCutList");
 		return dto;
 	}
-
+	/** 감상평 삭제 */
+	public int repleDel(int repleIdx) {
+		int result = sqlMap.delete("repleDel",repleIdx);
+		return result;
+	}
 	/** 어드민 영화 리스트 */
 	public List<AdminMovieDTO> movieList(int cp, int ls) {
 		Map data = new HashMap();
@@ -71,4 +75,11 @@ public class AdminMovieDAOImple implements AdminMovieDAO {
 		
 		return dto;
 	}
+	/** 영화 관람평 리스트 */
+	public List<AdminMovieDTO> repleList() {
+		List<AdminMovieDTO> lists = sqlMap.selectList("repleList");
+		
+		return lists;
+	}
+	
 }

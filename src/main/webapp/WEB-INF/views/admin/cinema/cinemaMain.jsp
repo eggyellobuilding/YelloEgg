@@ -99,11 +99,11 @@ function openSeatModal(e){
 				<ul class="nav nav-tabs">
 					<li class="active"><a href="adminCinema.do">영화관 목록</a></li>
 					<li><a href="adminCinemaAdd.do">영화관 등록</a></li>
-					<li><a href="adminTheaterAdd.do">상영관 등록</a></li>
+					<li><a href="adminTheaterAdd.do">상영관 수정</a></li>
 					<li><a href="adminSeatsAdd.do">좌석 등록</a></li>
 				</ul>
 				<div class="container">
-					<div class="col-xs-6">
+					<div class="col-xs-6" style="width:55%;">
 						<h2>영화관 목록</h2>
 						<table class="table table-hover text-center">
 							<tr class="text-center">
@@ -122,6 +122,15 @@ function openSeatModal(e){
 										value="삭제" class="btn btn-danger"></td>
 								</tr>
 							</c:forEach>
+							<tr>
+									<td colspan="4">
+										<nav style="text-align: center">
+											<ul class="pagination">
+											${pageStr}
+											</ul>
+										</nav>
+									</td>
+							</tr>
 						</table>
 					</div>
 					<div class="col-xs-1"

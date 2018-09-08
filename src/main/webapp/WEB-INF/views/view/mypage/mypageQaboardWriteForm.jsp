@@ -13,14 +13,22 @@
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
     <script src="/yelloMovie/bootstrap/js/bootstrap.min.js"></script>
   	    <!-- mypage css -->
-    <link href="/yelloMovie/css/mypage/mypage.css" rel="stylesheet">
+    
         <link href="/yelloMovie/css/admin/cinema/theaterAdd.css" rel="stylesheet" type="text/css">
         <link href="/yelloMovie/css/admin/header.css" type="text/css"rel="stylesheet">
+  <link href="/yelloMovie/css/mypage/mypage.css" rel="stylesheet">
   </head>
+<style>
+#mypage {
+	margin-top: 30px;
+	margin-left: 10px;
+}
 
+</style>
     <script type="text/javascript">
   function cancelQaboardWrite() {
-	location.href='mypageQaboardList.do';
+	  var memberIdx=document.getElementById('memberIdx').value;
+	location.href='mypageQaboardList.do?memberIdx='+memberIdx;
 }
   
   $(document).ready(function(){
@@ -85,9 +93,29 @@
 		$('#cinemaIdx').val(cinemaIdx);
 		$('#div').hide();
 	}
+
+	function checkBlank() {
+		var qaCate=document.getElementById('qaCate').value;
+		var qaTitle=document.getElementById('qaTitle').value;
+		var qaContent=document.getElementById('qaContent').value;
+	
+		if(qaCate==''){
+			alert('문의유형을 선택해주세요.');
+			return false;
+		}
+		if(qaTitle==''){
+			alert('문의 제목을 입력해주세요.');
+			return false;
+		}
+		if(qaContent==''){
+			alert('문의 내용을 입력해주세요.');
+			return false;
+		}
+	}
   </script>
   <body>
      <%@include file="../commonsView/header.jsp" %>
+     
 	<c:if test="${empty sessionScope.smdto.memberIdx}">
 		<script type="text/javascript">
 			window.alert('로그인후 사용하시기를 바랍니다.');
@@ -96,38 +124,41 @@
 	</c:if>     
 <div class="container" id="divMypageContainer">
  <div class="mypageHeader"><h2><b>My YelloMovie</b></h2></div>
- 		<div class="row" id="mypageNav">
+ 		<div class="row" style="padding-top: 30px;padding-left: 10px;">
 			<div class="col-xs-2" id="mypageCol">
-				<p><a href="mypageQaboardList.do?memberIdx=${sessionScope.smdto.memberIdx}"><img src="/yelloMovie/img/mypage/mypage.jpg"
-					style="margin-left: 7px;" width="50%" height="50%"
+				<p><a href="mypageQaboardList.do?memberIdx=${sessionScope.smdto.memberIdx}">
+				<img src="/yelloMovie/img/mypage/mypageQaboard.png"
+					style="margin-left: 7px;" width="50px" height="50px"
 					alt="myYelloMovie" class="img-rounded"></a>
 				</p>
 				<span style="color:#A4A4A4;"><strong>나의 문의내역</strong></span>
 			</div>
 			<div class="col-xs-2" id="mypageCol">
 				<p><a href="mypageUpdateMemberForm.do?memberIdx=${sessionScope.smdto.memberIdx}"><img
-					src="/yelloMovie/img/mypage/reservation.jpg" width="50%" height="50%"
+					src="/yelloMovie/img/mypage/mypageUpdate.png" width="50px" height="50px"
 					alt="updateMember" class="img-rounded"></a>
 				</p>
 				<span style="color:#A4A4A4;"><strong>개인정보수정</strong></span>
 			</div>
 			<div class="col-xs-2" id="mypageCol">
-				<p><a href="mypageReservationList.do"><img
-					src="/yelloMovie/img/mypage/reservation.jpg" width="50%" height="50%"
+				<p><a href="mypageReservationList.do?memberIdx=${sessionScope.smdto.memberIdx}"><img
+					src="/yelloMovie/img/mypage/mypageReservation.png" width="61px" height="50px"
 					alt="reservationImfo" class="img-rounded"></a>
 				</p>
 				<span style="color:#A4A4A4;"><strong>예매확인/취소</strong></span>
 			</div>
 			<div class="col-xs-2" id="mypageCol">
-				<p><a href="mypageStoreBuyList.do"><img src="/yelloMovie/img/mypage/store.jpg"
-					width="50%" height="50%" alt="storeImfo" class="img-rounded"></a>
+				<p><a href="mypageStoreBuyList.do?memberIdx=${sessionScope.smdto.memberIdx}">
+				<img src="/yelloMovie/img/mypage/mypageStore.png"
+					width="50px" height="50px" alt="storeImfo" class="img-rounded"></a>
 				</p>
 				<span style="color:#A4A4A4;"><strong>스토어 구매내역</strong></span>
 			</div>
 		</div>
+		
 		<div style="margin-top: 80px; margin-left: 10px;"><h3><strong>1:1문의</strong></h3></div>
 		<div><h4><strong>개인정보 수집에 대한 동의</strong></h4></div>
-		<textarea class="form-control" name="agreementContents" rows="10">
+		<textarea class="form-control" name="agreementContents" rows="10" readonly="readonly">
 		귀하께서 문의하신 다음의 내역은 법률에 의거 개인정보 수집.이용에 대한 본인동의가 필요한 항목입니다.
 
 개인정보의 수집 및 이용목적
@@ -149,33 +180,33 @@
 			</div>
 			<div class="col-xs-4" style="padding-top: 20px; text-align: right;">
 				<p>
-				<input type="checkbox" name="inquiryAgree" style="width:20px; height: 14px; margin-right: 5px;"/>동의함
-				<input type="checkbox" name="inquiryAgree" style="width:20px; height: 14px; margin-left: 15px; margin-right: 5px;"/>동의 하지 않음
+				<input type="checkbox" name="qaboardAgree" id="qaboardAgree" style="width:20px; height: 14px; margin-right: 5px;"/>동의함
+				<input type="checkbox" name="qaboardAgree" id="qaboardDeagree" style="width:20px; height: 14px; margin-left: 15px; margin-right: 5px;"/>동의 하지 않음
 				</p>
-				
 			</div>
 		</div>
 		
 		<div style="border-top: 4px solid #F4FA58; margin-top: 20px;">
-			<form class="form-group"  action="mypageQaboardWrite.do" method="post">
+			<form class="form-group"  action="mypageQaboardWrite.do" method="post" onsubmit="return checkBlank()">
+				<input type="hidden" name="memberIdx" id="memberIdx" value="${sessionScope.smdto.memberIdx}"/>
 				<table class="table table-striped">
 					<tr>
 						<th id="inquiryCol"> 이름</th>
-						<td colspan="3"><input type="text" value="${sessionScope.smdto.name}" readonly name="name" class="form-control" style="width: 30%"></input></td>
+						<td colspan="3"><input type="text" value="${sessionScope.smdto.name}" readonly name="name" class="form-control" style="width: 140px;"></input></td>
 					</tr>
 					<tr>
 						<th id="inquiryCol"> 연락처</th>
-						<td class="form-inline" style="width:30%">
-						<input type="text" name="tel" value="${sessionScope.smdto.tel}"class="form-control" style="width: 20%"/> 
+						<td>
+						<input type="text" name="tel" value="${sessionScope.smdto.tel}"class="form-control" readonly style="width: 150px;"/> 
 						</td>
 						<th id="inquiryCol"> 이메일</th>
-						<td><input type="email" name="email" value="${sessionScope.smdto.email}" class="form-control" style="width: 75%"></input></td>
+						<td><input type="email" name="email" value="${sessionScope.smdto.email}" class="form-control" readonly style="width: 200px;"></input></td>
 					</tr>
 					<tr>
 						<th id="inquiryCol"> 문의지점</th>
 					
 						<td colspan="3">
-							<button id="selectCinemaName" type="button" class="btn btn-default"> 영화관 선택  <span class="caret"></span></button>
+							<button id="selectCinemaName" type="button" class="btn btn-default"  style="width:180px;"> 영화관 선택  <span class="caret"></span></button>
 	      					<input type="hidden" name="qaCinemaIdx" id="cinemaIdx" class="form-control"/>
 	      					<div id="div" style="display:none;"></div>
 						</td>
@@ -184,8 +215,8 @@
 					<tr>
 						<th id="inquiryCol"> 문의유형</th>
 						<td colspan="3">
-						<select class="form-control" name="qaCate" style="width:30%">
-  							<option value="문의유형 선택">문의유형 선택</option>
+						<select class="form-control" name="qaCate" id="qaCate" style="width:160px;">
+  							<option value="">문의유형 선택</option>
   							<option value="일반문의">일반문의</option>
   							<option value="칭찬">칭찬</option>
   							<option value="불만">불만</option>
@@ -196,17 +227,17 @@
 					<tr>
 						<th id="inquiryCol"> 제목</th>
 						<td colspan="3">
-						<input type="text" name="qaTitle" class="form-control">
+						<input type="text" name="qaTitle" id="qaTitle" class="form-control">
 						</td>
 					</tr>
 					<tr>
-						<th id="inquiryCol"> 내용</th>
+						<th id="inquiryCol" style="vertical-align: middle;"> 내용</th>
 						<td colspan="3">
-						<textarea class="form-control" name="qaContents" rows="20"></textarea>
+						<textarea class="form-control" name="qaContent" id="qaContent" rows="20"></textarea>
 						</td>
 					</tr>
 					<tr>
-						<td colspan="3" align="center" style="padding-top: 20px;">
+						<td colspan="4" align="center" style="padding-top: 20px;">
 						<button type="button" style="margin-right: 20px;width:120px;"class="btn btn-default btn-lg" onclick="cancelQaboardWrite()">취소</button>
 						<button type="submit" style="width:120px;"class="btn btn-primary btn-lg">글작성</button>
 						</td>

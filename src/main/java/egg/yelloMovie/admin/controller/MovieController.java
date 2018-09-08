@@ -73,18 +73,11 @@ public class MovieController {
 			return null;
 		}
 	}
-	
-	/** 어드민 메인 페이지 */
-	@RequestMapping("adminMain.do")
-	public String main() {
-		return "admin/adminTemplete";
-	}
-	 
+
 	/** 관리자 영화 리스트 */
 	@RequestMapping("/adminMovieList.do")
 	public ModelAndView adminMovieListForm(@RequestParam(value="cp",defaultValue="1") int cp) {
-			ModelAndView mav = new ModelAndView();
-			AdminMovieDTO dto = new AdminMovieDTO();	
+			ModelAndView mav = new ModelAndView();	
 			
 			int totalcnt=adminMovieDAO.movieTotalCut();
 			int listsize=10;
@@ -92,6 +85,7 @@ public class MovieController {
 			
 			List<AdminMovieDTO> movieList = adminMovieDAO.movieList(cp, listsize);	
 			List<AdminMovieDTO> steelCutList = adminMovieDAO.steelCutList();
+			List<AdminMovieDTO> repList = adminMovieDAO.repleList();
 			
 			/** sql날짜 -> String 변환 */
 			for(int i = 0; i<movieList.size(); i++) {	
@@ -99,13 +93,14 @@ public class MovieController {
 				movieList.get(i).setEndDate(new SimpleDateFormat("yyyy-MM-dd").format(movieList.get(i).getMovieEndDate()));	
 			}
 
-			String pageStr=egg.commons.PageModule.makepage("adminMovieList.do", totalcnt, listsize, pagesize, cp);
+			String pageStr=egg.commons.PageModule.makePage("adminMovieList.do", totalcnt, listsize, pagesize, cp);
 			
+			mav.addObject("repList", repList);
 			mav.addObject("pagestr", pageStr);
 			mav.addObject("movieList", movieList);
 			mav.addObject("steelCutList", steelCutList);
 			mav.setViewName("admin/movie/movieList");
-
+			
 			return mav;
 	}
 	
@@ -142,7 +137,13 @@ public class MovieController {
 			searchList.get(i).setEndDate(new SimpleDateFormat("yyyy-MM-dd").format(searchList.get(i).getMovieEndDate()));	
 		}
 
-		String pageStr=egg.commons.PageModule.makepage("searchMovie.do", totalcnt, listsize, pagesize, cp);
+		String pageStr=egg.commons.PageModule.makePage("searchMovie.do", totalcnt, listsize, pagesize, cp);
+		
+		/** 감상평 리스트 */
+		
+		List<AdminMovieDTO> repList = adminMovieDAO.repleList();
+		
+		mav.addObject("repList", repList);
 		
 		mav.addObject("pagestr", pageStr);
 		mav.addObject("searchList", searchList);
@@ -152,13 +153,6 @@ public class MovieController {
 		return mav;
 	}
 	
-	/** 감상평 보기 */
-	@RequestMapping(value="/adminMovieRepleList.do",method=RequestMethod.GET)
-	public String adminMovieRepleListForm() {
-		
-		return "admin/movie/movieReple";
-	}
-
 	/** 영화 등록 */
 	@RequestMapping(value="/adminMovieAdd.do",method=RequestMethod.GET)
 	public String adminMovieAddForm() {
@@ -210,16 +204,16 @@ public class MovieController {
 		return mav;
 	}
 	
-	/** 영화 수정 */
+	/** 감상평 삭제 */
+	@RequestMapping("/adminRepleDel.do")
+	public ModelAndView repleDelSubmit(@RequestParam("repleIdx")int repleIdx) {
+		ModelAndView mav = new ModelAndView();
+		
+		adminMovieDAO.repleDel(repleIdx);
+		String msg = "삭제완료!";	
 	
-	/** 파일삭제 */
-	@RequestMapping("fileDelete.do")
-	public String fileDelete(AdminMovieDTO dto) {
-		
-		File f = new File("C:/Users/user/git/eggYello/src/main/webapp/"+dto);
-		f.delete();
-		
-		return null;
+		mav.addObject("msg", msg);
+		mav.setViewName("admin/movie/movieMsg");
+		return mav;
 	}
-	
 }

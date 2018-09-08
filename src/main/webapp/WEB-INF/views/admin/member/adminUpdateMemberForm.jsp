@@ -41,7 +41,32 @@ h2 {
 function cancelAdminUpdateMember() {
 	location.href='adminMemberList.do';
 }
-
+function adminUpdateMember() {
+	var memberIdx=document.getElementById('memberIdx').value;
+	var email=document.getElementById('email').value;
+	var tel=document.getElementById('tel').value;
+	location.href='adminUpdateMember.do?memberIdx='+memberIdx+'&email='+email+'&tel='+tel;
+}
+function telExp() {
+	var tel = document.getElementById('tel').value;
+	var regExp = /^01([0|1|6|7|8|9]?)-?([0-9]{3,4})-?([0-9]{4})$/;
+	if(!(regExp.test(tel))){
+		alert('휴대폰 형식에 맞게 입력해주세요.(010-1234-5678)');
+		document.getElementById('tel').value='';
+		document.getElementById('tel').focus();
+		
+	}
+}
+function emailExp() {
+	var email=document.getElementById('email').value;
+	var regExp=/^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/;
+	if(!(regExp.test(email))){
+		alert('이메일 형식에 맞게 입력해주세요.(example@example.com)');
+		document.getElementById('email').value='';
+		document.getElementById('email').focus();
+		
+	}
+}
 </script>
 <body>
 	<c:if test="${empty sessionScope.saddto.adminIdx}">
@@ -62,8 +87,8 @@ function cancelAdminUpdateMember() {
 				</ul>
 				<div class="container">
 					<h2>회원 정보 수정</h2>
-					<form class="form-group" action="adminUpdateMember.do" method="post">
-						<input type="hidden" name="memberIdx" value="${dtos.memberIdx}"/>
+					<form class="form-group" method="post">
+						<input type="hidden" name="memberIdx" id="memberIdx" value="${dtos.memberIdx}"/>
 						<table id="adminUpdateMemberTable" class="table table-striped">
 							<tr>
 								<th>회원등급</th>
@@ -97,16 +122,16 @@ function cancelAdminUpdateMember() {
 							</tr>
 							<tr>
 								<th>Email</th>
-								<td><input type="text" style="width: 50%" name="email" class="form-control" value="${dtos.email}" /></td>
+								<td onchange="emailExp()"><input type="text" style="width: 50%" name="email" id="email" class="form-control" value="${dtos.email}" /></td>
 							</tr>
 							<tr>
 								<th>휴대폰 번호</th>
-								<td><input type="text" style="width: 50%" name="tel" class="form-control" value="${dtos.tel}" /></td>
+								<td onchange="telExp()"><input type="text" style="width: 50%" name="tel" id="tel" class="form-control" value="${dtos.tel}" /></td>
 							</tr>
 							<tr>
 								<td colspan="2" style="width: 50%; padding-top: 20px;" align="center">
 									<input type="button"	style="margin-right: 20px; width: 120px;" class="btn btn-default btn-lg" value="취소" onclick="cancelAdminUpdateMember()" /> 
-									<input type="submit" style="width: 120px;" class="btn btn-primary btn-lg" value="수정" />
+									<input type="button" style="width: 120px;" class="btn btn-primary btn-lg" value="수정" onclick="adminUpdateMember()" />
 								</td>
 							</tr>
 						</table>

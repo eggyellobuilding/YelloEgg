@@ -20,12 +20,22 @@
 		
 	</insert>
 	
+	<select id="getMemberIdx" parameterType="String" resultType="int">
+	select memberIdx from member where email=#{email}
+	</select>
+	
+	<insert id="mileageAdd" parameterType="mdto">
+		insert into mileage values(mileageSq.nextval,300,'회원가입',#{mileageMemberIdx})
+	</insert>
+	
 	<select id="idCheck" parameterType="String" resultType="java.lang.Integer">
 		select count(id) from member where id=#{id}
 	</select>
 	
 	<select id="memberLogin" parameterType="mdto" resultType="mdto">
-		select * from member where id=#{id}
+		select m.*,g.* from member m , grade g
+		where memberGradeIdx=gradeIdx
+		and id=#{id}
 	</select>
 	
 	<select id="adminLogin" parameterType="mdto" resultType="mdto">
@@ -50,14 +60,14 @@
 		update member set state='Y',joinDate=sysdate where memberIdx=#{memberIdx}
 	</update>
 	
-	<select id="adminMemberList" resultType="mdto">
+	<select id="adminMemberList" parameterType="map" resultType="mdto">
 	select * from
 	(select rownum as rnum,b.* from
 	( select sum(mileagePrice) as mileagePrice,a.memberIdx,a.name,a.id,	a.birthdate,a.joindate,a.gender,a.email,a.tel,a.gradeName
 	from 
 	(select m.*,g.gradeName from member m, grade g 
-	where m.memberGradeIdx=g.gradeIdx)a,mileage mi
-	where a.memberIdx=mi.mileageMemberIdx
+	where m.memberGradeIdx=g.gradeIdx and state='N')a,mileage mi
+	where a.memberIdx=mi.mileageMemberIdx 
 	group by a.memberIdx, a.name, a.id,a.birthdate,a.joindate,a.gender,a.email,a.tel,a.gradeName
 	)b)c
 	where rnum<![CDATA[>=]]>#{startnum}	and rnum<![CDATA[<=]]>#{endnum}
@@ -71,11 +81,14 @@
 	group by a.memberIdx , a.name
 	</select>
 	
-	<select id="totalCnt" resultType="int">
-		select count(*) from member
+	<select id="memberTotalCnt" resultType="int">
+		select count(*) from member where state='N'
 	</select>
 	
-	<select id="adminDeleteMemberList" resultType="mdto">
+	<select id="deleteMemberTotalCnt" resultType="int">
+		select count(*) from member where state='Y'
+	</select>
+	<select id="adminDeleteMemberList" parameterType="map" resultType="mdto">
 	select * from
 		(select rownum as rnum,a.* from
 		(select m.*, g.gradeName from member m, grade g 
@@ -84,7 +97,7 @@
 	</select>
 	
 	<delete id="afterDaysDeleteMember" parameterType="mdto">
-		delete from member where joinDate<![CDATA[<=]]>(sysdate<![CDATA[-]]>1)
+		delete from member where joinDate<![CDATA[<=]]>(sysdate<![CDATA[-]]>30)
 	</delete>
 	
 	<select id="getMemberImfo" parameterType="mdto" resultType="mdto">
@@ -104,17 +117,14 @@
 		select b.* from
 		(select rownum as rnum,a.* from
 		(select a.*,c.cinemaCity,c.cinemaName
-		from admin a, cinema c where cinemaIdx=adminCinemaIdx order by adminGrade desc)a)b
+		from admin a, cinema c where cinemaIdx=adminCinemaIdx 
+		order by adminGrade desc)a)b
 		where rnum between #{startnum} and #{endnum}	
 	</select>
-	
+
 	<delete id="adminDeleteEmployee" parameterType="int">
 		delete from admin where adminIdx=#{adminIdx}
 	</delete>
-	
-	<select id="adminIdCheck" parameterType="String" resultType="java.lang.Integer">
-		select count(adminId) from admin where adminId=#{adminId}
-	</select>
 	
 	<insert id="adminRegisterEmployee" parameterType="mdto">
 		insert into admin values(
@@ -138,20 +148,9 @@
 		where adminCinemaIdx = #{cinemaIdx}
 	</select>
 	
-	<insert id="adminEmployeeAdd" parameterType="mdto">
-		insert into 
-		admin 
-		values(
-		adminSq.nextval,
-		#{adminId},
-		#{adminPwd},
-		sysdate,
-		#{adminGrade},
-		#{adminCinemaIdx}
-		)
-	</insert>
-	
 	<select id="adminTotalCnt" resultType="int">
 	select count(*) from admin
 	</select>
+	
+
 </mapper>  

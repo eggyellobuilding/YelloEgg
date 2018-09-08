@@ -23,7 +23,7 @@
 		var newPwdConfirm=document.getElementById('newPwdConfirm').value;
 		var regExp=/^.*(?=^.{8,16}$)(?=.*\d)(?=.*[a-zA-Z])(?=.*[!@#$%^&+=]).*$/;
 		if(!(regExp.test(newPwd))){
-			window.alert('비밀번호는 문자와 숫자, 특수문자 포함해서 6~16자를 입력하셔야 됩니다.');
+			window.alert('비밀번호는 문자와 숫자, 특수문자 포함해서 8~16자를 입력하셔야 됩니다.');
 			document.getElementById('newPwd').focus();
 			document.getElementById('newPwd').value='';
 			document.getElementById('newPwdConfirm').value='';
@@ -40,6 +40,28 @@
 			}
 		}
 	}
+
+	function checkBlank() {
+		var nowPwd=document.getElementById('nowPwd').value;
+		var newPwd=document.getElementById('newPwd').value;
+		var newPwdConfirm=document.getElementById('newPwdConfirm').value;
+		if(nowPwd==''){
+			alert('현재비밀번호를 입력해주세요.');
+			return false;
+		}
+		if(newPwd==''){
+			alert('새 비밀번호를 입력해주세요.');
+			return false;
+		}
+		if(newPwdConfirm==''){
+			alert('새 비밀번호 확인을 입력해주세요.');
+			return false;
+		}
+		
+	}
+	function cancelChangePwd() {
+		location.href='mypageUpdateMemberForm.do?memberIdx=${sessionScope.smdto.memberIdx}';
+	}
   </script>
   <body>
  <%@include file="../commonsView/header.jsp" %>
@@ -53,29 +75,31 @@
  <div class="mypageHeader"><h2><b>My YelloMovie</b></h2></div>
  		<div class="row" id="mypageNav">
 			<div class="col-xs-2" id="mypageCol">
-				<p><a href="mypageQaboardList.do?memberIdx=${sessionScope.smdto.memberIdx}"><img src="/yelloMovie/img/mypage/mypage.jpg"
-					style="margin-left: 7px;" width="50%" height="50%"
+				<p><a href="mypageQaboardList.do?memberIdx=${sessionScope.smdto.memberIdx}">
+					<img src="/yelloMovie/img/mypage/mypageQaboard.png"
+					style="margin-left: 7px;" width="50px" height="50px"
 					alt="myYelloMovie" class="img-rounded"></a>
 				</p>
 				<span style="color:#A4A4A4;"><strong>나의 문의내역</strong></span>
 			</div>
 			<div class="col-xs-2" id="mypageCol">
 				<p><a href="mypageUpdateMemberForm.do?memberIdx=${sessionScope.smdto.memberIdx}"><img
-					src="/yelloMovie/img/mypage/reservation.jpg" width="50%" height="50%"
+					src="/yelloMovie/img/mypage/mypageUpdate.png" width="50px" height="50px"
 					alt="updateMember" class="img-rounded"></a>
 				</p>
 				<span style="color:#A4A4A4;"><strong>개인정보수정</strong></span>
 			</div>
 			<div class="col-xs-2" id="mypageCol">
-				<p><a href="mypageReservationList.do"><img
-					src="/yelloMovie/img/mypage/reservation.jpg" width="50%" height="50%"
+				<p><a href="mypageReservationList.do?memberIdx=${sessionScope.smdto.memberIdx}"><img
+					src="/yelloMovie/img/mypage/mypageReservation.png" width="61px" height="50px"
 					alt="reservationImfo" class="img-rounded"></a>
 				</p>
 				<span style="color:#A4A4A4;"><strong>예매확인/취소</strong></span>
 			</div>
 			<div class="col-xs-2" id="mypageCol">
-				<p><a href="mypageStoreBuyList.do"><img src="/yelloMovie/img/mypage/store.jpg"
-					width="50%" height="50%" alt="storeImfo" class="img-rounded"></a>
+				<p><a href="mypageStoreBuyList.do?memberIdx=${sessionScope.smdto.memberIdx}">
+				<img src="/yelloMovie/img/mypage/mypageStore.png"
+					width="50px" height="50px" alt="storeImfo" class="img-rounded"></a>
 				</p>
 				<span style="color:#A4A4A4;"><strong>스토어 구매내역</strong></span>
 			</div>
@@ -85,24 +109,24 @@
 		<div style="padding-top:8px;"><small style="color:#A4A4A4;padding-left: 20px;">현재 비밀번호를 입력한 후 새로 사용할 비밀번호를 입력하세요.</small></div>
 		<div style="border-top: 4px solid #F4FA58; margin-top: 20px;">
 		
-			<form class="form-group" action="mypageChangePwd.do" method="post">
+			<form class="form-group" action="mypageChangePwd.do" method="post" onsubmit="return checkBlank()">
 				<input type="hidden" name="memberIdx" id="memberIdx" value="${sessionScope.smdto.memberIdx}"/>
 				<input type="hidden" name="pwd" id="pwd" value="${sessionScope.smdto.pwd}"/>
 				<table class="table table-striped">
 					<tr>
-						<th id="updateTr"> * 현재 비밀번호</th>
-						<td id="updateTd"><input type="password" name="nowPwd" id="nowPwd" class="form-control" style="width: 21%"></input></td>
+						<th id="changeTr"> * 현재 비밀번호</th>
+						<td id="changeTd"><input type="password" name="nowPwd" id="nowPwd" class="form-control" style="width: 190px;"></input></td>
 					</tr>
 					<tr>
-						<th id="updateTr"> * 새 비밀번호</th>
-						<td id="updateTd" class="form-inline"><input type="password" name="newPwd" id="newPwd" class="form-control" style="width: 21%" onchange="isSame()"></input>
+						<th id="changeTr"> * 새 비밀번호</th>
+						<td id="changeTd" class="form-inline"  onchange="isSame()"><input type="password" name="newPwd" id="newPwd" class="form-control" style="width: 190px;"></input>
 						<span style="color:#A4A4A4;margin-left: 10px;">문자,숫자,특수문자를 포함 8~16자리 입력해주세요.</span>
 						</td>
 				
 					</tr>
 					<tr>
-						<th id="updateTr"> * 새 비밀번호 확인</th>
-						<td id="updateTd" class="form-inline"><input type="password" name="newPwdConfirm" id="newPwdConfirm" class="form-control" style="width: 21%" onchange="isSame()">
+						<th id="changeTr"> * 새 비밀번호 확인</th>
+						<td id="changeTd" class="form-inline"  onchange="isSame()"><input type="password" name="newPwdConfirm" id="newPwdConfirm" class="form-control" style="width: 190px;">
 						<span id="same" style="margin-left: 30px;"></span>
 						</td>
 					</tr>

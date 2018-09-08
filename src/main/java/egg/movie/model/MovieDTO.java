@@ -65,6 +65,7 @@ public class MovieDTO {
 	
 	/** 사용자 ID */
 	private String id;
+	
 	/** 재료 */
 	private String runTime;
 	private String grade;
@@ -74,6 +75,11 @@ public class MovieDTO {
 	private String reScore;
 	private String reMemberIdx;
 	private String reMovieIdx;
+	private int repleCount;
+	private String repleDate;
+	private int repleSum;
+	private double replescoreavg;
+	private String movieRepleScoreAvg;
 	
 	public MovieDTO() {
 		super();
@@ -88,7 +94,8 @@ public class MovieDTO {
 			Date scheduleDate, String scheduleStartTime, int ticketIdx, int ticketAge, int ticketPrice,
 			int seatTheaterIdx, int seatX, int seatY, int exitX, int exitY, String id, String runTime, String grade,
 			String releaseDate, String endDate, String seatNumber, String reScore, String reMemberIdx,
-			String reMovieIdx) {
+			String reMovieIdx, int repleCount, String repleDate, int repleSum, double replescoreavg,
+			String movieRepleScoreAvg) {
 		super();
 		this.movieIdx = movieIdx;
 		this.movieReleaseDate = movieReleaseDate;
@@ -140,6 +147,11 @@ public class MovieDTO {
 		this.reScore = reScore;
 		this.reMemberIdx = reMemberIdx;
 		this.reMovieIdx = reMovieIdx;
+		this.repleCount = repleCount;
+		this.repleDate = repleDate;
+		this.repleSum = repleSum;
+		this.replescoreavg = replescoreavg;
+		this.movieRepleScoreAvg = movieRepleScoreAvg;
 	}
 
 	public int getMovieIdx() {
@@ -541,5 +553,48 @@ public class MovieDTO {
 	public void setReMovieIdx(String reMovieIdx) {
 		this.reMovieIdx = reMovieIdx;
 	}
+
+	public int getRepleCount() {
+		return repleCount;
+	}
+
+	public void setRepleCount(int repleCount) {
+		this.repleCount = repleCount;
+	}
+
+	public String getRepleDate() {
+		return repleDate;
+	}
+
+	public void setRepleDate(String repleDate) {
+		this.repleDate = repleDate;
+	}
+
+	public int getRepleSum() {
+		return repleSum;
+	}
+
+	public void setRepleSum(int repleSum) {
+		this.repleSum = repleSum;
+	}
+
+	public double getReplescoreavg() {
+		return replescoreavg;
+	}
+
+	public void setReplescoreavg(double replescoreavg) {
+		this.replescoreavg = replescoreavg;
+	}
+
+	public String getMovieRepleScoreAvg() {
+		return movieRepleScoreAvg;
+	}
+
+	public void setMovieRepleScoreAvg(String movieRepleScoreAvg) {
+		this.movieRepleScoreAvg = movieRepleScoreAvg;
+	}
+
+	
+	
 	
 }

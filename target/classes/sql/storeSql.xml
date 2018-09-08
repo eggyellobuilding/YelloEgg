@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="yello.movie">
+	<select id="storeTicket" resultType="sdto">
+		select * from store where storeCtg = '티켓' order by storeIdx desc
+	</select>
+	<select id="storeEvent" resultType="sdto">
+		select * from store where storeCtg = '이벤트' order by storeIdx desc
+	</select>
+	<select id="storeAccessories" resultType="sdto">
+		select * from store where storeCtg = '악세사리' order by storeIdx desc
+	</select>
+	<select id="storePopcorn" resultType="sdto">
+		select * from store where storeCtg = '팝콘/음료' order by storeIdx desc
+	</select>
+	<select id="storePayment" resultType="sdto" parameterType="int">
+		select sum(mileagePrice) as mileagePrice,a.memberIdx,a.id,a.email,a.tel
+  		from(select m.memberIdx,m.id,m.email,m.tel from member m 
+   		where m.memberIdx=#{midx})a,mileage mi
+  		where a.memberIdx=mi.mileageMemberIdx
+   		group by a.memberIdx, a.id, a.email,a.tel
+	</select>
+	<select id="storePayMileage" resultType="int" parameterType="int">
+		select sum(storePayMileage) from storePayment where storePayMemberIdx = #{midx} order by storePayIdx desc 
+	</select>
+	<insert id="storePaymentAdd" parameterType="sdto">
+		insert into storePayment values
+		(storePayIdxSq.nextval,
+		sysdate,
+		#{storePayCard},
+		#{storePayMileage},
+		#{storePayCount},
+		#{storePayState},
+		#{storePayMemberIdx},
+		#{storePayStoreIdx})
+	</insert>
+	<insert id="mileageAdd" parameterType="sdto">
+		insert into mileage values
+		(mileageSq.nextval,
+		#{mileagePrice},
+		#{mileageReason},
+		#{storePayMemberIdx})
+	</insert>
+	<select id="storeIdx" parameterType="int" resultType="int">
+		select storeIdx from store where storeIdx = #{storePayStoreIdx}
+	</select>
+	<select id="storePayIdx" parameterType="int" resultType="int">
+		select max(storePayIdx) as storePayIdx from storePayment where storePayMemberIdx = #{storePayMemberIdx}
+	</select>
+	<select id="paymentOkForm" parameterType="sdto" resultType="sdto">
+		select distinct sp.*,mb.id,mb.email,mb.tel,st.storename,st.storePrice
+		from storePayment sp, member mb, store st 
+		where mb.memberIdx = sp.storePayMemberIdx 
+		and sp.storePayMemberIdx = #{storePayMemberIdx} and sp.storePayIdx = #{storePayIdx}
+		and st.storeIdx = #{storeIdx}
+	</select>
+	<select id="gradecheck" parameterType="int" resultType="int">
+		select sum(mileagePrice) from mileage where mileageMemberIdx = #{mileageIdx}
+	</select>
+	<update id="grade2">
+		update member set memberGradeIdx=2 where memberIdx = #{mileageIdx}
+	</update>
+	<update id="grade3">
+		update member set memberGradeIdx=3 where memberIdx = #{mileageIdx}
+	</update>
+</mapper>  

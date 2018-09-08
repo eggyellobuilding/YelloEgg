@@ -28,6 +28,15 @@ public class AdminMovieDTO {
 	private String steelCutFileName;
 	private int steelCutMovieIdx;
 	
+	/** 감상평 DB */
+	private int repleIdx;
+	private String repleContent;
+	private int repleMovieIdx;
+	
+	/** 회원 DB */
+	private String id;
+	private int memberIdx;
+	
 	/** 재료 */
 	private String searchMovie;
 	private String searchContent;
@@ -45,7 +54,8 @@ public class AdminMovieDTO {
 	public AdminMovieDTO(int movieIdx, Date movieReleaseDate, String movieName, String movieDirector, String movieActor,
 			String movieSummary, int movieRunTime, String movieTitleCut, int movieGrade, String movieGenre,
 			Date movieEndDate, String movieDistributer, int steelCutIdx, String steelCutFileName, int steelCutMovieIdx,
-			String searchMovie, String searchContent, String runTime, String grade, String releaseDate, String endDate,
+			int repleIdx, String repleContent, int repleMovieIdx, String id, int memberIdx, String searchMovie,
+			String searchContent, String runTime, String grade, String releaseDate, String endDate,
 			List<MultipartFile> steelCutFileImg, MultipartFile movieTitleImg) {
 		super();
 		this.movieIdx = movieIdx;
@@ -63,6 +73,11 @@ public class AdminMovieDTO {
 		this.steelCutIdx = steelCutIdx;
 		this.steelCutFileName = steelCutFileName;
 		this.steelCutMovieIdx = steelCutMovieIdx;
+		this.repleIdx = repleIdx;
+		this.repleContent = repleContent;
+		this.repleMovieIdx = repleMovieIdx;
+		this.id = id;
+		this.memberIdx = memberIdx;
 		this.searchMovie = searchMovie;
 		this.searchContent = searchContent;
 		this.runTime = runTime;
@@ -193,6 +208,46 @@ public class AdminMovieDTO {
 		this.steelCutMovieIdx = steelCutMovieIdx;
 	}
 
+	public int getRepleIdx() {
+		return repleIdx;
+	}
+
+	public void setRepleIdx(int repleIdx) {
+		this.repleIdx = repleIdx;
+	}
+
+	public String getRepleContent() {
+		return repleContent;
+	}
+
+	public void setRepleContent(String repleContent) {
+		this.repleContent = repleContent;
+	}
+
+	public int getRepleMovieIdx() {
+		return repleMovieIdx;
+	}
+
+	public void setRepleMovieIdx(int repleMovieIdx) {
+		this.repleMovieIdx = repleMovieIdx;
+	}
+
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
+	}
+
+	public int getMemberIdx() {
+		return memberIdx;
+	}
+
+	public void setMemberIdx(int memberIdx) {
+		this.memberIdx = memberIdx;
+	}
+
 	public String getSearchMovie() {
 		return searchMovie;
 	}
@@ -257,5 +312,8 @@ public class AdminMovieDTO {
 		this.movieTitleImg = movieTitleImg;
 	}
 
+	
+	
+	
 	
 }

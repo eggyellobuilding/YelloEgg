@@ -79,7 +79,7 @@ public class AdminStoreController {
 		int totalcnt=dao.getTotalcnt();
 		int listsize=15;
 		int pagesize=5;
-		String pagestr=egg.commons.PageModule.makepage("adminStoreList.do", totalcnt, listsize, pagesize, cp);
+		String pagestr=egg.commons.PageModule.makePage("adminStoreList.do", totalcnt, listsize, pagesize, cp);
 		List<AdminStoreDTO> list=dao.adminstorelist(cp,listsize);
 		ModelAndView mav= new ModelAndView();
 		mav.addObject("list", list);

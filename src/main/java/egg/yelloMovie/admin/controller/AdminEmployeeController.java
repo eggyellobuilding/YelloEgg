@@ -2,9 +2,7 @@ package egg.yelloMovie.admin.controller;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -55,11 +53,11 @@ public class AdminEmployeeController {
 	/**사원목록*/
 	@RequestMapping("/adminEmployeeList.do")
 	public ModelAndView adminEmployeeList(@RequestParam(value="cp",defaultValue="1")int cp) {
-		int totalcnt=memberdao.adminTotalCnt();
-		int listsize=10;
-		int pagesize=5;
-		List<MemberDTO> lists=memberdao.adminEmployeeList(listsize, cp);
-		String pageStr=egg.commons.PageModule.makepage("adminEmployeeList.do", totalcnt, listsize, pagesize, cp);
+		int totalCnt=memberdao.adminTotalCnt();
+		int listSize=10;
+		int pageSize=5;
+		List<MemberDTO> lists=memberdao.adminEmployeeList(listSize, cp);
+		String pageStr=egg.commons.PageModule.makePage("adminEmployeeList.do", totalCnt, listSize, pageSize, cp);
 		ModelAndView mav = new ModelAndView();
 		mav.addObject("pageStr", pageStr);
 		mav.addObject("lists", lists);
@@ -68,9 +66,12 @@ public class AdminEmployeeController {
 		
 	}
 	
+	
 	/**관리자가 사원을 삭제*/
 	@RequestMapping("/adminDeleteEmployee.do")
-	public ModelAndView adminDeleteEmployeeSubmit(@RequestParam(value="adminIdx")int adminIdx) {
+	public ModelAndView adminDeleteEmployeeSubmit(HttpServletRequest req) {
+		String adminIdx_s=req.getParameter("adminIdx");
+		int adminIdx=Integer.parseInt(adminIdx_s);
 		int result = memberdao.adminDeleteEmployee(adminIdx);
 		String msg=result>0?"사원을 삭제하였습니다.":"사원삭제를 실패하였습니다.";
 		ModelAndView mav = new ModelAndView();
@@ -80,28 +81,7 @@ public class AdminEmployeeController {
 		return mav;
 				
 	}
-	
-	/**사원ID체크*/
-	@RequestMapping("/adminIdCheck.do")
-	public ModelAndView adminIdCheck(HttpServletRequest req) {
-		String adminId=req.getParameter("adminId");
-		ModelAndView mav = new ModelAndView();
-		int result=memberdao.adminIdCheck(adminId);
-		String msg=null;
-		if(adminId.equals("master")) {
-			msg=adminId+"는 사용할 수 없는 아이디 입니다.";
-		}else {
-			if(result>0) {
-				msg=adminId+"는 중복된 아이디 입니다.";
-			}else {
-				msg=adminId+"는 사용가능한 아이디 입니다.";
-			}
-		}
-		mav.addObject("msg", msg);
-		mav.setViewName("admin/employee/adminIdCheckMsg");
-		return mav;
-	}
-	
+		
 	/**사원 등록*/
 	
 	
@@ -129,6 +109,7 @@ public class AdminEmployeeController {
 		mav.addObject("count",count);
 		return mav;
 	}
+	
 	/**admin 등록*/
 	@RequestMapping(value="/adminRegisterEmployee.do",method=RequestMethod.POST)
 	public ModelAndView adminRegisterEmployeeSubmit(@RequestParam("adminCinemaIdx")int adminCinemaIdx,

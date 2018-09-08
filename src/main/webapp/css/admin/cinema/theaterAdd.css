@@ -20,6 +20,7 @@
 	border-left: 1px solid lightgray;
 	border-bottom: 1px solid lightgray;
 	background: white;
+	overflow-y:auto; 
 }
 
 #cinemaNameList {
@@ -30,6 +31,7 @@
 	border-top: 1px solid lightgray;
 	border-bottom-right-radius: 6px;
 	border-bottom:1px solid lightgray;
+	overflow-y:auto; 
 }
 
 #cinemSi ul li,#cinemaNameList ul li{

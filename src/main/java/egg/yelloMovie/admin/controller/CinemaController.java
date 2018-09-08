@@ -28,12 +28,19 @@ public class CinemaController {
 	CinemaDAO cdao; 
 	
 	//영화관 페이지
-	@RequestMapping("/adminCinema.do")
-	public ModelAndView adminCinemaList() {
-		List<CinemaDTO> cinemaLists = cdao.cinemaList();
-		ModelAndView mav = new ModelAndView("admin/cinema/cinemaMain","lists",cinemaLists);
-		return mav;
-	}
+		@RequestMapping("/adminCinema.do")
+		public ModelAndView adminCinemaList(@RequestParam(value="cp",defaultValue="1")int cp) {
+			int totalCnt=cdao.adminCinemaTotalCnt();
+			int listSize=10;
+			int pageSize=5;
+			List<CinemaDTO> cinemaLists = cdao.cinemaList(listSize, cp);
+			String pageStr=egg.commons.PageModule.makePage("adminCinema.do", totalCnt, listSize, pageSize, cp);
+			ModelAndView mav=new ModelAndView();
+			mav.addObject("pageStr", pageStr);
+			mav.addObject("lists", cinemaLists);
+			mav.setViewName("admin/cinema/cinemaMain");
+			return mav;
+		}
 	
 	//영화관 페이지 상영관 불러오기
 	@RequestMapping("/adminCinemaTheaterFind.do")

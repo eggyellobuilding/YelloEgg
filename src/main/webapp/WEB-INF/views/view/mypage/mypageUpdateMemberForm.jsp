@@ -41,7 +41,34 @@
 	function deleteMemberForm() {
 		location.href = 'mypageDeleteMemberForm.do';
 	}
-
+	
+	function mypageUpdateMember() {
+		var memberIdx=document.getElementById('memberIdx').value;
+		var email=document.getElementById('email').value;
+		var tel=document.getElementById('tel').value;
+		location.href='mypageUpdateMember.do?memberIdx='+memberIdx+'&email='+email+'&tel='+tel;
+	}
+	
+	function telExp() {
+		var tel = document.getElementById('tel').value;
+		var regExp = /^01([0|1|6|7|8|9]?)-?([0-9]{3,4})-?([0-9]{4})$/;
+		if(!(regExp.test(tel))){
+			alert('휴대폰 형식에 맞게 입력해주세요.(010-1234-5678)');
+			document.getElementById('tel').value='';
+			document.getElementById('tel').focus();
+			
+		}
+	}
+	function emailExp() {
+		var email=document.getElementById('email').value;
+		var regExp=/^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/;
+		if(!(regExp.test(email))){
+			alert('이메일 형식에 맞게 입력해주세요.(example@example.com)');
+			document.getElementById('email').value='';
+			document.getElementById('email').focus();
+			
+		}
+	}
 </script>
 <body>
 	<%@include file="../commonsView/header.jsp" %>
@@ -55,34 +82,37 @@
  	<div class="mypageHeader"><h2><b>My YelloMovie</b></h2></div>
  		<div class="row" id="mypageNav">
 			<div class="col-xs-2" id="mypageCol">
-				<p><a href="mypageQaboardList.do?memberIdx=${sessionScope.smdto.memberIdx}"><img src="/yelloMovie/img/mypage/mypage.jpg"
-					style="margin-left: 7px;" width="50%" height="50%"
+				<p><a href="mypageQaboardList.do?memberIdx=${sessionScope.smdto.memberIdx}">
+				<img src="/yelloMovie/img/mypage/mypageQaboard.png"
+					style="margin-left: 7px;" width="50px" height="50px"
 					alt="myYelloMovie" class="img-rounded"></a>
 				</p>
 				<span style="color:#A4A4A4;"><strong>나의 문의내역</strong></span>
 			</div>
 			<div class="col-xs-2" id="mypageCol">
 				<p><a href="mypageUpdateMemberForm.do?memberIdx=${sessionScope.smdto.memberIdx}"><img
-					src="/yelloMovie/img/mypage/reservation.jpg" width="50%" height="50%"
+					src="/yelloMovie/img/mypage/mypageUpdate.png" width="50px" height="50px"
 					alt="updateMember" class="img-rounded"></a>
 				</p>
 				<span style="color:#A4A4A4;"><strong>개인정보수정</strong></span>
 			</div>
 			<div class="col-xs-2" id="mypageCol">
-				<p><a href="mypageReservationList.do"><img
-					src="/yelloMovie/img/mypage/reservation.jpg" width="50%" height="50%"
+				<p><a href="mypageReservationList.do?memberIdx=${sessionScope.smdto.memberIdx}"><img
+					src="/yelloMovie/img/mypage/mypageReservation.png" width="61px" height="50px"
 					alt="reservationImfo" class="img-rounded"></a>
 				</p>
 				<span style="color:#A4A4A4;"><strong>예매확인/취소</strong></span>
 			</div>
 			<div class="col-xs-2" id="mypageCol">
-				<p><a href="mypageStoreBuyList.do"><img src="/yelloMovie/img/mypage/store.jpg"
-					width="50%" height="50%" alt="storeImfo" class="img-rounded"></a>
+				<p><a href="mypageStoreBuyList.do?memberIdx=${sessionScope.smdto.memberIdx}">
+				<img src="/yelloMovie/img/mypage/mypageStore.png"
+					width="50px" height="50px" alt="storeImfo" class="img-rounded"></a>
 				</p>
 				<span style="color:#A4A4A4;"><strong>스토어 구매내역</strong></span>
 			</div>
 		</div>
 		<div style="margin-top: 80px; margin-left: 10px;"><h3><strong>개인정보수정</strong></h3></div>
+		<form class="form-group">
 		<div class="row">
 			<div class="col-xs-9">
 				<div style="padding-top:8px;color:#A4A4A4;padding-left: 20px;">회원님의 정보를 정확히 입력하세요.(*표시 필수입력 항목입니다.)</div>
@@ -94,28 +124,29 @@
 				</div>
 			</div>
 		</div>
+		</form>
 		
 		
 		<div style="border-top: 4px solid #F4FA58; margin-top: 20px;">
-			<form class="form-group" action="mypageUpdateMember.do" method="post">
-				<input type="hidden" name="memberIdx" value="${sessionScope.smdto.memberIdx}"/>
+			<form class="form-group" method="post">
+				<input type="hidden" name="memberIdx" id="memberIdx" value="${sessionScope.smdto.memberIdx}"/>
 				<table class="table table-striped">
 					<tr>
 						<th id="updateTr">회원등급</th>
 						<td id="updateTd">
-						<input type="text" class="form-control" name="gradeName" value="${dtos.gradeName}" style="width: 20%" readonly="readonly" />
+						<input type="text" class="form-control" name="gradeName" value="${dtos.gradeName}" style="width: 150px;" readonly="readonly" />
 						</td>
 					</tr>
 					<tr>
 						<th id="updateTr">이름</th>
 						<td id="updateTd">
-						<input type="text" name="name" value="${dtos.name}" readonly="readonly" class="form-control" style="width: 20%"/>
+						<input type="text" name="name" value="${dtos.name}" readonly="readonly" class="form-control" style="width: 150px;"/>
 						</td>
 					</tr>
 					<tr>
 						<th id="updateTr">생년월일</th>
 						<td id="updateTd">
-						<input type="text" name="birthDate" value="${dtos.birthDate}" style="width: 20%" class="form-control" readonly="readonly"/>
+						<input type="text" name="birthDate" value="${dtos.birthDate}" style="width: 150px;" class="form-control" readonly="readonly"/>
 						</td>
 					</tr>
 					<tr>
@@ -135,19 +166,19 @@
 					</tr>
 					<tr>
 						<th id="updateTr">휴대폰번호</th>
-						<td id="updateTd">
-						<input type="text" name="tel" value="${dtos.tel}"class="form-control" style="width: 20%"/>
+						<td id="updateTd" onchange="telExp()">
+						<input type="text" name="tel" id="tel" value="${dtos.tel}"class="form-control" style="width: 150px;"/>
 						</td>
 					</tr>
 					<tr>
 						<th id="updateTr">Email</th>
-						<td id="updateTd"><input type="email" name="email" value="${dtos.email}" class="form-control" style="width: 30%"></input>
+						<td id="updateTd" onchange="emailExp()"><input type="email" name="email" id="email" value="${dtos.email}" class="form-control" style="width: 230px;"></input>
 						</td>
 					</tr>
 					<tr>
 						<td colspan="2" align="center" style="padding-top: 20px;">
 						<button type="button" style="margin-right: 20px;width:120px;" class="btn btn-default btn-lg" onclick="cancelUpdateMember()">취소</button>
-						<button type="submit" style="width:120px;" class="btn btn-primary btn-lg">확인</button>
+						<button type="button" style="width:120px;" class="btn btn-primary btn-lg"onclick="mypageUpdateMember()">확인</button>
 						</td>
 					</tr>
 				</table>

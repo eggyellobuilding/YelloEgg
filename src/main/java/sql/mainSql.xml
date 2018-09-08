@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="yello.movie">
+	<select id="mainMovieCarousel" resultType="mvdto">
+		select * from movieInfo 
+		where 
+		movieReleaseDate<![CDATA[<=]]>sysdate and movieEndDate <![CDATA[>=]]> sysdate
+		order by movieIdx desc
+	</select>
+	<select id="mainMovieSteelCut">
+		select * from steelCut where steelCutMovieIdx=#{movieIdx} order by steelCutIdx asc 
+	</select>
+</mapper>  

@@ -9,7 +9,9 @@ public interface CinemaDAO {
 	//영화관 등록
 	public int cinemaAdd(CinemaDTO cdto);
 	//영화관 리스트
-	public List<CinemaDTO> cinemaList();
+	public List<CinemaDTO> cinemaList(int ls, int cp);
+	//영화관 totalCnt가져오기
+	public int adminCinemaTotalCnt();
 	//상영관 리스트
 	public List<CinemaDTO> theaterList(int cinemaIdx);
 	//영화관 수,idx
