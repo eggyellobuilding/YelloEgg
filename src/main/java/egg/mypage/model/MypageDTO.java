@@ -120,6 +120,8 @@ public class MypageDTO {
 	private Date reservationDate;
 	private int reservationMemberIdx;
 	private String reservationStatus;
+	private int reservationMileage;
+	private String reservationSeatInfo;
 
 	/** ticketInfo */
 	private int ticketIdx;
@@ -151,8 +153,9 @@ public class MypageDTO {
 			String movieActor, String movieSummary, int movieRunTime, String movieTitleCut, String movieDistributer,
 			int movieGrade, String movieGenre, Date movieEndDate, int theaterIdx, String theaterName,
 			int theaterCinemaIdx, int reservationIdx, int reservationScheduleIdx, int reservationTicketIdx,
-			Date reservationDate, int reservationMemberIdx, String reservationStatus, int ticketIdx, int ticketAge,
-			int ticketPrice, int delReservationIdx, Date delReservationDate) {
+			Date reservationDate, int reservationMemberIdx, String reservationStatus, int reservationMileage,
+			String reservationSeatInfo, int ticketIdx, int ticketAge, int ticketPrice, int delReservationIdx,
+			Date delReservationDate) {
 		super();
 		this.memberIdx = memberIdx;
 		this.id = id;
@@ -243,6 +246,8 @@ public class MypageDTO {
 		this.reservationDate = reservationDate;
 		this.reservationMemberIdx = reservationMemberIdx;
 		this.reservationStatus = reservationStatus;
+		this.reservationMileage = reservationMileage;
+		this.reservationSeatInfo = reservationSeatInfo;
 		this.ticketIdx = ticketIdx;
 		this.ticketAge = ticketAge;
 		this.ticketPrice = ticketPrice;
@@ -962,6 +967,22 @@ public class MypageDTO {
 		this.reservationStatus = reservationStatus;
 	}
 
+	public int getReservationMileage() {
+		return reservationMileage;
+	}
+
+	public void setReservationMileage(int reservationMileage) {
+		this.reservationMileage = reservationMileage;
+	}
+
+	public String getReservationSeatInfo() {
+		return reservationSeatInfo;
+	}
+
+	public void setReservationSeatInfo(String reservationSeatInfo) {
+		this.reservationSeatInfo = reservationSeatInfo;
+	}
+
 	public int getTicketIdx() {
 		return ticketIdx;
 	}
@@ -994,13 +1015,13 @@ public class MypageDTO {
 		this.delReservationIdx = delReservationIdx;
 	}
 
-	public Date getDelReservaationDate() {
+	public Date getDelReservationDate() {
 		return delReservationDate;
 	}
 
-	public void setDelReservaationDate(Date delReservaationDate) {
-		this.delReservationDate = delReservaationDate;
+	public void setDelReservationDate(Date delReservationDate) {
+		this.delReservationDate = delReservationDate;
 	}
-	
+
 	
 }

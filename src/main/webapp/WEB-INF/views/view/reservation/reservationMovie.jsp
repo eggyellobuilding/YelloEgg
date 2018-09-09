@@ -19,6 +19,27 @@
 .dimmed {
 	color: dimgray;
 }
+
+.mg0{
+	color: white;
+	background-color: #1DDB16;
+	border-radius:5px;
+}
+.mg12{
+	color: white;
+	background-color: #0054FF;
+	border-radius:5px;
+}
+.mg15{
+	color: white;
+	background-color: #FF5E00;
+	border-radius:5px;
+}
+.mg19{
+	color: white;
+	background-color: #FF0000;
+	border-radius:5px;
+}
 </style>
 <script>
 //영화 선택
@@ -342,7 +363,13 @@ function reservationResult(){
 										<c:forEach items="${movieList}" var="rdto">
 											<li class="movieList" id="${rdto.movieIdx}"
 												onclick="selectMovie('${rdto.movieName}','${rdto.movieGrade}',${rdto.movieIdx},'${rdto.movieTitleCut}');showSchedule();">
-												<span>${rdto.movieGrade}</span>${rdto.movieName}</li>
+												<c:if test="${rdto.movieGrade==0}">
+													<span class="mg${rdto.movieGrade}">All</span>${rdto.movieName}
+												</c:if>
+												<c:if test="${rdto.movieGrade!=0}">
+													<span class="mg${rdto.movieGrade}">${rdto.movieGrade}</span>${rdto.movieName}
+												</c:if>
+											</li>
 										</c:forEach>
 									</ul>
 								</div>

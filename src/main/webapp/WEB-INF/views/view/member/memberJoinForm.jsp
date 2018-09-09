@@ -215,7 +215,6 @@
 	
 	function memberIdCheck() {
 		var id=document.getElementById('id').value;
-		alert(id);
 		sendRequest('memberIdCheck.do','id='+id,idCheckResult,'GET');
 	}
 	function idCheckResult() {

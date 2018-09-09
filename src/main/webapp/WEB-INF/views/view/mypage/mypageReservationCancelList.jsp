@@ -74,6 +74,7 @@
 						<th width="15%"  class="text-center">영화명</th>
 						<th width="15%"  class="text-center">영화관</th>
 						<th width="10%"  class="text-center">상영관</th>
+						<th width="10%"  class="text-center">좌석정보</th>
 						<th width="10%"  class="text-center">가격</th>
 						<th width="10%"  class="text-center">예매상태</th>
 						<th width="10%"  class="text-center">예매날짜</th>
@@ -93,6 +94,7 @@
 								<td>${mpdto.movieName}</td>
 								<td>${mpdto.cinemaName}</td>
 								<td>${mpdto.theaterName}</td>
+								<td>${mpdto.reservationSeatInfo}</td>
 								<td>${mpdto.ticketPrice}원</td>
 								<c:if test="${'N' eq mpdto.reservationStatus}">
 								<td>예몌취소</td>

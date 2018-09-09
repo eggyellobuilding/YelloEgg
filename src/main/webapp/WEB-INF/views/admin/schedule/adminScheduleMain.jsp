@@ -69,7 +69,6 @@
         $("#date1").change(function(){
             var changeDate=$(this).val().split("-",3);
             $("#topDate").text($(this).val());
-            window.alert($('#selectCinemaIdxInput').val());
         	$.ajax({
         		   url:'adminScheduleMainJquery.do?date='+$('#topDate').text()+'&cinemaIdx='+$('#selectCinemaIdxInput').val(),
         		   type:'post',
@@ -320,7 +319,6 @@
 					
 					//스캐줄 입력
 					var adminScheduleList=data.asdtoList;
-					window.alert(adminScheduleList.length);
 					for(var i=0 ; i < adminScheduleList.length;i++){
 						var dto = adminScheduleList[i];
 						var blockCount=Math.floor(dto.movieRunTime/30)+1;

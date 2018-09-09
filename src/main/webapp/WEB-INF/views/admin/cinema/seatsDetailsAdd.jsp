@@ -164,7 +164,6 @@
 	function seatsSubmit(){
 		var seatsInfo = document.getElementsByClassName('seatsInfo');
 		var seatsSubmit = document.getElementById('seatsSubmit');
-		window.alert(seatsInfo.length);
 		for(var i = 0; i<seatsInfo.length;i++){
 			if(seatsInfo[i].checked){
 				seatsInfo[i].setAttribute('value',(seatsInfo[i].style.left).split('p',1)+","+(seatsInfo[i].style.top).split('p',1));

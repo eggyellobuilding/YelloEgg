@@ -72,12 +72,6 @@
 			<ref bean="sqlSessionTemplate"/>
 		</constructor-arg>
 	</bean>
-	
-	 <bean id="qADAO" class="egg.qaboard.model.QaBoardDAOImple">
-		<constructor-arg>
-			<ref bean="sqlSessionTemplate"/>
-		</constructor-arg>
-	</bean>
 
 	<bean id="movieReservationDAO" class="egg.reservation.model.ReservationDAOImple">
 		<constructor-arg>
