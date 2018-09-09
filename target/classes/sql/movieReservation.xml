@@ -67,6 +67,20 @@
 		where scheduleIdx = #{scheduleIdx}
 	</select>
 	
+	<insert id="reservationAdd" parameterType="map">
+		insert into reservation
+		values(
+		reservationSq.nextval,
+		#{scheduleIdx},
+		26, 
+		sysdate,
+		#{memberIdx},
+		default,  
+		default,
+		#{seatInfo}
+		)
+		
+	</insert>
 	
 	
 	

@@ -8,15 +8,20 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import egg.cinema.admin.model.CinemaDAO;
 import egg.cinema.admin.model.CinemaDTO;
 import egg.commons.GetCalendar;
+import egg.member.model.MemberDTO;
 import egg.reservation.model.ReservationDAO;
 import egg.reservation.model.ReservationDTO;
 
@@ -141,6 +146,24 @@ public class MovieReservationController {
 			} 
 			
 			
+		return mav;
+	}
+	/**예약하기*/
+	@RequestMapping(value="/reservationAdd.do", method=RequestMethod.POST)
+	public ModelAndView reservationAdd(@RequestParam("seatInfo")String seatInfo,
+			@RequestParam("scheduleIdx")int scheduleIdx,
+			HttpSession session) {
+		MemberDTO mdto = new MemberDTO();
+		mdto =(MemberDTO)session.getAttribute("smdto");
+		System.out.println(mdto.getMemberIdx()); 
+		int result=rdao.reservationAdd(scheduleIdx, seatInfo,mdto.getMemberIdx());
+		System.out.println(result);
+		ModelAndView mav = new ModelAndView();
+		String msg="예매가 완료되었습니다.";
+		String goUrl="main.do";
+		mav.addObject("msg" ,msg);
+		mav.addObject("goUrl" ,goUrl);
+		mav.setViewName("view/member/memberMsg");
 		return mav;
 	}
 }

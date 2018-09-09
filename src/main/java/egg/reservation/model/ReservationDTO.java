@@ -55,6 +55,7 @@ public class ReservationDTO {
 		private Date reservationDate;
 		private String reservationStatus;
 		private String reservationMonth;
+		private String reserevationSeatInfo;
 	//ticketInfo
 		private int ticketIdx;
 		private int ticketAge;
@@ -434,6 +435,14 @@ public class ReservationDTO {
 
 		public void setReservationMonth(String reservationMonth) {
 			this.reservationMonth = reservationMonth;
+		}
+
+		public String getReserevationSeatInfo() {
+			return reserevationSeatInfo;
+		}
+
+		public void setReserevationSeatInfo(String reserevationSeatInfo) {
+			this.reserevationSeatInfo = reserevationSeatInfo;
 		}
 		
 		

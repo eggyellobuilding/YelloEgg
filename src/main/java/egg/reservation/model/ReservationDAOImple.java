@@ -130,4 +130,18 @@ public class ReservationDAOImple implements ReservationDAO {
 		return theaterIdx;
 	}
 	
+	public Integer reservationAdd(int scheduleIdx, String seatInfo,int memberIdx) {
+		Map<String,Object> map = new HashMap<String, Object>();
+		String seatList[] = seatInfo.split(",");
+		int result =0;
+		for(int i =0 ; i <seatList.length;i++) {
+			System.out.println(seatList[i]);
+			map.put("scheduleIdx", scheduleIdx);
+			map.put("seatInfo", seatList[i]);
+			map.put("memberIdx", memberIdx);
+			result += sqlMap.insert("reservationAdd",map);
+		}
+		
+		return result;
+	}
 }

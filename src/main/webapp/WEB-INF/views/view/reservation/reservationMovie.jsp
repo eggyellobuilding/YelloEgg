@@ -99,7 +99,7 @@ $.ajax({
 		    var temp = "";
 		    var result = "";
 		    var size = Object.keys(scheduleMap).length;
- 			temp +='<div style="overflow-y: auto;height:100%;">';
+ 			temp +='<div style="overflow-y: auto;height:100%;padding-left:17px;">';
  			temp +=		'<ul>';
 	 		for(var i = 0 ; i<size;i++){
 	 			var list = scheduleMap[key[i]]
@@ -215,7 +215,6 @@ function submitInfo(){
 	$('#payment').show();
 	$('#next').hide();
 	//상영관 좌석 정보가져오기
-		window.alert("스캐줄 아이디 엑스="+$('#scheduleResultIdx').val());
 		$.ajax({
 				   url:'reservationScheduleSeatListJquery.do?scheduleIdx='+$('#scheduleResultIdx').val(),
 				   type:'post',
@@ -230,7 +229,6 @@ function submitInfo(){
 						var width = parseInt(xSize)+17
 						var height = parseInt(ySize)+17
 						
-						window.alert(width);
 						var result = '';
 						result += '<div  style="height:'+(ySize+17)+'px;z-index:1;margin:0px auto;">';
 						result += 	'<div class="seatsPosition" style="margin-top: 20px;">';
@@ -244,7 +242,7 @@ function submitInfo(){
 							result += 			'<span class="xLists" style="z-index:2;text-align:center;display:none;width:16px;height:16px;position:absolute;left:' + xList[i].seatX + 'px;background-color:lightgray;margin-left:1px;">' + (i + 1) + '</span>';
 						}
 						for(var i = 0; i < seatsList.length; i++){
-							result += 			'<span class="seats" style="z-index:2;text-align:center;display:inline-block;width:16px;height:16px;position:absolute;left:' + seatsList[i].seatX + 'px;top:' + seatsList[i].seatY + 'px;background-color:slategray;margin-left:1px;"></span>';
+							result += 			'<span class="seats" style="z-index:2;text-align:center;display:inline-block;width:16px;height:16px;position:absolute;left:' + seatsList[i].seatX + 'px;top:' + seatsList[i].seatY + 'px;background-color:slategray;margin-left:1px;">'+""+' </span>';
 						}
 						result +=				'</div>';
 						result +=			'</div>';
@@ -253,24 +251,11 @@ function submitInfo(){
 						
 						var seatModalBodyNode = document.getElementById('exitPosition');
 						seatModalBodyNode.innerHTML = result;
-						
+		
 						var xLists = document.getElementsByClassName('xLists');
 						var seats = document.getElementsByClassName('seats');
 						
 						for (var i = 0; i < xLists.length; i++) {
-							var xValue = xLists[i].style.left;
-							for (j = 0; j < seats.length; j++) {
-								var seatsValue = seats[j].style.left;
-								window.alert(seats[j]);
-								if (xValue == seatsValue) {
-								
-									seats[j].firstChild.nodeValue = i + 1;
-								}
-
-							}
-						}
-						
-		/* 				for (var i = 0; i < xLists.length; i++) {
 							var xValue = xLists[i].style.left;
 							var seatAscii = 64;
 							for (j = 0; j < seats.length; j++) {
@@ -280,17 +265,20 @@ function submitInfo(){
 									var seatId = String.fromCharCode(seatAscii);
 									seats[j].firstChild.nodeValue = i + 1;
 									seats[j].setAttribute('id', seatId + (i + 1));
-									seats[j].setAttribute('onclick', 'seatRevationInfo("'
-											+ seatId + (i + 1) + '",' + 1 + ')');
+									seats[j].setAttribute('onclick', 'seatDetailInfo("'
+											+ seatId + (i + 1)+'")');
 								}
 							}
-						} */
-						
-					  }
-				  
-		
+						} 
+				   
+				   }
+					
+					  
 		})
+		
+		
 
+				  
 	//스케줄 가져가서 예약 정보가져오기
 
 }
@@ -304,10 +292,39 @@ function goBackReservation(){
 	$('#next').show();
 }
 
+var ticketCount = 1 ; 
 //seat
-function reserveSeat(){
+function seatDetailInfo(id){
+	//티켓
+	$('#'+id).css('background-color','red');
 	
+	$('#SelectseatInfo').css('display','block');
+	$('#seatInfoSpan').css('display','none');
+	$('#payInfoSpan').css('display','none');
+	$('#SelectPayInfo').css('display','block');
+	
+	var info =$('#seatInfoResult').text();
+	if(info == ""){
+		info += id;	
+	}else{
+		info += ","+id;
+	}
+	
+	$('#seatInfoResult').html(info);
+	$('#seatInfoResultInput').val(info);
+	
+	
+	//총 금액
+	
+	$('#payInfoResult').html(12000*parseInt(ticketCount));
+	ticketCount++;
 }
+
+function reservationResult(){
+	
+	$('#reservationForm').submit();
+}
+
 
 </script>
 </head>
@@ -413,7 +430,7 @@ function reserveSeat(){
 				</div>
 
 	<!-- 정보 바 -->
-
+	<form action="reservationAdd.do" method="post" id="reservationForm">
 		<div id="bottomDiv">
 			<div class="container">
 				<div class="row" style="width: 1000px; margin: 0px auto;">
@@ -440,7 +457,7 @@ function reserveSeat(){
 								<span class="theaterHeader"> 일시 :</span><span
 									id="scheduleDateResult"></span>&nbsp;<span
 									id="scheduleTimeResult"></span> <input type="hidden"
-									id="scheduleResultIdx">
+									id="scheduleResultIdx" name="scheduleIdx">
 							</div>
 							<div class="row">
 								<span class="theaterHeader"> 상영관 :</span><span
@@ -448,19 +465,27 @@ function reserveSeat(){
 									id="theaterNameResultIdx">
 							</div>
 							<div class="row">
-								<span class="theaterHeader"> 인원 :</span><span
-									id="ticketCountResult"></span>
+								<span class="theaterHeader"> 인원 :</span><span id="ticketCountResult"></span>
 							</div>
 						</div>
 
 					</div>
 
 					<div id="seatInfo">
-						<span style="font-size: 30px;">좌석 선택</span>
+						<span id="seatInfoSpan" style="font-size: 30px;">좌석 선택</span>
+						
+						<div class="row" style="display:none;" id="SelectseatInfo">
+								<span class="seatInfoHeader"> 좌석 명:</span> <span id="seatInfoResult"></span> 
+								<input type="hidden" name="seatInfo" id="seatInfoResultInput">
+						</div>
 					</div>
 
 					<div id="payInfo">
-						<span style="font-size: 30px;">금액 정보</span>
+						<span id="payInfoSpan" style="font-size: 30px;">결제 금액</span>
+						
+						<div class="row" style="display:none;font-size:17px;" id="SelectPayInfo">
+								<span class="payInfoHeader"> 총 금액:</span> <span id="payInfoResult" style="margin-left:35px;color:red;font-weight:bold;"></span><strong class="text-right" style="color:red;">원</strong>
+						</div>
 					</div>
 
 					<div>
@@ -468,13 +493,14 @@ function reserveSeat(){
 							<span class="glyphicon glyphicon-menu-right" style="width: 100px; font-size: 100px;"></span>
 						</span>
 						
-						<span class="bottomInfo" id="payment" style="display:none;"> 
+						<span class="bottomInfo" id="payment" style="display:none;" onclick="reservationResult()"> 
 							<span class="glyphicon glyphicon-menu-right" style="width: 100px; font-size: 100px;"></span>
 						</span>
 					</div>
 				</div>
 			</div>
 		</div>
+	</form>
 	<%@include file="../commonsView/footer.jsp"%>
 
 	<script src="/yelloMovie/bootstrap/js/bootstrap.min.js"></script>

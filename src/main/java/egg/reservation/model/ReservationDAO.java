@@ -26,6 +26,9 @@ public interface ReservationDAO {
 	//스캐줄 IDX 값으로 theaterIdx 가져오기
 	public Integer reservationTheaterIdx(int scheduleIdx);
 	
+	//예약하기
+	public Integer reservationAdd(int scheduleIdx , String seatInfo,int memberIdx);
+	
 	
 	
 	

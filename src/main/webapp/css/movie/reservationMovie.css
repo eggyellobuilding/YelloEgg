@@ -219,10 +219,6 @@ li {
 	border-right: 1px solid #2D2D2D;
 }
 
-#seatInfo span {
-	font-size: 32px;
-}
-
 #nextInfo {
 	width: 153px;
 	height: 100px;
@@ -335,4 +331,8 @@ ul li {
 	float: left;
 	width: 187px;
 	border-right: 1px solid #2D2D2D;
+}
+
+.seatActive{
+	background-color: red;
 }
