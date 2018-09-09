@@ -78,13 +78,7 @@
 			<ref bean="sqlSessionTemplate"/>
 		</constructor-arg>
 	</bean>
-	
-	<bean id="moviePaymentDAO" class="egg.moviePayment.model.MoviePaymentImple">
-		<constructor-arg>
-			<ref bean="sqlSessionTemplate"/>
-		</constructor-arg>
-	</bean>
-	
+
 	<bean id="movieReservationDAO" class="egg.reservation.model.ReservationDAOImple">
 		<constructor-arg>
 			<ref bean="sqlSessionTemplate"/>

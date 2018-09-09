@@ -375,17 +375,16 @@ function goBackReservation(){
 				                <p class="reservationTime"><span id="reservationDate">2018-09-03</span>&nbsp;&nbsp;<span id="#reservationTime">11:15 ~ 13:10</span></p>
 				            </div>
 				
+				<!-- 티켓 등록 -->
 				            <div class="col-xs-12" >
 				                <div class="text-center" id="screen" style="">screen</div>
-									
 									<div id="exitPosition">
 										
 									</div>
-					
-				            </div>
-				        </div>
-				    </div>
-    			</div>
+					            </div>
+					        </div>
+					    </div>
+	    			</div>
 
 
 	<!-- 정보 바 -->

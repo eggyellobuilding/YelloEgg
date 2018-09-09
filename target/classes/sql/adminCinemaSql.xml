@@ -17,6 +17,12 @@
 		)
 	</insert>
 	 
+	 <select id="recentCinemaIdx" resultType="int">
+	 	select cinemaIdx from
+	 	cinema
+	 	where rownum = 1 
+	 	order by cinemaIdx desc 
+	 </select>
 	<select id="cinemaList" parameterType="map" resultType="cdto" >
 		select * from
 		(select rownum as rnum,a.* from

@@ -29,7 +29,6 @@
 		<mapper resource="sql/scheduleSql.xml"/>
 		<mapper resource="sql/memberSql.xml"/>
 		<mapper resource="sql/movieReservation.xml"/>
-		<mapper resource="sql/moviePayment.xml"/>
 		<mapper resource="sql/adminStaticsSql.xml"/>
 		<mapper resource="sql/mypageSql.xml"/>
 		<mapper resource="sql/storeSql.xml"/>

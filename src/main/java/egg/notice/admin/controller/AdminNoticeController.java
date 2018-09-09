@@ -64,7 +64,7 @@ public class AdminNoticeController {
 		if(result > 0 ) {
 			mav.addObject("msg", "공지사항 등록");
 		}else {
-			mav.addObject("msg", "공지사항 실패");
+			mav.addObject("msg", "공지사항 실패");   
 		}
 		mav.setViewName("admin/adminNotice/adminNoticeMsg");
 		return mav;

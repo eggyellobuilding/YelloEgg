@@ -8,3 +8,4 @@ public interface AdminNoticeDAO {
 	public int updateNotice(AdminNoticeDTO dto); 
 	public int delNotice(AdminNoticeDTO dto);
 }
+     

@@ -8,10 +8,10 @@ public class AdminNoticeDTO {
 	private Date noticeWriteDate;
 	private String noticeTitle, noticeContent, noticeTop, cinemaName;
 	public AdminNoticeDTO() {
-	}
+	} 
 	public AdminNoticeDTO(int noticeIdx, int noticeReadnum, int noticeCinemaIdx, int cinemaIdx, Date noticeWriteDate,
 			String noticeTitle, String noticeContent, String noticeTop, String cinemaName) {
-		super();
+		super();             
 		this.noticeIdx = noticeIdx;
 		this.noticeReadnum = noticeReadnum;
 		this.noticeCinemaIdx = noticeCinemaIdx;

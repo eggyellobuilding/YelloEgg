@@ -14,10 +14,10 @@ public class AdminNoticeDAOImple implements AdminNoticeDAO {
 	
 	
 	public AdminNoticeDAOImple(SqlSessionTemplate sqlSessionTemplate) {
-		super();
+		super(); 
 		this.sqlSessionTemplate = sqlSessionTemplate;
-	}
-
+	} 
+       
 
 	
 	public int getNoticeCount() {
