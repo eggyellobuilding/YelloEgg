@@ -23,6 +23,8 @@ public interface ReservationDAO {
 	//스캐줄 IDX 키값
 	public List<Integer> reservationScheduleIdxkey(Map<String,Object> map,int cinemaIdx);
 	
+	//스캐줄 IDX 값으로 theaterIdx 가져오기
+	public Integer reservationTheaterIdx(int scheduleIdx);
 	
 	
 	

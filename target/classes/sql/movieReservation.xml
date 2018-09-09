@@ -61,6 +61,11 @@
 		where scheduleMovieIdx = #{movieIdx} and scheduleDate <![CDATA[>=]]> #{date}
 	</select>
 	
+	<select id="reservationThetaerIdx" parameterType="int" resultType="int">
+		select scheduleTheaterIdx from 
+		schedule
+		where scheduleIdx = #{scheduleIdx}
+	</select>
 	
 	
 	

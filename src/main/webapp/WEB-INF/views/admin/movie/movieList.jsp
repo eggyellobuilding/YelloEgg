@@ -47,6 +47,7 @@
 						<input type="submit" value="검색">
 					</form>	
 					</div>
+					
 					<table class="table table-striped">
 						<tr>
 							<td>인덱스</td>
@@ -238,6 +239,7 @@
 									</td>
 								</tr>
 							</c:forEach>
+						
 							</c:if>
 						</c:if>
 						<c:if test="${!empty searchList }">
@@ -407,16 +409,33 @@
 										</form>	
 									</td>
 								</tr>
-							</c:forEach>							
+							</c:forEach>
 							
-						</c:if>
-					</table>
-					<c:if test="${!empty movieList }">
-						<div align="center">${requestScope.pagestr }</div>
 					</c:if>
-					<c:if test="${!empty searchList }">
-						<div align="center">${requestScope.pagestr }</div>
-					</c:if>					
+					<c:if test="${!empty movieList}">
+						<tr>
+							<td colspan="11">
+							<nav style="text-align: center">
+								<ul class="pagination">
+									${pageStr}
+								</ul>
+							</nav>
+							</td>
+						</tr>	
+					</c:if>
+					<c:if test="${!empty searchList}">
+						<tr>
+							<td colspan="11">
+							<nav style="text-align: center">
+								<ul class="pagination">
+									${pageStr}
+								</ul>
+							</nav>
+							</td>
+						</tr>	
+					</c:if>
+					</table>
+								
 				</div>
 			</div>
 		</div>

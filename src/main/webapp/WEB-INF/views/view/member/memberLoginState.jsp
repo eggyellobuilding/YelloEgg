@@ -22,17 +22,17 @@
 					<p class="text-center" style="font-size: 20px;padding-top: 12px;">${sessionScope.smdto.id}님</p>
 				</div>
 				<div class="col-xs-6">
-					<c:if test="${'3' eq sessionScope.smdto.gradeIdx}">
+					<c:if test="${'3' eq sessionScope.smdto.memberGradeIdx}">
 					<p class="text-center"><img	src="/yelloMovie/img/grade/vipGrade.jpg" 
 							width="65px" height="65px" alt="gradeImfo" class="img-circle">
 					</p>
 					</c:if>
-					<c:if test="${'2' eq sessionScope.smdto.gradeIdx}">
+					<c:if test="${'2' eq sessionScope.smdto.memberGradeIdx}">
 					<p class="text-center"><img	src="/yelloMovie/img/grade/goldGrade.png" 
 							width="65px" height="65px" alt="gradeImfo" class="img-circle">
 					</p>
 					</c:if>
-					<c:if test="${'1' eq sessionScope.smdto.gradeIdx}">
+					<c:if test="${'1' eq sessionScope.smdto.memberGradeIdx}">
 					<p class="text-center"><img	src="/yelloMovie/img/grade/bronzeGrade.png" 
 							width="65px" height="65px" alt="gradeImfo" class="img-circle">
 					</p>

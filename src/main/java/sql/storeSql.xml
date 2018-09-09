@@ -36,9 +36,9 @@
 		#{storePayMemberIdx},
 		#{storePayStoreIdx})
 	</insert>
-	<insert id="mileageAdd" parameterType="sdto">
+	<insert id="smileageAdd" parameterType="sdto">
 		insert into mileage values
-		(mileageSq.nextval,
+		(mileagesq.nextval,
 		#{mileagePrice},
 		#{mileageReason},
 		#{storePayMemberIdx})

@@ -44,7 +44,7 @@ public class StoreDAOImple implements StoreDAO {
 	}
 	public void paymentOk(StoreDTO dto) {
 		sqlMap.insert("storePaymentAdd",dto);
-		sqlMap.insert("mileageAdd",dto);
+		sqlMap.insert("smileageAdd",dto);
 	}
 	public int storeIdx(int storePayStoreIdx) {
 		int result = sqlMap.selectOne("storeIdx",storePayStoreIdx);

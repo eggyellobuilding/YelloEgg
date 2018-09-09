@@ -35,11 +35,12 @@ public class StoreController {
 	}
 	@RequestMapping("/Payment.do")
 	public ModelAndView storePaymentSubmit(StoreDTO dto) {
+		
 		ModelAndView mav = new ModelAndView();
 		int midx = Integer.parseInt(dto.getmIdx());
 		List<StoreDTO> mList = storeDAO.memberInfo(midx);
 		int storePayMileage = storeDAO.storePaymileage(midx);
-		
+
 		int result = mList.get(0).getMileagePrice() - storePayMileage;
 		
 		mList.get(0).setMileagePrice(result);

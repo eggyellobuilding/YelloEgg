@@ -115,9 +115,9 @@ public class MovieReservationController {
 	
 	/**좌석 가져오기*/
 	@RequestMapping("/reservationScheduleSeatListJquery.do")
-	public ModelAndView reservationScheduleSeatListJquery(@RequestParam("theaterIdx")int theaterIdx,
-			@RequestParam("scheduleIdx")int scheduleIdx) {
+	public ModelAndView reservationScheduleSeatListJquery(@RequestParam("scheduleIdx")int scheduleIdx) {
 		ModelAndView mav = new ModelAndView("yongJson");
+		int theaterIdx = rdao.reservationTheaterIdx(scheduleIdx);
 		//좌석 뿌려주기
 			try {
 				Map<String,List<CinemaDTO>> map = cdao.exitsSeatsList(theaterIdx);

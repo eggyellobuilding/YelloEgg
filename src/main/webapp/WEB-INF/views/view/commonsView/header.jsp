@@ -58,7 +58,7 @@
 					}
 				}else{
 					divNode.style.display='block';
-					divNode.style.height='63%';
+					divNode.style.height='54%';
 					divNode.style.left='920px';
 					divNode.innerHTML=loginImfo;
 				}
@@ -70,7 +70,7 @@
   </script>
 <body> 
 	<div>
-		<ul class="nav nav-tabs navbar-fixed-top " style="padding-left: 550px; background-color: white; width:1600px;">
+		<ul class="nav nav-tabs navbar-fixed-top " style="padding-left: 550px; background-color: white; width:100%;">
 			 <li class="header logo"><a href="main.do"><img src="/yelloMovie/img/log.PNG" class="img-rounded" height="20" width="100"></a></li>
 			<li class="header"><a href="movieBoxOffice.do" style="margin: 0px;">영화</a></li>
 			<li class="header"><a href="storeView.do" style="margin: 0px;">스토어</a></li>

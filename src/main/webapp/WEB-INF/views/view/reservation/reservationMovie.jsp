@@ -28,8 +28,7 @@ function selectMovie(movieName , movieGrade,movieIdx,movieTitleCut){
 	
 	var temp = "";
 	var result = "";
-	
-	temp +=' <img id="movieTitleCut"src="'+movieTitleCut+'" style="width:74px;height:104px;">';
+	temp +=' <img id="movieTitleCut"src="'+movieTitleCut+'" style="width:74px;height:104px;float:left;">';
 	temp +=' <ul id="movieDetail" style="display:inline-block;width:125px;height:104px;">';
 	temp +=' <li id="movieTitle" style="color:white;">'+movieName+'<input type="hidden" id="movieIdx" value="'+movieIdx+'"></li>';
 	temp +='<li id="movieGrade" style="color:white;margin-top: 17px;">'+movieGrade+'세 이용가</li>';
@@ -216,23 +215,27 @@ function submitInfo(){
 	$('#payment').show();
 	$('#next').hide();
 	//상영관 좌석 정보가져오기
-	$('#theaterNameResult').text();
+		window.alert("스캐줄 아이디 엑스="+$('#scheduleResultIdx').val());
 		$.ajax({
-				   url:'reservationScheduleSeatListJquery.do?theaterIdx='+theaterIdx+'&scheduleIdx='+scheduleIdx,
+				   url:'reservationScheduleSeatListJquery.do?scheduleIdx='+$('#scheduleResultIdx').val(),
 				   type:'post',
 				   success:function(data){
 						var yList = data.yList;
-						var xList = objData.xList;
-						var ySize = objData.ySize;
-						var xSize = objData.xSize;
-						var alt = objData.alt;
-						var seatsList = objData.seatsList;
+						var xList = data.xList;
+						var ySize = data.ySize;
+						var xSize = data.xSize;
+						var alt = data.alt;
+						var seatsList = data.seatsList;
 						
+						var width = parseInt(xSize)+17
+						var height = parseInt(ySize)+17
+						
+						window.alert(width);
 						var result = '';
-						result += '<div  style="width: ${xSize+17}px; height: ${ySize+17}px;z-index:1;">';
+						result += '<div  style="height:'+(ySize+17)+'px;z-index:1;margin:0px auto;">';
 						result += 	'<div class="seatsPosition" style="margin-top: 20px;">';
 						result += 		'<div id="exitSeatPosition" style="height: ' + (80+ySize+17) + 'px;position:relative;">';
-						result += 			'<p class="screen" style="text-align:center;">screen</p>';
+						result += 			' <p class="text-center" id="screen" style="margin-bottom:30px;">screen</p>';
 						result += 			'<div id="exitPosition" style="width: '+ (xSize+17) + 'px; height: ' + (ySize+17) + 'px;z-index:1;margin:0px auto;position:relative;">';
 						for(var i = 0; i < yList.length; i++){
 							result += 			'<span style="z-index:2;text-align:center;width:16px;height:16px;position:absolute;top:'+ yList[i].seatY +'px;background-color:lightgray;margin-left:1px;">'+alt[i]+'</span>';
@@ -241,7 +244,7 @@ function submitInfo(){
 							result += 			'<span class="xLists" style="z-index:2;text-align:center;display:none;width:16px;height:16px;position:absolute;left:' + xList[i].seatX + 'px;background-color:lightgray;margin-left:1px;">' + (i + 1) + '</span>';
 						}
 						for(var i = 0; i < seatsList.length; i++){
-							result += 			'<span class="seats" style="z-index:2;text-align:center;display:inline-block;width:16px;height:16px;position:absolute;left:' + seatsList[i].seatX + 'px;top:' + seatsList[i].seatY + 'px;background-color:red;margin-left:1px;"></span>';
+							result += 			'<span class="seats" style="z-index:2;text-align:center;display:inline-block;width:16px;height:16px;position:absolute;left:' + seatsList[i].seatX + 'px;top:' + seatsList[i].seatY + 'px;background-color:slategray;margin-left:1px;"></span>';
 						}
 						result +=				'</div>';
 						result +=			'</div>';
@@ -253,19 +256,40 @@ function submitInfo(){
 						
 						var xLists = document.getElementsByClassName('xLists');
 						var seats = document.getElementsByClassName('seats');
+						
 						for (var i = 0; i < xLists.length; i++) {
 							var xValue = xLists[i].style.left;
 							for (j = 0; j < seats.length; j++) {
 								var seatsValue = seats[j].style.left;
+								window.alert(seats[j]);
 								if (xValue == seatsValue) {
-									seats[j].innerHTML = i + 1;
+								
+									seats[j].firstChild.nodeValue = i + 1;
 								}
 
 							}
 						}
 						
+		/* 				for (var i = 0; i < xLists.length; i++) {
+							var xValue = xLists[i].style.left;
+							var seatAscii = 64;
+							for (j = 0; j < seats.length; j++) {
+								var seatsValue = seats[j].style.left;
+								if (xValue == seatsValue) {
+									seatAscii = seatAscii + 1;
+									var seatId = String.fromCharCode(seatAscii);
+									seats[j].firstChild.nodeValue = i + 1;
+									seats[j].setAttribute('id', seatId + (i + 1));
+									seats[j].setAttribute('onclick', 'seatRevationInfo("'
+											+ seatId + (i + 1) + '",' + 1 + ')');
+								}
+							}
+						} */
+						
 					  }
-				   })
+				  
+		
+		})
 
 	//스케줄 가져가서 예약 정보가져오기
 
@@ -278,6 +302,11 @@ function goBackReservation(){
 	$('#reservationBefore').hide();
 	$('#payment').hide();
 	$('#next').show();
+}
+
+//seat
+function reserveSeat(){
+	
 }
 
 </script>
@@ -376,16 +405,12 @@ function goBackReservation(){
 				            </div>
 				
 				<!-- 티켓 등록 -->
-				            <div class="col-xs-12" >
-				                <div class="text-center" id="screen" style="">screen</div>
-									<div id="exitPosition">
-										
-									</div>
-					            </div>
+				            <div class="col-xs-12" id="exitPosition" >
+									
 					        </div>
 					    </div>
 	    			</div>
-
+				</div>
 
 	<!-- 정보 바 -->
 
@@ -399,7 +424,7 @@ function goBackReservation(){
 	                    </span>
                   
 					</div>
-					<div id="movieInfo" class="resultInfo">
+					<div id="movieInfo" class="resultInfo" >
 						<span>영화 선택</span>
 					</div>
 

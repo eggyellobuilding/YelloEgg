@@ -125,19 +125,9 @@ public class ReservationDAOImple implements ReservationDAO {
 		return lists;
 	}
 
-	
-	
-	
-	
-	/*public Map<String, List<ReservationDTO>> reservationScheduleSelectMovie(Map<String, Object> map) {
-	Map<String, List<ReservationDTO>> resultMap = new HashMap<String, List<ReservationDTO>>();
-	List<ReservationDTO> theaterList = sqlMap.selectList("reservationMovieScheduleTheaterIdx",map);
-	List<ReservationDTO> scheduleList = sqlMap.selectList("reservationMovieScheduleDate",map);
-	resultMap.put("theaterIdx", theaterList);
-	resultMap.put("scheduleIdx", scheduleList);
-	return resultMap;
-}*/
-
-	
+	public Integer reservationTheaterIdx(int scheduleIdx) {
+		Integer theaterIdx = sqlMap.selectOne("reservationThetaerIdx",scheduleIdx);
+		return theaterIdx;
+	}
 	
 }

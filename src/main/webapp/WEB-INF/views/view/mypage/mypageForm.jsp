@@ -58,7 +58,11 @@
 			<div>
 				
 			</div>
+			<div class="col-xs-12" style="padding:0px;">
+				<img src="/yelloMovie/img/mypage/myPageLog.png" style="width:100%;height:500px;margin:20px auto;">
+			</div>
 		</div>
+	
 	</div>
  <%@include file="../commonsView/footer.jsp" %>
   </body>

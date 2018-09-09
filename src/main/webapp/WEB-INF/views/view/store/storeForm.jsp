@@ -107,7 +107,7 @@
 		</c:forEach>
 	</div>
 	
-	<div class="row" style="margin: 25px auto; padding-left: 350px; padding-right: 250px;">		
+	<%-- <div class="row" style="margin: 25px auto; padding-left: 350px; padding-right: 250px;">		
 		<h1 style="margin-left: 35px;">이벤트</h1>
 		
 		<c:forEach var="eList" items="${eventLists}" varStatus="e">
@@ -196,7 +196,7 @@
 </div>	
 		</c:forEach>
 
-	</div>
+	</div> --%>
 	<div class="row" style="margin: 25px auto; padding-left: 350px; padding-right: 250px;">	
 		<h1 style="margin-left: 35px;">악세사리</h1>	
 		

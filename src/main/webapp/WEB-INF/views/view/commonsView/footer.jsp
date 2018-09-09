@@ -5,7 +5,7 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
-<link type="text/css" href="css/footer.css" rel="stylesheet"></link>
+<link type="text/css" href="/yelloMovie/css/view/footer.css" rel="stylesheet"></link>
 </head>
 <body>
 	<div id="footer" class="visible-lg">

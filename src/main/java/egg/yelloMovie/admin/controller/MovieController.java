@@ -96,7 +96,7 @@ public class MovieController {
 			String pageStr=egg.commons.PageModule.makePage("adminMovieList.do", totalcnt, listsize, pagesize, cp);
 			
 			mav.addObject("repList", repList);
-			mav.addObject("pagestr", pageStr);
+			mav.addObject("pageStr", pageStr);
 			mav.addObject("movieList", movieList);
 			mav.addObject("steelCutList", steelCutList);
 			mav.setViewName("admin/movie/movieList");

@@ -41,6 +41,38 @@
 	  $('#afterQaContent').val(qaContent);
 	  $('#answerAnswer').val(answerAnswer);
   }
+  
+  function goModal(){
+	  var qaItem = document.getElementsByClassName('qaListItem');
+		
+			  var qaCate = qaItem[0].firstChild.nodeValue;
+			  var cinemaName = qaItem[1].firstChild.nodeValue;
+			  var qaTitle = qaItem[2].firstChild.nodeValue;
+			  var qaContent = qaItem[3].firstChild.nodeValue;
+
+			  $('#cinemaName').val(cinemaName);
+			  $('#qaCate').val(qaCate);
+			  $('#qaTitle').val(qaTitle);
+			  $('#qaContent').val(qaContent);
+			
+  }
+  
+function goModal2(){
+	 var qaItem = document.getElementsByClassName('qaAfterItem');
+	 
+	 var qaCate = qaItem[0].firstChild.nodeValue;
+	  var cinemaName = qaItem[1].firstChild.nodeValue;
+	  var qaTitle = qaItem[2].firstChild.nodeValue;
+	  var qaContent = qaItem[3].firstChild.nodeValue;
+	  var qaAnswer = qaItem[4].firstChild.nodeValue;
+	  
+	  $('#afterCinemaName').val(cinemaName);
+	  $('#afterQaCate').val(qaCate);
+	  $('#afterQaTitle').val(qaTitle);
+	  $('#afterQaContent').val(qaContent);
+	  $('#answerAnswer').val(qaAnswer);
+	  
+}
   </script>
   <body>
     <%@include file="../commonsView/header.jsp" %>
@@ -109,22 +141,25 @@
 						</c:if>
 						<c:forEach var="qadto" items="${lists}">
 						<c:if test="${'Y' eq qadto.qaAnswer}">
-							<tr onclick="answerModalOpen('${qadto.cinemaName}','${qadto.qaCate}','${qadto.qaTitle}','${qadto.qaContent}','${qadto.answerAnswer}')">
+							<tr data-toggle="modal" data-target="#answerModal" onclick="goModal2()">
 								<td>${qadto.qaIdx}</td>
-								<td>${qadto.qaCate}</td>
-								<td>${qadto.cinemaName}</td>
-								<td>${qadto.qaTitle}</td>
+								<td class="qaAfterItem">${qadto.qaCate}</td>
+								<td class="qaAfterItem">${qadto.cinemaName}</td>
+								<td class="qaAfterItem">${qadto.qaTitle}</td>
 								<td>답변완료</td>
 								<td>${qadto.qaWriteDate}</td>
 								<td>${qadto.answerDate}</td>
+								<td style="display:none;"  class="qaAfterItem">${qadto.qaContent}</td>
+								<td style="display:none;"  class="qaAfterItem">${qadto.answerAnswer}</td>
 							</tr>
 							</c:if>
 						<c:if test="${'N' eq qadto.qaAnswer}">
-							<tr onclick="qaboardModalOpen('${qadto.cinemaName}','${qadto.qaCate}','${qadto.qaTitle}','${qadto.qaContent}')">
+							<tr data-toggle="modal" data-target="#qaboardModal" onclick="goModal()">
 								<td>${qadto.qaIdx}</td>
-								<td>${qadto.qaCate}</td>
-								<td>${qadto.cinemaName}</td>
-								<td>${qadto.qaTitle}</td>
+								<td class="qaListItem">${qadto.qaCate}</td>
+								<td class="qaListItem">${qadto.cinemaName}</td>
+								<td class="qaListItem">${qadto.qaTitle}</td>
+								<td style="display:none;"  class="qaListItem">${qadto.qaContent}</td>
 								<td>답변대기</td>
 								<td>${qadto.qaWriteDate}</td>
 								<td>-</td>
@@ -159,27 +194,27 @@
       <div class="modal-body">
       	<div style="border-top: 4px solid #F4FA58; margin-top: 20px;">
 			<form class="form-group"  action="mypageQaboardWrite.do" method="post">
-				<input type="hidden" id="qaIdx"/>
+				<input type="hidden" id="qaIdx" value="${qadto.qaIdx}"/>
 				<table class="table table-striped">
 					<tr>
 						<th id="inquiryCol"> 문의지점</th>
 						<td>
-						<input type="text" id="cinemaName" class="form-control" readonly style="width: 150px;"/> 
+						<input type="text" id="cinemaName" class="form-control" value="${qadto.cinemaName}" readonly style="width: 150px;"/> 
 						</td>
 						<th id="inquiryCol"> 문의유형</th>
-						<td><input type="email" id="qaCate" class="form-control" readonly style="width: 200px;"></input>
+						<td><input type="email" id="qaCate" class="form-control" value="${qadto.qaCate}"readonly style="width: 200px;"></input>
 						</td>
 					</tr>
 					<tr>
 						<th id="inquiryCol"> 제목</th>
 						<td colspan="3">
-						<input type="text" id="qaTitle" readonly="readonly" class="form-control">
+						<input type="text" id="qaTitle" readonly="readonly" value="${qadto.qaTitle}"class="form-control">
 						</td>
 					</tr>
 					<tr>
 						<th id="inquiryCol" style="vertical-align: middle;"> 내용</th>
 						<td colspan="3">
-						<textarea class="form-control" id="qaContent" rows="5" cols="15" readonly="readonly"></textarea>
+						<textarea class="form-control" id="qaContent" value="${qadto.qaContent}"rows="5" cols="15" readonly="readonly"></textarea>
 						</td>
 					</tr>
 				</table>
